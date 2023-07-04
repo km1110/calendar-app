@@ -10,10 +10,10 @@ type Router interface {
 }
 
 type router struct {
-	sc scheduleController
+	sc ScheduleController
 }
 
-func CreateRouter(sc scheduleController) Router {
+func CreateRouter(sc ScheduleController) Router {
 	return &router{sc}
 }
 
