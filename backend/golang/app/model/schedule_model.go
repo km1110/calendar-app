@@ -10,7 +10,7 @@ import (
 )
 
 type ScheduleModel interface {
-	FetchSchedule() ([]*entities.Schedule, error)
+	FetchSchedules() ([]*entities.Schedule, error)
 	AddSchedule(r entities.Schedule) (sql.Result, error)
 	ChangeSchedule(r entities.Schedule) (sql.Result, error)
 	DeleteSchedule(r entities.Schedule) (sql.Result, error)
@@ -24,7 +24,7 @@ func CreateScheduleModel() ScheduleModel {
 }
 
 // TODO 日付データに関する処理を追加する必要がある
-func (sm *scheduleModel) FetchSchedule() ([]*entities.Schedule, error) {
+func (sm *scheduleModel) FetchSchedules() ([]*entities.Schedule, error) {
 	sql := `SERECT id, title, description, date, location FROM schedules`
 
 	rows, err := Db.Query(sql)
