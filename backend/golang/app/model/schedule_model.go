@@ -38,7 +38,8 @@ func (sm *scheduleModel) FetchSchedules() ([]*entities.Schedule, error) {
 
 	for rows.Next() {
 		var (
-			id, title, description, date, location string
+			id, title, description, location string
+			date                             time.Time
 		)
 
 		if err := rows.Scan(&id, &title, &description, &date, &location); err != nil {
