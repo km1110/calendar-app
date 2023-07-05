@@ -85,9 +85,7 @@ func (sm *scheduleModel) AddSchedule(r entities.Schedule) (sql.Result, error) {
 func (sm *scheduleModel) ChangeSchedule(r entities.Schedule) (sql.Result, error) {
 	sql := `UPDATE schedules SET title = ?, description = ?, date = ?, location = ? WHERE id = ?`
 
-	// TODO 更新処理
-
-	result, err := Db.Exec(sql, r.Id)
+	result, err := Db.Exec(sql, r.Title, r.Description, r.Date, r.Location, r.Id)
 
 	if err != nil {
 		return result, err
