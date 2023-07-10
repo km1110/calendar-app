@@ -1,23 +1,64 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
 import dayjs from "dayjs";
+import { Container, Grid, Typography } from "@mui/material";
 
 import { MonthElement } from "@/components/parts/CalenderElement/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 
 export const MonthCalender = () => {
-  const currenDate = dayjs();
-  const year = currenDate.year();
-  const month = currenDate.month() + 1;
+  const currentDate = dayjs();
+  const year = currentDate.year();
+  const month = currentDate.month() + 1;
 
   const [currentMonth, setCurrentMonth] = useState(
     createCalender({ year, month })
   );
 
+  const days = ["日", "月", "火", "水", "木", "金", "土"];
+
   return (
     <div>
-      {currentMonth.map((days: any, i: number) => (
-        <MonthElement key={i} day={days} />
-      ))}
+      <Container>
+        <Grid container columns={{ xs: 7, sm: 7, md: 7 }}>
+          {days.map((day) => (
+            <Grid
+              item
+              xs={1}
+              sm={1}
+              md={1}
+              key={day}
+              sx={{
+                borderBottom: "1px solid #ccc",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              {day}
+            </Grid>
+          ))}
+          {currentMonth.map((days: any, i: number) => (
+            <Grid
+              item
+              xs={1}
+              sm={1}
+              md={1}
+              key={i}
+              sx={{
+                borderRight: "1px solid #ccc",
+                borderBottom: "1px solid #ccc;",
+                textAlign: "right",
+                width: "40px",
+                height: "100px",
+              }}
+            >
+              <Typography>
+                <MonthElement key={i} day={days} />
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </div>
   );
 };
