@@ -37,6 +37,12 @@ export const MonthCalender = () => {
               {day}
             </Grid>
           ))}
+        </Grid>
+        <Grid
+          container
+          columns={{ xs: 7, sm: 7, md: 7 }}
+          sx={{ borderLeft: "1px solid #ccc" }}
+        >
           {currentMonth.map((days: any, i: number) => (
             <Grid
               item
