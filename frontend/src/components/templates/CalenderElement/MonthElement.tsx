@@ -5,7 +5,7 @@ type Props = {
   day: any;
 };
 
-export const MonthElement: React.FC<Props> = ({ day }) => {
+export const MonthElement = ({ day }: Props) => {
   return (
     <div>
       <header style={{ marginRight: "5px" }}>
