@@ -3,7 +3,7 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import { Container, Grid, Typography } from "@mui/material";
 
-import { MonthElement } from "@/components/parts/CalenderElement/MonthElement";
+import { MonthElement } from "@/components/templates/CalenderElement/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 
 export const MonthCalender = () => {
