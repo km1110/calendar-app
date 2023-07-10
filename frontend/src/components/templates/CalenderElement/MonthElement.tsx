@@ -1,10 +1,11 @@
+import React from "react";
 import dayjs from "dayjs";
 
-export const MonthElement = (props: any) => {
-  const { day, index } = props;
+type Props = {
+  day: any;
+};
 
-  const today = dayjs();
-
+export const MonthElement: React.FC<Props> = ({ day }) => {
   return (
     <div>
       <header style={{ marginRight: "5px" }}>
