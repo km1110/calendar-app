@@ -1,13 +1,9 @@
-import React from "react";
-
-import { Header } from "../parts/Header";
-import { MonthCalender } from "@/components/templates/MonthCalender";
+import { MonthView } from "@/components/views/MonthView";
 
 export const MonthPage = () => {
   return (
     <div>
-      <Header />
-      <MonthCalender />
+      <MonthView />
     </div>
   );
 };
