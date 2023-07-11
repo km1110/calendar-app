@@ -1,11 +1,8 @@
 import dayjs from "dayjs";
 
-interface Date {
-  year: number;
-  month: number;
-}
+import { DateType } from "@/types/date";
 
-export const createCalender = (date: Date) => {
+export const createCalender = (date: DateType) => {
   const firstDay = getMonth(date);
   const firstDayIndex = firstDay.day();
 
@@ -19,7 +16,7 @@ export const createCalender = (date: Date) => {
     });
 };
 
-export const getMonth = (date: Date) => {
+export const getMonth = (date: DateType) => {
   return dayjs(`${date.year}-${date.month}`);
 };
 
