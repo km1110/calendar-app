@@ -1,22 +1,26 @@
 import React, { useContext } from "react";
+import dayjs from "dayjs";
 
 import { Header } from "@/components/parts/Header";
 import { MonthContext } from "@/provider/CalendarProvider";
 
 export const HeaderTemplate = () => {
-  const { date, setDate } = useContext(MonthContext);
-  const previousMonth = { year: date.year, month: date.month - 1 };
-  const nextMonth = { year: date.year, month: date.month + 1 };
+  const { month, setMonth } = useContext(MonthContext);
 
   const handlePrevioustMonth = () => {
-    setDate(previousMonth);
+    setMonth(month - 1);
   };
+
   const handleNextMonth = () => {
-    setDate(nextMonth);
+    setMonth(month + 1);
   };
+
+  const year = dayjs().year();
+  const date = dayjs(new Date(year, month));
 
   return (
     <Header
+      date={date}
       setPrevioustMonth={handlePrevioustMonth}
       setNextMonth={handleNextMonth}
     />
