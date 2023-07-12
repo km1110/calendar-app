@@ -8,19 +8,13 @@ import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 
 export const MonthCalender = () => {
-  const currentDate = dayjs();
-  const year = currentDate.year();
-  const month = currentDate.month() + 1;
+  const [currentMonth, setCurrentMonth] = useState(createCalender());
 
-  const [currentMonth, setCurrentMonth] = useState(
-    createCalender({ year, month })
-  );
-
-  const { date } = useContext(MonthContext);
+  const { month } = useContext(MonthContext);
 
   useEffect(() => {
-    setCurrentMonth(createCalender(date));
-  }, [date]);
+    setCurrentMonth(createCalender(month));
+  }, [month]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
