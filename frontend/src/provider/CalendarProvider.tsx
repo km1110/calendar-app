@@ -8,15 +8,13 @@ import {
 
 import dayjs from "dayjs";
 
-import { DateType } from "@/types/date";
-
 interface PropType {
   children: ReactNode;
 }
 
 interface monthProviderType {
-  date: DateType;
-  setDate: Dispatch<SetStateAction<DateType>>;
+  month: number;
+  setMonth: Dispatch<SetStateAction<number>>;
 }
 
 export const MonthContext = createContext<monthProviderType>(
@@ -26,14 +24,12 @@ export const MonthContext = createContext<monthProviderType>(
 export const CalendarProvider = (props: PropType) => {
   const { children } = props;
 
-  const currentDate = dayjs();
-  const year = currentDate.year();
-  const month = currentDate.month() + 1;
+  const currentMonth = dayjs().month();
 
-  const [date, setDate] = useState<DateType>({ year, month });
+  const [month, setMonth] = useState(currentMonth);
 
   return (
-    <MonthContext.Provider value={{ date, setDate }}>
+    <MonthContext.Provider value={{ month, setMonth }}>
       {children}
     </MonthContext.Provider>
   );
