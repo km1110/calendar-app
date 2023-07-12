@@ -1,25 +1,26 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 import { Container, Grid, Typography } from "@mui/material";
 
 import { MonthElement } from "@/components/templates/CalenderElement/MonthElement";
 import { createCalender } from "@/libs/service/calender";
+import { MonthContext } from "@/provider/CalendarProvider";
 
 export const MonthCalender = () => {
-  const currentDate = dayjs();
-  const year = currentDate.year();
-  const month = currentDate.month() + 1;
+  const [currentMonth, setCurrentMonth] = useState(createCalender());
 
-  const [currentMonth, setCurrentMonth] = useState(
-    createCalender({ year, month })
-  );
+  const { month } = useContext(MonthContext);
+
+  useEffect(() => {
+    setCurrentMonth(createCalender(month));
+  }, [month]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
   return (
     <div>
-      <Container>
+      <Container sx={{ marginTop: "10px" }}>
         <Grid container columns={{ xs: 7, sm: 7, md: 7 }}>
           {days.map((day) => (
             <Grid

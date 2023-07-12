@@ -1,12 +1,8 @@
 import dayjs from "dayjs";
 
-interface Date {
-  year: number;
-  month: number;
-}
-
-export const createCalender = (date: Date) => {
-  const firstDay = getMonth(date);
+export const createCalender = (month = dayjs().month()) => {
+  const year = dayjs().year();
+  const firstDay = dayjs(new Date(year, month, 1));
   const firstDayIndex = firstDay.day();
 
   return Array(42)
@@ -17,10 +13,6 @@ export const createCalender = (date: Date) => {
 
       return day;
     });
-};
-
-export const getMonth = (date: Date) => {
-  return dayjs(`${date.year}-${date.month}`);
 };
 
 export const isSameDay = (day1: dayjs.Dayjs, day2: dayjs.Dayjs) => {
