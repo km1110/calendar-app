@@ -1,21 +1,23 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { FormDialog } from "../parts/FormDialog";
+import { MonthContext } from "@/provider/CalendarProvider";
 
 export const AddScheduleDialog = () => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+  const { showDialog, setShowDialog } = useContext(MonthContext);
 
   const handleOpne = () => {
-    setOpen(true);
+    setShowDialog(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setShowDialog(false);
   };
 
   return (
     <div>
       <FormDialog
-        open={open}
+        open={showDialog}
         handleOpne={handleOpne}
         handleClose={handleClose}
       />
