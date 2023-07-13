@@ -10,7 +10,8 @@ import { AddScheduleDialog } from "@/components/templates/AddScheduleDialog";
 export const MonthCalender = () => {
   const [currentMonth, setCurrentMonth] = useState(createCalender());
 
-  const { month, showDialog } = useContext(MonthContext);
+  const { month, showDialog, setDaySelected, setShowDialog } =
+    useContext(MonthContext);
 
   useEffect(() => {
     setCurrentMonth(createCalender(month));
@@ -45,7 +46,7 @@ export const MonthCalender = () => {
           columns={{ xs: 7, sm: 7, md: 7 }}
           sx={{ borderLeft: "1px solid #ccc" }}
         >
-          {currentMonth.map((days: any, i: number) => (
+          {currentMonth.map((day: any, i: number) => (
             <Grid
               item
               xs={1}
@@ -60,9 +61,16 @@ export const MonthCalender = () => {
                 height: "100px",
               }}
             >
-              <Typography>
-                <MonthElement key={i} day={days} />
-              </Typography>
+              <div
+                onClick={() => {
+                  setDaySelected(day);
+                  setShowDialog(true);
+                }}
+              >
+                <Typography>
+                  <MonthElement key={i} day={day} />
+                </Typography>
+              </div>
             </Grid>
           ))}
         </Grid>
