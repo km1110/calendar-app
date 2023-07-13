@@ -15,6 +15,10 @@ interface PropType {
 interface monthProviderType {
   month: number;
   setMonth: Dispatch<SetStateAction<number>>;
+  daySelected: dayjs.Dayjs;
+  setDaySelected: Dispatch<SetStateAction<dayjs.Dayjs>>;
+  showDialog: boolean;
+  setShowDialog: Dispatch<SetStateAction<boolean>>;
 }
 
 export const MonthContext = createContext<monthProviderType>(
@@ -24,12 +28,26 @@ export const MonthContext = createContext<monthProviderType>(
 export const CalendarProvider = (props: PropType) => {
   const { children } = props;
 
-  const currentMonth = dayjs().month();
+  const today = dayjs();
+  const currentMonth = today.month();
 
   const [month, setMonth] = useState(currentMonth);
+  const [daySelected, setDaySelected] = useState(today);
+  const [showDialog, setShowDialog] = useState(false);
+
+  console.log(showDialog);
 
   return (
-    <MonthContext.Provider value={{ month, setMonth }}>
+    <MonthContext.Provider
+      value={{
+        month,
+        setMonth,
+        daySelected,
+        setDaySelected,
+        showDialog,
+        setShowDialog,
+      }}
+    >
       {children}
     </MonthContext.Provider>
   );
