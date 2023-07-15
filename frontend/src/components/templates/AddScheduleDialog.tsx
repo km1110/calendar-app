@@ -3,8 +3,7 @@ import { FormDialog } from "../parts/FormDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 
 export const AddScheduleDialog = () => {
-  // const [open, setOpen] = useState(false);
-  const { showDialog, setShowDialog } = useContext(MonthContext);
+  const { daySelected, setShowDialog } = useContext(MonthContext);
 
   const handleOpne = () => {
     setShowDialog(true);
@@ -17,7 +16,7 @@ export const AddScheduleDialog = () => {
   return (
     <div>
       <FormDialog
-        open={showDialog}
+        date={daySelected}
         handleOpne={handleOpne}
         handleClose={handleClose}
       />
