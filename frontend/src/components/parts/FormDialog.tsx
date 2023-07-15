@@ -1,19 +1,21 @@
+import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers";
 
+import CloseIcon from "@mui/icons-material/Close";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import NotesIcon from "@mui/icons-material/Notes";
 
 import dayjs from "dayjs";
-import { Grid } from "@mui/material";
 
 type Props = {
   date: dayjs.Dayjs;
@@ -27,6 +29,11 @@ export const FormDialog = ({ date, handleOpne, handleClose }: Props) => {
   return (
     <div>
       <Dialog open={handleOpne} onClose={handleClose} maxWidth="xs" fullWidth>
+        <DialogActions>
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
         <DialogContent>
           <TextField
             size="medium"
@@ -86,7 +93,7 @@ export const FormDialog = ({ date, handleOpne, handleClose }: Props) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>保存</Button>
         </DialogActions>
       </Dialog>
     </div>
