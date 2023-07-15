@@ -1,4 +1,3 @@
-import React from "react";
 import dayjs from "dayjs";
 
 import { isSameDay } from "@/libs/service/calender";
@@ -10,7 +9,6 @@ type Props = {
 
 export const MonthElement = ({ day }: Props) => {
   const today = dayjs();
-
   const isToday = isSameDay(day, today);
 
   return (
