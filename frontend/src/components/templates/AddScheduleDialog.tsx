@@ -22,7 +22,8 @@ export const AddScheduleDialog = () => {
       <FormDialog
         date={daySelected}
         handleOpne={handleOpne}
-        handleClose={handleSaveSchedule}
+        handleClose={handleClose}
+        handleSaveSchedule={handleSaveSchedule}
       />
     </div>
   );
