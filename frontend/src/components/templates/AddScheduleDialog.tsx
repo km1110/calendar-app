@@ -13,12 +13,16 @@ export const AddScheduleDialog = () => {
     setShowDialog(false);
   };
 
+  const handleSaveSchedule = () => {
+    setShowDialog(false);
+  };
+
   return (
     <div>
       <FormDialog
         date={daySelected}
         handleOpne={handleOpne}
-        handleClose={handleClose}
+        handleClose={handleSaveSchedule}
       />
     </div>
   );
