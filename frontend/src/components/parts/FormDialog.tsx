@@ -21,11 +21,17 @@ type Props = {
   date: dayjs.Dayjs;
   handleOpne: any;
   handleClose: any;
+  handleSaveSchedule: any;
 };
 
 const spacer = { margin: "10px 0" };
 
-export const FormDialog = ({ date, handleOpne, handleClose }: Props) => {
+export const FormDialog = ({
+  date,
+  handleOpne,
+  handleClose,
+  handleSaveSchedule,
+}: Props) => {
   return (
     <div>
       <Dialog open={handleOpne} onClose={handleClose} maxWidth="xs" fullWidth>
@@ -93,7 +99,7 @@ export const FormDialog = ({ date, handleOpne, handleClose }: Props) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>保存</Button>
+          <Button onClick={handleSaveSchedule}>保存</Button>
         </DialogActions>
       </Dialog>
     </div>
