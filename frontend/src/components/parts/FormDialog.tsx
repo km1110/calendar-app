@@ -17,9 +17,18 @@ import NotesIcon from "@mui/icons-material/Notes";
 
 import dayjs from "dayjs";
 
+import { scheduleType } from "@/types/schedule";
+
 type Props = {
+  title: string;
+  description: string;
+  location: string;
   date: dayjs.Dayjs;
-  handleOpne: any;
+  setTitle: any;
+  setDescription: any;
+  setLocation: any;
+  setDaySelected: any;
+  showDialog: any;
   handleClose: any;
   handleSaveSchedule: any;
 };
@@ -27,14 +36,21 @@ type Props = {
 const spacer = { margin: "10px 0" };
 
 export const FormDialog = ({
+  title,
+  description,
+  location,
   date,
-  handleOpne,
+  setTitle,
+  setDescription,
+  setLocation,
+  setDaySelected,
+  showDialog,
   handleClose,
   handleSaveSchedule,
 }: Props) => {
   return (
     <div>
-      <Dialog open={handleOpne} onClose={handleClose} maxWidth="xs" fullWidth>
+      <Dialog open={showDialog} onClose={handleClose} maxWidth="xs" fullWidth>
         <DialogActions>
           <IconButton onClick={handleClose}>
             <CloseIcon />
@@ -48,6 +64,8 @@ export const FormDialog = ({
             fullWidth
             placeholder="タイトルを追加"
             sx={{ marginBottom: 4 }}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
           <Grid
             container
@@ -59,7 +77,7 @@ export const FormDialog = ({
             </Grid>
             <Grid item xs={10}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker value={date} format="YYYY/MM/DD" className="" />
+                <DatePicker format="YYYY/MM/DD" className="" />
               </LocalizationProvider>
             </Grid>
           </Grid>
