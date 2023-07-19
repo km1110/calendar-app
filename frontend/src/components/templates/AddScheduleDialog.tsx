@@ -10,17 +10,25 @@ export const AddScheduleDialog = () => {
   const { daySelected, showDialog, setDaySelected, setShowDialog } =
     useContext(MonthContext);
 
-  const handleClose = () => {
-    setShowDialog(false);
+  const schedule = {
+    title: title,
+    date: daySelected,
+    location: location,
+    description: description,
   };
 
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    setTitle(event.target.value);
+  const handleClose = () => {
+    setTitle("");
+    setLocation("");
+    setDescription("");
+    setShowDialog(false);
   };
 
   const handleSaveSchedule = () => {
-    // console.log(setSchedules);
     setShowDialog(false);
+    setTitle("");
+    setLocation("");
+    setDescription("");
   };
 
   return (
