@@ -5,13 +5,11 @@ import { Container, Grid, Typography } from "@mui/material";
 import { MonthElement } from "@/components/templates/CalenderElement/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { AddScheduleDialog } from "@/components/templates/AddScheduleDialog";
 
 export const MonthCalender = () => {
   const [currentMonth, setCurrentMonth] = useState(createCalender());
 
-  const { month, showDialog, setDaySelected, setShowDialog } =
-    useContext(MonthContext);
+  const { month, setDaySelected, setShowDialog } = useContext(MonthContext);
 
   useEffect(() => {
     setCurrentMonth(createCalender(month));
@@ -21,7 +19,6 @@ export const MonthCalender = () => {
 
   return (
     <div>
-      {/* {showDialog && <AddScheduleDialog />} */}
       <Container sx={{ marginTop: "10px" }}>
         <Grid container columns={{ xs: 7, sm: 7, md: 7 }}>
           {days.map((day) => (
