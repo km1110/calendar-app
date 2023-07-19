@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-export interface schedule {
+export interface scheduleType {
   title: string;
   description: string;
   date: dayjs.Dayjs;
