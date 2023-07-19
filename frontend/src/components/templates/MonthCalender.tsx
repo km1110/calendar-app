@@ -21,7 +21,7 @@ export const MonthCalender = () => {
 
   return (
     <div>
-      {showDialog && <AddScheduleDialog />}
+      {/* {showDialog && <AddScheduleDialog />} */}
       <Container sx={{ marginTop: "10px" }}>
         <Grid container columns={{ xs: 7, sm: 7, md: 7 }}>
           {days.map((day) => (
