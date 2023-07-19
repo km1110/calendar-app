@@ -77,7 +77,12 @@ export const FormDialog = ({
             </Grid>
             <Grid item xs={10}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker format="YYYY/MM/DD" className="" />
+                <DatePicker
+                  value={date}
+                  onChange={(d) => setDaySelected(d)}
+                  format="YYYY/MM/DD"
+                  className=""
+                />
               </LocalizationProvider>
             </Grid>
           </Grid>
@@ -91,6 +96,8 @@ export const FormDialog = ({
             </Grid>
             <Grid item xs={10}>
               <TextField
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
                 style={spacer}
                 variant="standard"
                 fullWidth
@@ -108,6 +115,8 @@ export const FormDialog = ({
             </Grid>
             <Grid item xs={10}>
               <TextField
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 style={spacer}
                 variant="standard"
                 fullWidth
