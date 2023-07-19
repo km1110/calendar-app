@@ -8,7 +8,7 @@ import {
 
 import dayjs from "dayjs";
 
-import { schedule } from "@/types/schedule";
+import { scheduleType } from "@/types/schedule";
 
 interface PropType {
   children: ReactNode;
@@ -21,8 +21,8 @@ interface monthProviderType {
   setDaySelected: Dispatch<SetStateAction<dayjs.Dayjs>>;
   showDialog: boolean;
   setShowDialog: Dispatch<SetStateAction<boolean>>;
-  schedules: schedule[];
-  setSchedules: Dispatch<SetStateAction<schedule[]>>;
+  schedules: scheduleType[];
+  setSchedules: Dispatch<SetStateAction<scheduleType[]>>;
 }
 
 export const MonthContext = createContext<monthProviderType>(
@@ -38,7 +38,7 @@ export const CalendarProvider = (props: PropType) => {
   const [month, setMonth] = useState(currentMonth);
   const [daySelected, setDaySelected] = useState(today);
   const [showDialog, setShowDialog] = useState(false);
-  const [schedules, setSchedules] = useState<schedule[]>([]);
+  const [schedules, setSchedules] = useState<scheduleType[]>([]);
 
   return (
     <MonthContext.Provider
