@@ -31,9 +31,9 @@ export const AddScheduleDialog = () => {
       location: location,
       description: description,
     };
-    const body = new URLSearchParams(schedule);
-    await client.post("add-schedule", body);
-    client.get("fetch-schedule").then(({ data }) => {
+    // const body = new URLSearchParams(schedule);
+    await client.post("schedule/add-schedule", schedule);
+    client.get("schedule/fetch-schedules").then(({ data }) => {
       setSchedules(data);
     });
 
