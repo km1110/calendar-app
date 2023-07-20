@@ -25,7 +25,7 @@ func CreateScheduleModel() ScheduleModel {
 
 // TODO 日付データに関する処理を追加する必要がある
 func (sm *scheduleModel) FetchSchedules() ([]*entities.Schedule, error) {
-	sql := `SERECT id, title, description, date, location FROM schedules`
+	sql := `select id, title, description, date, location from schedules`
 
 	rows, err := Db.Query(sql)
 	if err != nil {
@@ -71,7 +71,7 @@ func (sm *scheduleModel) AddSchedule(r entities.Schedule) (sql.Result, error) {
 		Location:    r.Location,
 	}
 
-	sql := `INSERT INTO schedule(id, title, description, date, location) VALUES(?, ?, ?, ?, ?)`
+	sql := `INSERT INTO schedules(id, title, description, date, location) VALUES(?, ?, ?, ?, ?)`
 
 	result, err := Db.Exec(sql, req.Id, req.Title, req.Description, req.Date, req.Location)
 
