@@ -64,9 +64,7 @@ export const MonthCalender = () => {
                   setShowDialog(true);
                 }}
               >
-                <Typography>
-                  <MonthElement key={i} day={day} />
-                </Typography>
+                <MonthElement key={i} day={day} />
               </div>
             </Grid>
           ))}

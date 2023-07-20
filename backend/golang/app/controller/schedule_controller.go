@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/km1110/calender-app/backend/golang/controller/dto"
-	"github.com/km1110/calender-app/backend/golang/model"
-	"github.com/km1110/calender-app/backend/golang/model/entities"
+	"github.com/km1110/calendar-app/backend/golang/controller/dto"
+	"github.com/km1110/calendar-app/backend/golang/model"
+	"github.com/km1110/calendar-app/backend/golang/model/entities"
 )
 
 type ScheduleController interface {
