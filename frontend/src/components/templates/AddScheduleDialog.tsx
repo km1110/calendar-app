@@ -25,18 +25,19 @@ export const AddScheduleDialog = () => {
   };
 
   const handleSaveSchedule = async () => {
-    const schedule = {
+    const body = {
       title: title,
-      date: daySelected.format("YYYYMMDD"),
+      date: daySelected.toISOString(),
       location: location,
       description: description,
     };
     // const body = new URLSearchParams(schedule);
-    await client.post("schedule/add-schedule", schedule);
+    await client.post("schedule/add-schedule", body);
     client.get("schedule/fetch-schedules").then(({ data }) => {
       setSchedules(data);
     });
 
+    console.log(setSchedules);
     setShowDialog(false);
     setTitle("");
     setLocation("");
