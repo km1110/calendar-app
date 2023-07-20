@@ -37,11 +37,10 @@ export const AddScheduleDialog = () => {
       setSchedules(data);
     });
 
-    console.log(setSchedules);
-    setShowDialog(false);
     setTitle("");
     setLocation("");
     setDescription("");
+    setShowDialog(false);
   };
 
   return (
