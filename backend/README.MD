@@ -18,7 +18,7 @@ password: root_password
 ### MySQL
 
 ```
-mysql> CREATE DATABASE calender;
+mysql> CREATE DATABASE calendar;
 mysql> exit
 ```
 

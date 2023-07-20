@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/km1110/calender-app/backend/golang/model/entities"
+	"github.com/km1110/calendar-app/backend/golang/model/entities"
 	"github.com/oklog/ulid"
 )
 

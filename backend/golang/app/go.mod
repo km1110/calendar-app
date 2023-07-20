@@ -1,4 +1,4 @@
-module github.com/km1110/calender-app/backend/golang
+module github.com/km1110/calendar-app/backend/golang
 
 go 1.20
 
