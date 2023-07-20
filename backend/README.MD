@@ -26,5 +26,5 @@ mysql> exit
 
 ```
 docker compose exec go sh
-/go/src # go run cmd/main.go
+/go/src # go run cmd/main.go -option=migrate
 ```
