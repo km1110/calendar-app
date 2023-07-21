@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { FormDialog } from "../parts/FormDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { client } from "@/libs/api/axios";
-import { scheduleType } from "@/types/schedule";
 
 export const AddScheduleDialog = () => {
   const [title, setTitle] = useState("");
