@@ -1,19 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 
 import { MonthElement } from "@/components/templates/CalenderElement/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
+import { setSchedules } from "@/libs/service/schedule";
+import dayjs from "dayjs";
 
 export const MonthCalender = () => {
   const [currentMonth, setCurrentMonth] = useState(createCalender());
 
-  const { month, setDaySelected, setShowDialog } = useContext(MonthContext);
+  const { month, schedules, setDaySelected, setShowDialog } =
+    useContext(MonthContext);
 
   useEffect(() => {
+    const calendar = setSchedules(createCalender(month), schedules);
     setCurrentMonth(createCalender(month));
-  }, [month]);
+  }, [month, schedules]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
