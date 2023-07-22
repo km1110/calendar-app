@@ -1,19 +1,25 @@
 import { useContext, useEffect, useState } from "react";
 
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 
-import { MonthElement } from "@/components/templates/CalenderElement/MonthElement";
+import { MonthElement } from "@/components/templates/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
+import { setSchedules } from "@/libs/service/schedule";
+import dayjs from "dayjs";
 
-export const MonthCalender = () => {
+export const MonthCalender = (schedule: any) => {
+  const { month, schedules, setDaySelected, setShowDialog } =
+    useContext(MonthContext);
   const [currentMonth, setCurrentMonth] = useState(createCalender());
-
-  const { month, setDaySelected, setShowDialog } = useContext(MonthContext);
+  const [calendar, setCalendar] = useState(
+    setSchedules(currentMonth, schedules)
+  );
 
   useEffect(() => {
     setCurrentMonth(createCalender(month));
-  }, [month]);
+    setCalendar(setSchedules(currentMonth, schedules));
+  }, [month, schedules]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
@@ -43,7 +49,7 @@ export const MonthCalender = () => {
           columns={{ xs: 7, sm: 7, md: 7 }}
           sx={{ borderLeft: "1px solid #ccc" }}
         >
-          {currentMonth.map((day: any, i: number) => (
+          {calendar.map((item: any, i: number) => (
             <Grid
               item
               xs={1}
@@ -59,12 +65,17 @@ export const MonthCalender = () => {
               }}
             >
               <div
+                className="ssss"
                 onClick={() => {
-                  setDaySelected(day);
+                  setDaySelected(item.date);
                   setShowDialog(true);
                 }}
               >
-                <MonthElement key={i} day={day} />
+                <MonthElement
+                  key={i}
+                  day={item.date}
+                  schedule={item.schedules}
+                />
               </div>
             </Grid>
           ))}
