@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 
 import { Schedule } from "@/components/templates/Schedule";
 import { isSameDay } from "@/libs/service/calender";
-import "@/components/templates/CalenderElement/style.css";
 
 type Props = {
   day: any;
