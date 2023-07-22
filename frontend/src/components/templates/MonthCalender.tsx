@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { Container, Grid } from "@mui/material";
 
-import { MonthElement } from "@/components/templates/CalenderElement/MonthElement";
+import { MonthElement } from "@/components/templates/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { setSchedules } from "@/libs/service/schedule";
