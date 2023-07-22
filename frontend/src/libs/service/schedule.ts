@@ -1,7 +1,9 @@
 import { isSameDay } from "@/libs/service/calender";
+import dayjs from "dayjs";
 
-export const setSchedules = (calendar: any, schedules: any) =>
-  calendar.map((c: any) => ({
+export const setSchedules = (calendar: any, schedules: any) => {
+  return calendar.map((c: any) => ({
     date: c,
-    schedules: schedules.fillter((e: any) => isSameDay(e.date, c)),
+    schedules: schedules.filter((e: any) => isSameDay(dayjs(e.date), c)),
   }));
+};
