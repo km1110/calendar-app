@@ -21,6 +21,8 @@ interface monthProviderType {
   setDaySelected: Dispatch<SetStateAction<dayjs.Dayjs>>;
   showDialog: boolean;
   setShowDialog: Dispatch<SetStateAction<boolean>>;
+  schedule: scheduleType;
+  setSchedule: Dispatch<SetStateAction<scheduleType>>;
   schedules: scheduleType[];
   setSchedules: Dispatch<SetStateAction<scheduleType[]>>;
 }
@@ -39,6 +41,12 @@ export const CalendarProvider = (props: PropType) => {
   const [daySelected, setDaySelected] = useState(today);
   const [showDialog, setShowDialog] = useState(false);
   const [schedules, setSchedules] = useState<scheduleType[]>([]);
+  const [schedule, setSchedule] = useState<scheduleType>({
+    title: "",
+    description: "",
+    date: daySelected,
+    location: "",
+  });
 
   return (
     <MonthContext.Provider
@@ -49,6 +57,8 @@ export const CalendarProvider = (props: PropType) => {
         setDaySelected,
         showDialog,
         setShowDialog,
+        schedule,
+        setSchedule,
         schedules,
         setSchedules,
       }}
