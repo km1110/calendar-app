@@ -1,57 +1,57 @@
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
 
 import { FormDialog } from "../parts/FormDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { client } from "@/libs/api/axios";
 
 export const AddScheduleDialog = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
   const {
+    schedule,
     daySelected,
     showDialog,
+    setSchedule,
     setDaySelected,
     setShowDialog,
     setSchedules,
   } = useContext(MonthContext);
 
   const handleClose = () => {
-    setTitle("");
-    setLocation("");
-    setDescription("");
+    setSchedule({
+      title: "",
+      date: daySelected,
+      description: "",
+      location: "",
+    });
     setShowDialog(false);
   };
 
   const handleSaveSchedule = async () => {
     const body = {
-      title: title,
+      title: schedule.title,
       date: daySelected.toISOString(),
-      location: location,
-      description: description,
+      location: schedule.location,
+      description: schedule.description,
     };
-    // const body = new URLSearchParams(schedule);
     await client.post("schedule/add-schedule", body);
     client.get("schedule/fetch-schedules").then(({ data }) => {
       setSchedules(data);
     });
 
-    setTitle("");
-    setLocation("");
-    setDescription("");
+    setSchedule({
+      title: "",
+      date: daySelected,
+      description: "",
+      location: "",
+    });
     setShowDialog(false);
   };
 
   return (
     <div>
       <FormDialog
-        title={title}
-        description={description}
-        location={location}
+        schedule={schedule}
         date={daySelected}
-        setTitle={setTitle}
-        setDescription={setDescription}
-        setLocation={setLocation}
+        setSchdule={setSchedule}
         setDaySelected={setDaySelected}
         showDialog={showDialog}
         handleClose={handleClose}

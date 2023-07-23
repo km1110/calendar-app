@@ -20,13 +20,9 @@ import dayjs from "dayjs";
 import { scheduleType } from "@/types/schedule";
 
 type Props = {
-  title: string;
-  description: string;
-  location: string;
+  schedule: scheduleType;
   date: dayjs.Dayjs;
-  setTitle: any;
-  setDescription: any;
-  setLocation: any;
+  setSchdule: any;
   setDaySelected: any;
   showDialog: any;
   handleClose: any;
@@ -36,13 +32,9 @@ type Props = {
 const spacer = { margin: "10px 0" };
 
 export const FormDialog = ({
-  title,
-  description,
-  location,
+  schedule,
   date,
-  setTitle,
-  setDescription,
-  setLocation,
+  setSchdule,
   setDaySelected,
   showDialog,
   handleClose,
@@ -64,8 +56,8 @@ export const FormDialog = ({
             fullWidth
             placeholder="タイトルを追加"
             sx={{ marginBottom: 4 }}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={schedule.title}
+            onChange={(e) => setSchdule({ ...schedule, title: e.target.value })}
           />
           <Grid
             container
@@ -79,7 +71,7 @@ export const FormDialog = ({
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   value={date}
-                  onChange={(d) => setDaySelected(d)}
+                  onChange={(d) => setSchdule({ ...schedule, date: d })}
                   format="YYYY/MM/DD"
                   className=""
                 />
@@ -96,8 +88,10 @@ export const FormDialog = ({
             </Grid>
             <Grid item xs={10}>
               <TextField
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                value={schedule.location}
+                onChange={(e) =>
+                  setSchdule({ ...schedule, location: e.target.value })
+                }
                 style={spacer}
                 variant="standard"
                 fullWidth
@@ -115,8 +109,10 @@ export const FormDialog = ({
             </Grid>
             <Grid item xs={10}>
               <TextField
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={schedule.description}
+                onChange={(e) =>
+                  setSchdule({ ...schedule, description: e.target.value })
+                }
                 style={spacer}
                 variant="standard"
                 fullWidth
