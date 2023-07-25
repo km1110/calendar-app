@@ -8,21 +8,22 @@ export const AddScheduleDialog = () => {
   const {
     schedule,
     daySelected,
-    showDialog,
+    showAddDialog,
     setSchedule,
     setDaySelected,
-    setShowDialog,
+    setShowAddDialog,
     setSchedules,
   } = useContext(MonthContext);
 
   const handleClose = () => {
     setSchedule({
+      id: "",
       title: "",
       date: daySelected,
       description: "",
       location: "",
     });
-    setShowDialog(false);
+    setShowAddDialog(false);
   };
 
   const handleSaveSchedule = async () => {
@@ -38,12 +39,13 @@ export const AddScheduleDialog = () => {
     });
 
     setSchedule({
+      id: "",
       title: "",
       date: daySelected,
       description: "",
       location: "",
     });
-    setShowDialog(false);
+    setShowAddDialog(false);
   };
 
   return (
@@ -53,7 +55,7 @@ export const AddScheduleDialog = () => {
         date={daySelected}
         setSchdule={setSchedule}
         setDaySelected={setDaySelected}
-        showDialog={showDialog}
+        showAddDialog={showAddDialog}
         handleClose={handleClose}
         handleSaveSchedule={handleSaveSchedule}
       />

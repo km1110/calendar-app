@@ -9,7 +9,7 @@ import { setSchedules } from "@/libs/service/schedule";
 import dayjs from "dayjs";
 
 export const MonthCalender = (schedule: any) => {
-  const { month, schedules, setDaySelected, setShowDialog } =
+  const { month, schedules, setDaySelected, setShowAddDialog } =
     useContext(MonthContext);
   const [currentMonth, setCurrentMonth] = useState(createCalender());
   const [calendar, setCalendar] = useState(
@@ -65,10 +65,9 @@ export const MonthCalender = (schedule: any) => {
               }}
             >
               <div
-                className="ssss"
                 onClick={() => {
                   setDaySelected(item.date);
-                  setShowDialog(true);
+                  setShowAddDialog(true);
                 }}
               >
                 <MonthElement

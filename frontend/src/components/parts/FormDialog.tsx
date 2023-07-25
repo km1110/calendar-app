@@ -24,7 +24,7 @@ type Props = {
   date: dayjs.Dayjs;
   setSchdule: any;
   setDaySelected: any;
-  showDialog: any;
+  showAddDialog: any;
   handleClose: any;
   handleSaveSchedule: any;
 };
@@ -36,13 +36,18 @@ export const FormDialog = ({
   date,
   setSchdule,
   setDaySelected,
-  showDialog,
+  showAddDialog,
   handleClose,
   handleSaveSchedule,
 }: Props) => {
   return (
     <div>
-      <Dialog open={showDialog} onClose={handleClose} maxWidth="xs" fullWidth>
+      <Dialog
+        open={showAddDialog}
+        onClose={handleClose}
+        maxWidth="xs"
+        fullWidth
+      >
         <DialogActions>
           <IconButton onClick={handleClose}>
             <CloseIcon />
