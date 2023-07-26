@@ -16,7 +16,7 @@ export const CurrentScheduleDialog = () => {
 
   const handleDelete = async (id: string) => {
     await client.post("schedule/delete-schedule", { id });
-    client.get("schdule/fetch-schedules").then(({ data }) => {
+    client.get("schedule/fetch-schedules").then(({ data }) => {
       setSchedules(data);
     });
     setShowDialog(false);
