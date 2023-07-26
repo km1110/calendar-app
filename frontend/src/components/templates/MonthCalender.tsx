@@ -49,13 +49,13 @@ export const MonthCalender = (schedule: any) => {
           columns={{ xs: 7, sm: 7, md: 7 }}
           sx={{ borderLeft: "1px solid #ccc" }}
         >
-          {calendar.map((item: any, i: number) => (
+          {calendar.map((item: any, index: number) => (
             <Grid
               item
               xs={1}
               sm={1}
               md={1}
-              key={i}
+              key={index}
               sx={{
                 borderRight: "1px solid #ccc",
                 borderBottom: "1px solid #ccc;",
@@ -65,13 +65,14 @@ export const MonthCalender = (schedule: any) => {
               }}
             >
               <div
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setDaySelected(item.date);
                   setShowAddDialog(true);
                 }}
               >
                 <MonthElement
-                  key={i}
+                  key={index}
                   day={item.date}
                   schedule={item.schedules}
                 />
