@@ -15,7 +15,7 @@ import { DialogContentText, DialogTitle } from "@mui/material";
 
 type Props = {
   schedule: scheduleType;
-  showDialog: boolean;
+  showDialog: any;
   handleChange: any;
   handleDelete: any;
   handleClose: any;
@@ -35,7 +35,7 @@ export const CurrentDialog = ({
           <IconButton onClick={handleChange}>
             <EditIcon />
           </IconButton>
-          <IconButton onClick={handleDelete}>
+          <IconButton onClick={() => handleDelete(schedule.id)}>
             <DeleteIcon />
           </IconButton>
           <IconButton onClick={handleClose}>
@@ -43,11 +43,11 @@ export const CurrentDialog = ({
           </IconButton>
         </DialogActions>
         <DialogTitle>{schedule.title}</DialogTitle>
-        <DialogContent>
+        {/* <DialogContent>
           <DialogContentText>
             {schedule.date.format("MM月DD日")}
           </DialogContentText>
-        </DialogContent>
+        </DialogContent> */}
       </Dialog>
     </div>
   );
