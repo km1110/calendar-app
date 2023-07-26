@@ -9,6 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import NotesIcon from "@mui/icons-material/Notes";
 
 import { scheduleType } from "@/types/schedule";
 import { DialogContentText, DialogTitle } from "@mui/material";
@@ -16,6 +18,8 @@ import { DialogContentText, DialogTitle } from "@mui/material";
 type Props = {
   schedule: scheduleType;
   showDialog: any;
+  setShowDialog: any;
+  setShowAddDialog: any;
   handleChange: any;
   handleDelete: any;
   handleClose: any;
@@ -24,15 +28,23 @@ type Props = {
 export const CurrentDialog = ({
   schedule,
   showDialog,
+  setShowDialog,
+  setShowAddDialog,
   handleChange,
   handleDelete,
   handleClose,
 }: Props) => {
   return (
     <div>
-      <Dialog open={showDialog} onClose={handleClose}>
+      <Dialog open={showDialog} onClose={handleClose} maxWidth="xs" fullWidth>
         <DialogActions>
-          <IconButton onClick={handleChange}>
+          <IconButton
+            onClick={(e) => {
+              setShowDialog(false);
+              setShowAddDialog(true);
+              handleChange(schedule);
+            }}
+          >
             <EditIcon />
           </IconButton>
           <IconButton onClick={() => handleDelete(schedule.id)}>
@@ -43,11 +55,33 @@ export const CurrentDialog = ({
           </IconButton>
         </DialogActions>
         <DialogTitle>{schedule.title}</DialogTitle>
-        {/* <DialogContent>
-          <DialogContentText>
-            {schedule.date.format("MM月DD日")}
-          </DialogContentText>
-        </DialogContent> */}
+        <DialogContent>
+          {/* <DialogContentText>{schedule.date.format("MM/DD")}</DialogContentText> */}
+          <Grid
+            container
+            spacing={1}
+            sx={{ alignItems: "center", justifyItems: "space-between" }}
+          >
+            <Grid item>
+              <LocationOnIcon />
+            </Grid>
+            <Grid item xs={10}>
+              <DialogContentText>{schedule.location}</DialogContentText>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            spacing={1}
+            sx={{ alignItems: "center", justifyItems: "space-between" }}
+          >
+            <Grid item>
+              <NotesIcon />
+            </Grid>
+            <Grid item xs={10}>
+              <DialogContentText>{schedule.description}</DialogContentText>
+            </Grid>
+          </Grid>
+        </DialogContent>
       </Dialog>
     </div>
   );
