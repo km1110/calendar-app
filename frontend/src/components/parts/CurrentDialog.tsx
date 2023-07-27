@@ -44,7 +44,6 @@ export const CurrentDialog = ({
             onClick={(e) => {
               setShowDialog(false);
               setShowChangeDialog(true);
-              // handleChange(schedule);
             }}
           >
             <EditIcon />
