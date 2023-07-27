@@ -1,9 +1,7 @@
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -22,7 +20,6 @@ type Props = {
   showDialog: any;
   setShowDialog: any;
   setShowChangeDialog: any;
-  handleChange: any;
   handleDelete: any;
   handleClose: any;
 };
@@ -32,7 +29,6 @@ export const CurrentDialog = ({
   showDialog,
   setShowDialog,
   setShowChangeDialog,
-  handleChange,
   handleDelete,
   handleClose,
 }: Props) => {
@@ -41,7 +37,7 @@ export const CurrentDialog = ({
       <Dialog open={showDialog} onClose={handleClose} maxWidth="xs" fullWidth>
         <DialogActions>
           <IconButton
-            onClick={(e) => {
+            onClick={() => {
               setShowDialog(false);
               setShowChangeDialog(true);
             }}
