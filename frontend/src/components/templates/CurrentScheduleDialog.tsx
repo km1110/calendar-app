@@ -1,18 +1,19 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { CurrentDialog } from "@/components/parts/CurrentDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { client } from "@/libs/api/axios";
-import { setSchedules } from "@/libs/service/schedule";
 
 export const CurrentScheduleDialog = () => {
-  const { schedule, showDialog, setShowDialog, setSchedules } =
-    useContext(MonthContext);
-
-  const handleChange = (e: any) => {
-    // 他のイベントが発火するのをキャンセル
-    e.stopPropagation();
-  };
+  const {
+    daySelected,
+    schedule,
+    showDialog,
+    setShowDialog,
+    setShowChangeDialog,
+    setSchedule,
+    setSchedules,
+  } = useContext(MonthContext);
 
   const handleDelete = async (id: string) => {
     await client.post("schedule/delete-schedule", { id });
@@ -23,6 +24,13 @@ export const CurrentScheduleDialog = () => {
   };
 
   const handleClose = () => {
+    setSchedule({
+      id: "",
+      title: "",
+      date: daySelected,
+      description: "",
+      location: "",
+    });
     setShowDialog(false);
   };
 
@@ -31,7 +39,8 @@ export const CurrentScheduleDialog = () => {
       <CurrentDialog
         schedule={schedule}
         showDialog={showDialog}
-        handleChange={handleChange}
+        setShowDialog={setShowDialog}
+        setShowChangeDialog={setShowChangeDialog}
         handleDelete={handleDelete}
         handleClose={handleClose}
       />

@@ -6,9 +6,8 @@ import { MonthElement } from "@/components/templates/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { setSchedules } from "@/libs/service/schedule";
-import dayjs from "dayjs";
 
-export const MonthCalender = (schedule: any) => {
+export const MonthCalender = () => {
   const { month, schedules, setDaySelected, setShowAddDialog } =
     useContext(MonthContext);
   const [currentMonth, setCurrentMonth] = useState(createCalender());
@@ -19,6 +18,7 @@ export const MonthCalender = (schedule: any) => {
   useEffect(() => {
     setCurrentMonth(createCalender(month));
     setCalendar(setSchedules(currentMonth, schedules));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month, schedules]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];

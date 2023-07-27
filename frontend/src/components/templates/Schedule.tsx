@@ -1,6 +1,3 @@
-import { type } from "os";
-import React from "react";
-
 type Props = {
   schedule: any;
   setSchedule: any;

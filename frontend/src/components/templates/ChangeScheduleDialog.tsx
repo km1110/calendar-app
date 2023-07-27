@@ -59,7 +59,6 @@ export const ChangeScheduleDialog = () => {
     <div>
       <ChangeDialog
         schedule={schedule}
-        date={daySelected}
         showChangeDialog={showChangeDialog}
         setSchdule={setSchedule}
         handleClose={handleClose}
