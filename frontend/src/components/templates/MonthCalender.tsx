@@ -6,10 +6,9 @@ import { MonthElement } from "@/components/templates/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { setSchedules } from "@/libs/service/schedule";
-import dayjs from "dayjs";
 
-export const MonthCalender = (schedule: any) => {
-  const { month, schedules, setDaySelected, setShowDialog } =
+export const MonthCalender = () => {
+  const { month, schedules, setDaySelected, setShowAddDialog } =
     useContext(MonthContext);
   const [currentMonth, setCurrentMonth] = useState(createCalender());
   const [calendar, setCalendar] = useState(
@@ -19,6 +18,7 @@ export const MonthCalender = (schedule: any) => {
   useEffect(() => {
     setCurrentMonth(createCalender(month));
     setCalendar(setSchedules(currentMonth, schedules));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month, schedules]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
@@ -49,13 +49,13 @@ export const MonthCalender = (schedule: any) => {
           columns={{ xs: 7, sm: 7, md: 7 }}
           sx={{ borderLeft: "1px solid #ccc" }}
         >
-          {calendar.map((item: any, i: number) => (
+          {calendar.map((item: any, index: number) => (
             <Grid
               item
               xs={1}
               sm={1}
               md={1}
-              key={i}
+              key={index}
               sx={{
                 borderRight: "1px solid #ccc",
                 borderBottom: "1px solid #ccc;",
@@ -65,14 +65,14 @@ export const MonthCalender = (schedule: any) => {
               }}
             >
               <div
-                className="ssss"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setDaySelected(item.date);
-                  setShowDialog(true);
+                  setShowAddDialog(true);
                 }}
               >
                 <MonthElement
-                  key={i}
+                  key={index}
                   day={item.date}
                   schedule={item.schedules}
                 />

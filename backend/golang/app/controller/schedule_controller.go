@@ -142,7 +142,7 @@ func (sc *scheduleController) DeleteSchedule(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	result, err := sc.sm.ChangeSchedule(entities.Schedule{
+	result, err := sc.sm.DeleteSchedule(entities.Schedule{
 		Id: deleteScheduleRequest.Id,
 	})
 

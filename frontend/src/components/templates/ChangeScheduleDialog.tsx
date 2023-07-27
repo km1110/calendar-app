@@ -1,18 +1,18 @@
 import { useContext } from "react";
 
-import { FormDialog } from "../parts/FormDialog";
+import { ChangeDialog } from "@/components/parts/ChangeDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { client } from "@/libs/api/axios";
+import { scheduleType } from "@/types/schedule";
 
-export const AddScheduleDialog = () => {
+export const ChangeScheduleDialog = () => {
   const {
     schedule,
     daySelected,
-    showAddDialog,
+    showChangeDialog,
     setSchedule,
-    setDaySelected,
-    setShowAddDialog,
     setSchedules,
+    setShowChangeDialog,
   } = useContext(MonthContext);
 
   const handleClose = () => {
@@ -23,17 +23,23 @@ export const AddScheduleDialog = () => {
       description: "",
       location: "",
     });
-    setShowAddDialog(false);
+    setShowChangeDialog(false);
   };
 
-  const handleSaveSchedule = async () => {
-    const body = {
-      title: schedule.title,
-      date: daySelected.toISOString(),
-      location: schedule.location,
-      description: schedule.description,
-    };
-    await client.post("schedule/add-schedule", body);
+  const handleChangeSchedule = async (schedule: scheduleType) => {
+    const id = schedule.id;
+    const title = schedule.title;
+    const date = schedule.date;
+    const description = schedule.description;
+    const location = schedule.location;
+
+    await client.post("schedule/change-schedule", {
+      id,
+      title,
+      date,
+      description,
+      location,
+    });
     client.get("schedule/fetch-schedules").then(({ data }) => {
       setSchedules(data);
     });
@@ -45,19 +51,18 @@ export const AddScheduleDialog = () => {
       description: "",
       location: "",
     });
-    setShowAddDialog(false);
+
+    setShowChangeDialog(false);
   };
 
   return (
     <div>
-      <FormDialog
+      <ChangeDialog
         schedule={schedule}
-        date={daySelected}
+        showChangeDialog={showChangeDialog}
         setSchdule={setSchedule}
-        setDaySelected={setDaySelected}
-        showAddDialog={showAddDialog}
         handleClose={handleClose}
-        handleSaveSchedule={handleSaveSchedule}
+        handleChangeSchedule={handleChangeSchedule}
       />
     </div>
   );

@@ -21,29 +21,25 @@ import { scheduleType } from "@/types/schedule";
 
 type Props = {
   schedule: scheduleType;
-  date: dayjs.Dayjs;
   setSchdule: any;
-  setDaySelected: any;
-  showAddDialog: any;
+  showChangeDialog: any;
   handleClose: any;
-  handleSaveSchedule: any;
+  handleChangeSchedule: any;
 };
 
 const spacer = { margin: "10px 0" };
 
-export const FormDialog = ({
+export const ChangeDialog = ({
   schedule,
-  date,
   setSchdule,
-  setDaySelected,
-  showAddDialog,
+  showChangeDialog,
   handleClose,
-  handleSaveSchedule,
+  handleChangeSchedule,
 }: Props) => {
   return (
     <div>
       <Dialog
-        open={showAddDialog}
+        open={showChangeDialog}
         onClose={handleClose}
         maxWidth="xs"
         fullWidth
@@ -75,8 +71,10 @@ export const FormDialog = ({
             <Grid item xs={10}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  value={date}
-                  onChange={(d) => setSchdule({ ...schedule, date: d })}
+                  value={dayjs(schedule.date)}
+                  onChange={(d) =>
+                    setSchdule({ ...schedule, date: d?.toISOString() })
+                  }
                   format="YYYY/MM/DD"
                   className=""
                 />
@@ -127,7 +125,7 @@ export const FormDialog = ({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSaveSchedule}>保存</Button>
+          <Button onClick={() => handleChangeSchedule(schedule)}>保存</Button>
         </DialogActions>
       </Dialog>
     </div>
