@@ -1,7 +1,9 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { ChangeDialog } from "@/components/parts/ChangeDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
+import { client } from "@/libs/api/axios";
+import { scheduleType } from "@/types/schedule";
 
 export const ChangeScheduleDialog = () => {
   const {
@@ -9,7 +11,7 @@ export const ChangeScheduleDialog = () => {
     daySelected,
     showChangeDialog,
     setSchedule,
-    setDaySelected,
+    setSchedules,
     setShowChangeDialog,
   } = useContext(MonthContext);
 
@@ -24,8 +26,32 @@ export const ChangeScheduleDialog = () => {
     setShowChangeDialog(false);
   };
 
-  const handleSaveSchedule = () => {
-    console.log(schedule);
+  const handleChangeSchedule = async (schedule: scheduleType) => {
+    const id = schedule.id;
+    const title = schedule.title;
+    const date = schedule.date;
+    const description = schedule.description;
+    const location = schedule.location;
+
+    await client.post("schedule/change-schedule", {
+      id,
+      title,
+      date,
+      description,
+      location,
+    });
+    client.get("schedule/fetch-schedules").then(({ data }) => {
+      setSchedules(data);
+    });
+
+    setSchedule({
+      id: "",
+      title: "",
+      date: daySelected,
+      description: "",
+      location: "",
+    });
+
     setShowChangeDialog(false);
   };
 
@@ -37,7 +63,7 @@ export const ChangeScheduleDialog = () => {
         showChangeDialog={showChangeDialog}
         setSchdule={setSchedule}
         handleClose={handleClose}
-        handleSaveSchedule={handleSaveSchedule}
+        handleChangeSchedule={handleChangeSchedule}
       />
     </div>
   );
