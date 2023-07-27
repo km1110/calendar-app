@@ -15,11 +15,13 @@ import NotesIcon from "@mui/icons-material/Notes";
 import { scheduleType } from "@/types/schedule";
 import { DialogContentText, DialogTitle } from "@mui/material";
 
+import dayjs from "dayjs";
+
 type Props = {
   schedule: scheduleType;
   showDialog: any;
   setShowDialog: any;
-  setShowAddDialog: any;
+  setShowChangeDialog: any;
   handleChange: any;
   handleDelete: any;
   handleClose: any;
@@ -29,7 +31,7 @@ export const CurrentDialog = ({
   schedule,
   showDialog,
   setShowDialog,
-  setShowAddDialog,
+  setShowChangeDialog,
   handleChange,
   handleDelete,
   handleClose,
@@ -41,8 +43,8 @@ export const CurrentDialog = ({
           <IconButton
             onClick={(e) => {
               setShowDialog(false);
-              setShowAddDialog(true);
-              handleChange(schedule);
+              setShowChangeDialog(true);
+              // handleChange(schedule);
             }}
           >
             <EditIcon />
@@ -56,7 +58,9 @@ export const CurrentDialog = ({
         </DialogActions>
         <DialogTitle>{schedule.title}</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>{schedule.date.format("MM/DD")}</DialogContentText> */}
+          <DialogContentText>
+            {dayjs(schedule.date).format("MM/DD")}
+          </DialogContentText>
           <Grid
             container
             spacing={1}
