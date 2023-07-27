@@ -21,7 +21,6 @@ import { scheduleType } from "@/types/schedule";
 
 type Props = {
   schedule: scheduleType;
-  date: dayjs.Dayjs;
   setSchdule: any;
   showChangeDialog: any;
   handleClose: any;
@@ -32,7 +31,6 @@ const spacer = { margin: "10px 0" };
 
 export const ChangeDialog = ({
   schedule,
-  date,
   setSchdule,
   showChangeDialog,
   handleClose,
