@@ -25,7 +25,7 @@ type Props = {
   setSchdule: any;
   showChangeDialog: any;
   handleClose: any;
-  handleSaveSchedule: any;
+  handleChangeSchedule: any;
 };
 
 const spacer = { margin: "10px 0" };
@@ -36,7 +36,7 @@ export const ChangeDialog = ({
   setSchdule,
   showChangeDialog,
   handleClose,
-  handleSaveSchedule,
+  handleChangeSchedule,
 }: Props) => {
   return (
     <div>
@@ -127,7 +127,7 @@ export const ChangeDialog = ({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSaveSchedule}>保存</Button>
+          <Button onClick={() => handleChangeSchedule(schedule)}>保存</Button>
         </DialogActions>
       </Dialog>
     </div>
