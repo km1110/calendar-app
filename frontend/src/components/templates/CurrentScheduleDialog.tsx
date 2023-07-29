@@ -4,7 +4,11 @@ import { CurrentDialog } from "@/components/parts/CurrentDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { client } from "@/libs/api/axios";
 
-export const CurrentScheduleDialog = () => {
+type Props = {
+  handleDelete: any;
+};
+
+export const CurrentScheduleDialog = ({ handleDelete }: Props) => {
   const {
     daySelected,
     schedule,
@@ -12,17 +16,7 @@ export const CurrentScheduleDialog = () => {
     setShowDialog,
     setShowChangeDialog,
     setSchedule,
-    setSchedules,
   } = useContext(MonthContext);
-
-  // TODO viewsに移動
-  const handleDelete = async (id: string) => {
-    await client.delete("schedule/", { params: { id } });
-    client.get("schedule/").then(({ data }) => {
-      setSchedules(data);
-    });
-    setShowDialog(false);
-  };
 
   const handleClose = () => {
     setSchedule({

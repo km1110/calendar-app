@@ -5,13 +5,16 @@ import { MonthContext } from "@/provider/CalendarProvider";
 import { client } from "@/libs/api/axios";
 import { scheduleType } from "@/types/schedule";
 
-export const ChangeScheduleDialog = () => {
+type Props = {
+  handleChangeSchedule: any;
+};
+
+export const ChangeScheduleDialog = ({ handleChangeSchedule }: Props) => {
   const {
     schedule,
     daySelected,
     showChangeDialog,
     setSchedule,
-    setSchedules,
     setShowChangeDialog,
   } = useContext(MonthContext);
 
@@ -23,36 +26,6 @@ export const ChangeScheduleDialog = () => {
       description: "",
       location: "",
     });
-    setShowChangeDialog(false);
-  };
-
-  // TODO viewsに移動
-  const handleChangeSchedule = async (schedule: scheduleType) => {
-    const id = schedule.id;
-    const title = schedule.title;
-    const date = schedule.date;
-    const description = schedule.description;
-    const location = schedule.location;
-
-    await client.put("schedule/", {
-      id,
-      title,
-      date,
-      description,
-      location,
-    });
-    client.get("schedule/").then(({ data }) => {
-      setSchedules(data);
-    });
-
-    setSchedule({
-      id: "",
-      title: "",
-      date: daySelected,
-      description: "",
-      location: "",
-    });
-
     setShowChangeDialog(false);
   };
 
