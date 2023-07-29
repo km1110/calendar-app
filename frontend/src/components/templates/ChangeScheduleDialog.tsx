@@ -26,6 +26,7 @@ export const ChangeScheduleDialog = () => {
     setShowChangeDialog(false);
   };
 
+  // TODO viewsに移動
   const handleChangeSchedule = async (schedule: scheduleType) => {
     const id = schedule.id;
     const title = schedule.title;
@@ -33,14 +34,14 @@ export const ChangeScheduleDialog = () => {
     const description = schedule.description;
     const location = schedule.location;
 
-    await client.post("schedule/change-schedule", {
+    await client.put("schedule/", {
       id,
       title,
       date,
       description,
       location,
     });
-    client.get("schedule/fetch-schedules").then(({ data }) => {
+    client.get("schedule/").then(({ data }) => {
       setSchedules(data);
     });
 

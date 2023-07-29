@@ -26,6 +26,7 @@ export const AddScheduleDialog = () => {
     setShowAddDialog(false);
   };
 
+  // TODO viewsに移動
   const handleSaveSchedule = async () => {
     const body = {
       title: schedule.title,
@@ -33,8 +34,8 @@ export const AddScheduleDialog = () => {
       location: schedule.location,
       description: schedule.description,
     };
-    await client.post("schedule/add-schedule", body);
-    client.get("schedule/fetch-schedules").then(({ data }) => {
+    await client.post("schedule/", body);
+    client.get("schedule/").then(({ data }) => {
       setSchedules(data);
     });
 

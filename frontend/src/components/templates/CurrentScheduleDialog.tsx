@@ -15,9 +15,10 @@ export const CurrentScheduleDialog = () => {
     setSchedules,
   } = useContext(MonthContext);
 
+  // TODO viewsに移動
   const handleDelete = async (id: string) => {
-    await client.post("schedule/delete-schedule", { id });
-    client.get("schedule/fetch-schedules").then(({ data }) => {
+    await client.delete("schedule/", { params: { id } });
+    client.get("schedule/").then(({ data }) => {
       setSchedules(data);
     });
     setShowDialog(false);

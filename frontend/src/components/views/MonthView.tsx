@@ -13,7 +13,7 @@ export const MonthView = () => {
 
   useEffect(() => {
     const getSchedules = async () => {
-      client.get("schedule/fetch-schedules").then(({ data }) => {
+      client.get("schedule/").then(({ data }) => {
         setSchedules(data);
       });
     };
