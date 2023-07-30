@@ -153,11 +153,6 @@ func (sc *scheduleController) DeleteSchedule(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	// body := make([]byte, r.ContentLength)
-	// r.Body.Read(body)
-	// var deleteScheduleRequest dto.DeleteScheduleRequest
-	// err := json.Unmarshal(body, &deleteScheduleRequest)
-
 	if err != nil {
 		w.WriteHeader(500)
 		fmt.Fprint(w, err)
