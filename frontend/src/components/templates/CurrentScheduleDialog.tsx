@@ -2,7 +2,6 @@ import { useContext } from "react";
 
 import { CurrentDialog } from "@/components/parts/CurrentDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { client } from "@/libs/api/axios";
 
 type Props = {
   handleDelete: any;

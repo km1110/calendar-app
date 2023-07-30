@@ -2,7 +2,6 @@ import { useContext } from "react";
 
 import { FormDialog } from "../parts/FormDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { client } from "@/libs/api/axios";
 
 type Props = {
   handleSaveSchedule: any;

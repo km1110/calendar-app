@@ -2,8 +2,6 @@ import { useContext } from "react";
 
 import { ChangeDialog } from "@/components/parts/ChangeDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { client } from "@/libs/api/axios";
-import { scheduleType } from "@/types/schedule";
 
 type Props = {
   handleChangeSchedule: any;
