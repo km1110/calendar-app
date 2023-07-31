@@ -2,9 +2,12 @@ import { useContext } from "react";
 
 import { CurrentDialog } from "@/components/parts/CurrentDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { client } from "@/libs/api/axios";
 
-export const CurrentScheduleDialog = () => {
+type Props = {
+  handleDelete: any;
+};
+
+export const CurrentScheduleDialog = ({ handleDelete }: Props) => {
   const {
     daySelected,
     schedule,
@@ -12,16 +15,7 @@ export const CurrentScheduleDialog = () => {
     setShowDialog,
     setShowChangeDialog,
     setSchedule,
-    setSchedules,
   } = useContext(MonthContext);
-
-  const handleDelete = async (id: string) => {
-    await client.post("schedule/delete-schedule", { id });
-    client.get("schedule/fetch-schedules").then(({ data }) => {
-      setSchedules(data);
-    });
-    setShowDialog(false);
-  };
 
   const handleClose = () => {
     setSchedule({

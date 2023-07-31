@@ -7,13 +7,22 @@ import { CurrentScheduleDialog } from "@/components/templates/CurrentScheduleDia
 import { ChangeScheduleDialog } from "../templates/ChangeScheduleDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { client } from "@/libs/api/axios";
+import { scheduleType } from "@/types/schedule";
 
 export const MonthView = () => {
-  const { setSchedules } = useContext(MonthContext);
+  const {
+    schedule,
+    daySelected,
+    setSchedule,
+    setSchedules,
+    setShowAddDialog,
+    setShowChangeDialog,
+    setShowDialog,
+  } = useContext(MonthContext);
 
   useEffect(() => {
     const getSchedules = async () => {
-      client.get("schedule/fetch-schedules").then(({ data }) => {
+      client.get("schedule/").then(({ data }) => {
         setSchedules(data);
       });
     };
@@ -21,13 +30,72 @@ export const MonthView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleSaveSchedule = async () => {
+    const body = {
+      title: schedule.title,
+      date: daySelected.toISOString(),
+      location: schedule.location,
+      description: schedule.description,
+    };
+    await client.post("schedule/", body);
+    client.get("schedule/").then(({ data }) => {
+      setSchedules(data);
+    });
+
+    setSchedule({
+      id: "",
+      title: "",
+      date: daySelected,
+      description: "",
+      location: "",
+    });
+    setShowAddDialog(false);
+  };
+
+  const handleChangeSchedule = async (schedule: scheduleType) => {
+    const id = schedule.id;
+    const title = schedule.title;
+    const date = schedule.date;
+    const description = schedule.description;
+    const location = schedule.location;
+
+    await client.put("schedule/", {
+      id,
+      title,
+      date,
+      description,
+      location,
+    });
+    client.get("schedule/").then(({ data }) => {
+      setSchedules(data);
+    });
+
+    setSchedule({
+      id: "",
+      title: "",
+      date: daySelected,
+      description: "",
+      location: "",
+    });
+
+    setShowChangeDialog(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    await client.delete(`schedule/${id}`);
+    client.get("schedule/").then(({ data }) => {
+      setSchedules(data);
+    });
+    setShowDialog(false);
+  };
+
   return (
     <div>
       <HeaderTemplate />
       <MonthCalender />
-      <AddScheduleDialog />
-      <CurrentScheduleDialog />
-      <ChangeScheduleDialog />
+      <AddScheduleDialog handleSaveSchedule={handleSaveSchedule} />
+      <CurrentScheduleDialog handleDelete={handleDelete} />
+      <ChangeScheduleDialog handleChangeSchedule={handleChangeSchedule} />
     </div>
   );
 };

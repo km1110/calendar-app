@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/km1110/calendar-app/backend/golang/controller/dto"
 	"github.com/km1110/calendar-app/backend/golang/model"
@@ -131,10 +132,19 @@ func (sc *scheduleController) ChangeSchedule(w http.ResponseWriter, r *http.Requ
 }
 
 func (sc *scheduleController) DeleteSchedule(w http.ResponseWriter, r *http.Request) {
-	body := make([]byte, r.ContentLength)
-	r.Body.Read(body)
-	var deleteScheduleRequest dto.DeleteScheduleRequest
-	err := json.Unmarshal(body, &deleteScheduleRequest)
+	u, err := url.ParseRequestURI(r.URL.String())
+	if err != nil {
+		w.WriteHeader(400)
+		fmt.Fprint(w, err)
+		return
+	}
+
+	scheduleId := u.String()[10:]
+	if scheduleId == "" {
+		fmt.Println("ID is missing")
+		w.WriteHeader(400)
+		return
+	}
 
 	if err != nil {
 		w.WriteHeader(500)
@@ -143,7 +153,7 @@ func (sc *scheduleController) DeleteSchedule(w http.ResponseWriter, r *http.Requ
 	}
 
 	result, err := sc.sm.DeleteSchedule(entities.Schedule{
-		Id: deleteScheduleRequest.Id,
+		Id: scheduleId,
 	})
 
 	if err != nil {

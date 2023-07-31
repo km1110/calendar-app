@@ -23,6 +23,7 @@ func (ro *router) HandleRequest() {
 
 func (ro *router) HandleScheduleRequest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Origin", os.Getenv("ORIGIN"))
 	w.Header().Set("Content-Type", "application/json")
 
@@ -31,16 +32,16 @@ func (ro *router) HandleScheduleRequest(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	prefix := "/schedule/"
+	// prefix := "/schedule/"
 
-	switch r.URL.Path {
-	case prefix + "fetch-schedules":
+	switch r.Method {
+	case "GET":
 		ro.sc.FetchSchedules(w, r)
-	case prefix + "add-schedule":
+	case "POST":
 		ro.sc.AddSchedule(w, r)
-	case prefix + "change-schedule":
+	case "PUT":
 		ro.sc.ChangeSchedule(w, r)
-	case prefix + "delete-schedule":
+	case "DELETE":
 		ro.sc.DeleteSchedule(w, r)
 	default:
 		w.WriteHeader(405)
