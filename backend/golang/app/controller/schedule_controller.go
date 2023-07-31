@@ -139,14 +139,7 @@ func (sc *scheduleController) DeleteSchedule(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	params, err := url.ParseQuery(u.RawQuery)
-	if err != nil {
-		w.WriteHeader(400)
-		fmt.Fprint(w, err)
-		return
-	}
-
-	scheduleId := params.Get("id")
+	scheduleId := u.String()[10:]
 	if scheduleId == "" {
 		fmt.Println("ID is missing")
 		w.WriteHeader(400)
