@@ -81,8 +81,9 @@ export const MonthView = () => {
     setShowChangeDialog(false);
   };
 
+  // schedule/${id}に変更
   const handleDelete = async (id: string) => {
-    await client.delete("schedule/", { params: { id } });
+    await client.delete(`schedule/${id}`);
     client.get("schedule/").then(({ data }) => {
       setSchedules(data);
     });
