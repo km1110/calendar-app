@@ -1,7 +1,7 @@
 import { isSameDay } from "@/libs/service/calender";
 import dayjs from "dayjs";
 
-export const setSchedules = (calendar: any, schedules: any) => {
+export const margeSchedules = (calendar: any, schedules: any) => {
   if (schedules === null) {
     schedules = [];
   }
