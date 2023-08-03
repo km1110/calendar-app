@@ -5,19 +5,20 @@ import { Container, Grid } from "@mui/material";
 import { MonthElement } from "@/components/templates/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { setSchedules } from "@/libs/service/schedule";
+import { margeSchedules } from "@/libs/service/schedule";
 
 export const MonthCalender = () => {
   const { month, schedules, setDaySelected, setShowAddDialog } =
     useContext(MonthContext);
   const [currentMonth, setCurrentMonth] = useState(createCalender());
   const [calendar, setCalendar] = useState(
-    setSchedules(currentMonth, schedules)
+    margeSchedules(currentMonth, schedules)
   );
 
   useEffect(() => {
-    setCurrentMonth(createCalender(month));
-    setCalendar(setSchedules(currentMonth, schedules));
+    const newCalendar = createCalender(month);
+    setCurrentMonth(newCalendar);
+    setCalendar(margeSchedules(newCalendar, schedules));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month, schedules]);
 
