@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import Grid from "@mui/material/Grid";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -17,11 +18,11 @@ import dayjs from "dayjs";
 
 type Props = {
   schedule: scheduleType;
-  showDialog: any;
-  setShowDialog: any;
-  setShowChangeDialog: any;
-  handleDelete: any;
-  handleClose: any;
+  showDialog: boolean;
+  setShowDialog: Dispatch<SetStateAction<boolean>>;
+  setShowChangeDialog: Dispatch<SetStateAction<boolean>>;
+  handleDelete: (id: string) => Promise<void>;
+  handleClose: () => void;
 };
 
 export const CurrentDialog = ({

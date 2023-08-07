@@ -13,8 +13,8 @@ import dayjs from "dayjs";
 
 type Props = {
   date: dayjs.Dayjs;
-  setPrevioustMonth: any;
-  setNextMonth: any;
+  setPrevioustMonth: () => void;
+  setNextMonth: () => void;
 };
 
 export const Header = ({ date, setPrevioustMonth, setNextMonth }: Props) => {

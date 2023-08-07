@@ -1,7 +1,11 @@
+import { Dispatch, SetStateAction } from "react";
+
+import { scheduleType } from "@/types/schedule";
+
 type Props = {
-  schedule: any;
-  setSchedule: any;
-  setShowDialog: any;
+  schedule: scheduleType;
+  setSchedule: Dispatch<SetStateAction<scheduleType>>;
+  setShowDialog: Dispatch<SetStateAction<boolean>>;
 };
 
 export const Schedule = ({ schedule, setSchedule, setShowDialog }: Props) => {
