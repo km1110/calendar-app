@@ -2,9 +2,10 @@ import { useContext } from "react";
 
 import { ChangeDialog } from "@/components/parts/ChangeDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
+import { scheduleType } from "@/types/schedule";
 
 type Props = {
-  handleChangeSchedule: any;
+  handleChangeSchedule: (schedule: scheduleType) => Promise<void>;
 };
 
 export const ChangeScheduleDialog = ({ handleChangeSchedule }: Props) => {

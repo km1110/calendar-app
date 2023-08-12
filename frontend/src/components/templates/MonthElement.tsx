@@ -6,6 +6,7 @@ import { Schedule } from "@/components/templates/Schedule";
 // import { isSameDay } from "@/libs/service/calender";
 import { useContext } from "react";
 import { MonthContext } from "@/provider/CalendarProvider";
+import { scheduleType } from "@/types/schedule";
 
 type Props = {
   day: any;

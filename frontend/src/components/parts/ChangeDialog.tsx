@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -21,10 +22,10 @@ import { scheduleType } from "@/types/schedule";
 
 type Props = {
   schedule: scheduleType;
-  setSchdule: any;
-  showChangeDialog: any;
-  handleClose: any;
-  handleChangeSchedule: any;
+  showChangeDialog: boolean;
+  setSchdule: Dispatch<SetStateAction<scheduleType>>;
+  handleClose: () => void;
+  handleChangeSchedule: (schedule: scheduleType) => Promise<void>;
 };
 
 const spacer = { margin: "10px 0" };
@@ -72,9 +73,11 @@ export const ChangeDialog = ({
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   value={dayjs(schedule.date)}
-                  onChange={(d) =>
-                    setSchdule({ ...schedule, date: d?.toISOString() })
-                  }
+                  onChange={(d) => {
+                    if (d) {
+                      setSchdule({ ...schedule, date: d });
+                    }
+                  }}
                   format="YYYY/MM/DD"
                   className=""
                 />

@@ -4,7 +4,7 @@ import { CurrentDialog } from "@/components/parts/CurrentDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 
 type Props = {
-  handleDelete: any;
+  handleDelete: (id: string) => Promise<void>;
 };
 
 export const CurrentScheduleDialog = ({ handleDelete }: Props) => {

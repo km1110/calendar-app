@@ -13,7 +13,6 @@ export const AddScheduleDialog = ({ handleSaveSchedule }: Props) => {
     daySelected,
     showAddDialog,
     setSchedule,
-    setDaySelected,
     setShowAddDialog,
   } = useContext(MonthContext);
 
@@ -34,7 +33,6 @@ export const AddScheduleDialog = ({ handleSaveSchedule }: Props) => {
         schedule={schedule}
         date={daySelected}
         setSchdule={setSchedule}
-        setDaySelected={setDaySelected}
         showAddDialog={showAddDialog}
         handleClose={handleClose}
         handleSaveSchedule={handleSaveSchedule}
