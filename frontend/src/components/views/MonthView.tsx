@@ -86,6 +86,15 @@ export const MonthView = () => {
     client.get("schedule/").then(({ data }) => {
       setSchedules(data);
     });
+
+    setSchedule({
+      id: "",
+      title: "",
+      date: daySelected,
+      description: "",
+      location: "",
+    });
+
     setShowDialog(false);
   };
 
