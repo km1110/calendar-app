@@ -1,17 +1,11 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/km1110/calendar-app/backend/golang/controller"
-	"github.com/km1110/calendar-app/backend/golang/model"
+	"github.com/km1110/calendar-app/backend/golang/router"
 )
 
-var sm = model.CreateScheduleModel()
-var sc = controller.CreateScheduleController(sm)
-var ro = controller.CreateRouter(sc)
-
 func main() {
-	ro.HandleRequest()
-	http.ListenAndServe(":8080", nil)
+	if err := router.Router().Run(":8080"); err != nil {
+		panic(err)
+	}
 }
