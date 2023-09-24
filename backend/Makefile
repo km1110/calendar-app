@@ -9,3 +9,6 @@ ps:
 
 go:
 	docker compose exec go sh
+
+db:
+	docker compose exec db bash
