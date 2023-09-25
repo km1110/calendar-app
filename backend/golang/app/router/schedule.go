@@ -7,8 +7,8 @@ import (
 
 func initScheduleRouter(router *gin.Engine) {
 	s := router.Group("/schedule")
-	s.GET("/", controller.FeatchSchedule)
-	s.POST("/", controller.AddSchedule)
+	s.GET("", controller.FeatchSchedule)
+	s.POST("", controller.AddSchedule)
 	s.PUT("/:schedule_id")
 	s.DELETE("/:schedule_id")
 }
