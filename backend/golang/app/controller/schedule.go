@@ -66,7 +66,7 @@ func UpdateSchedule(c *gin.Context) {
 		})
 	}
 
-	id := c.Param("id")
+	id := c.Param("schedule_id")
 
 	sm := model.NewScheduleModel()
 	result, err := sm.UpdateSchedule(c, entities.Schedule{
@@ -95,7 +95,7 @@ func UpdateSchedule(c *gin.Context) {
 }
 
 func DeleteSchedule(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Param("schedule_id")
 
 	sm := model.NewScheduleModel()
 	result, err := sm.DeleteSchedule(c, entities.Schedule{
