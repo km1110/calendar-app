@@ -22,9 +22,17 @@ export const MonthView = () => {
 
   useEffect(() => {
     const getSchedules = async () => {
-      client.get("schedule/").then(({ data }) => {
-        setSchedules(data);
-      });
+      client
+        .get("/schedule")
+        .then(({ data }) => {
+          setSchedules(data);
+        })
+        .catch((error) => {
+          console.error(
+            "An error occurred while fetching the schedules:",
+            error
+          );
+        });
     };
     getSchedules();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,8 +45,8 @@ export const MonthView = () => {
       location: schedule.location,
       description: schedule.description,
     };
-    await client.post("schedule/", body);
-    client.get("schedule/").then(({ data }) => {
+    await client.post("/schedule", body);
+    client.get("/schedule").then(({ data }) => {
       setSchedules(data);
     });
 
@@ -59,14 +67,13 @@ export const MonthView = () => {
     const description = schedule.description;
     const location = schedule.location;
 
-    await client.put("schedule/", {
-      id,
+    await client.put(`/schedule/${id}`, {
       title,
       date,
       description,
       location,
     });
-    client.get("schedule/").then(({ data }) => {
+    client.get("/schedule").then(({ data }) => {
       setSchedules(data);
     });
 
@@ -82,8 +89,8 @@ export const MonthView = () => {
   };
 
   const handleDelete = async (id: string) => {
-    await client.delete(`schedule/${id}`);
-    client.get("schedule/").then(({ data }) => {
+    await client.delete(`/schedule/${id}`);
+    client.get("/schedule").then(({ data }) => {
       setSchedules(data);
     });
 

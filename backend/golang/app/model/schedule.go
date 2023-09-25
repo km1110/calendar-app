@@ -1,6 +1,7 @@
 package model
 
 import (
+	"context"
 	"database/sql"
 	"math/rand"
 	"time"
@@ -9,22 +10,14 @@ import (
 	"github.com/oklog/ulid"
 )
 
-type ScheduleModel interface {
-	FetchSchedules() ([]*entities.Schedule, error)
-	AddSchedule(r entities.Schedule) (sql.Result, error)
-	ChangeSchedule(r entities.Schedule) (sql.Result, error)
-	DeleteSchedule(r entities.Schedule) (sql.Result, error)
+type SchedulesModel struct {
 }
 
-type scheduleModel struct {
+func NewScheduleModel() *SchedulesModel {
+	return &SchedulesModel{}
 }
 
-func CreateScheduleModel() ScheduleModel {
-	return &scheduleModel{}
-}
-
-// TODO 日付データに関する処理を追加する必要がある
-func (sm *scheduleModel) FetchSchedules() ([]*entities.Schedule, error) {
+func (sm *SchedulesModel) GetSchedules(ctx context.Context) ([]*entities.Schedule, error) {
 	sql := `select id, title, description, date, location from schedules`
 
 	rows, err := Db.Query(sql)
@@ -58,9 +51,9 @@ func (sm *scheduleModel) FetchSchedules() ([]*entities.Schedule, error) {
 	return schedules, nil
 }
 
-func (sm *scheduleModel) AddSchedule(r entities.Schedule) (sql.Result, error) {
+func (sm *SchedulesModel) AddSchedule(ctx context.Context, r entities.Schedule) (sql.Result, error) {
 	t := time.Now()
-	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixMicro())), 0)
 	id := ulid.MustNew(ulid.Timestamp(t), entropy)
 
 	req := entities.Schedule{
@@ -82,7 +75,7 @@ func (sm *scheduleModel) AddSchedule(r entities.Schedule) (sql.Result, error) {
 	return result, nil
 }
 
-func (sm *scheduleModel) ChangeSchedule(r entities.Schedule) (sql.Result, error) {
+func (sm *SchedulesModel) UpdateSchedule(ctx context.Context, r entities.Schedule) (sql.Result, error) {
 	sql := `UPDATE schedules SET title = ?, description = ?, date = ?, location = ? WHERE id = ?`
 
 	result, err := Db.Exec(sql, r.Title, r.Description, r.Date, r.Location, r.Id)
@@ -92,10 +85,9 @@ func (sm *scheduleModel) ChangeSchedule(r entities.Schedule) (sql.Result, error)
 	}
 
 	return result, nil
-
 }
 
-func (sm *scheduleModel) DeleteSchedule(r entities.Schedule) (sql.Result, error) {
+func (sm *SchedulesModel) DeleteSchedule(ctx context.Context, r entities.Schedule) (sql.Result, error) {
 	sql := `DELETE FROM schedules WHERE id = ?`
 
 	result, err := Db.Exec(sql, r.Id)
