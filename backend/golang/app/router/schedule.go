@@ -8,7 +8,7 @@ import (
 func initScheduleRouter(router *gin.Engine) {
 	s := router
 	s.GET("", controller.FeatchSchedule)
-	s.POST("")
+	s.POST("", controller.AddSchedule)
 	s.PUT("/:schedule_id")
 	s.DELETE("/:schedule_id")
 }
