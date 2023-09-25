@@ -10,14 +10,12 @@ import (
 func Cors(r *gin.Engine) {
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: []string{
-			"http://localhost:3000",
-			"http://localhost:3000/",
+			"http://localhost:3000", // 開発環境
 		},
 		AllowMethods: []string{
 			"GET",
 			"POST",
 			"PUT",
-			"PATCH",
 			"DELETE",
 			"OPTIONS",
 		},
@@ -25,12 +23,12 @@ func Cors(r *gin.Engine) {
 			"Access-Control-Allow-Credentials",
 			"Access-Control-Allow-Headers",
 			"Content-Type",
-			"Content-Length",
-			"application/json",
-			"Accept-Encoding",
-			"X-CSRF-Token",
-			"Authorization",
-			"withCredentials",
+			// "Content-Length",
+			// "application/json",
+			// "Accept-Encoding",
+			// "X-CSRF-Token",
+			// "Authorization",
+			// "withCredentials",
 		},
 		ExposeHeaders: []string{
 			"Location",
