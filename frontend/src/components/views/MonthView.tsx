@@ -22,9 +22,17 @@ export const MonthView = () => {
 
   useEffect(() => {
     const getSchedules = async () => {
-      client.get("/schedule").then(({ data }) => {
-        setSchedules(data);
-      });
+      client
+        .get("/schedule")
+        .then(({ data }) => {
+          setSchedules(data);
+        })
+        .catch((error) => {
+          console.error(
+            "An error occurred while fetching the schedules:",
+            error
+          );
+        });
     };
     getSchedules();
     // eslint-disable-next-line react-hooks/exhaustive-deps
