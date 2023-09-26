@@ -10,5 +10,6 @@ func Router() *gin.Engine {
 	middleware.Cors(router)
 
 	initScheduleRouter(router)
+	initAuthRouter(router)
 	return router
 }
