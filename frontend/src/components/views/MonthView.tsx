@@ -6,7 +6,7 @@ import { AddScheduleDialog } from "@/components/templates/AddScheduleDialog";
 import { CurrentScheduleDialog } from "@/components/templates/CurrentScheduleDialog";
 import { ChangeScheduleDialog } from "../templates/ChangeScheduleDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { client } from "@/libs/api/axios";
+import { client, makeIntance } from "@/libs/api/axios";
 import { scheduleType } from "@/types/schedule";
 
 export const MonthView = () => {
@@ -20,9 +20,11 @@ export const MonthView = () => {
     setShowDialog,
   } = useContext(MonthContext);
 
+  const instance = makeIntance();
+
   useEffect(() => {
     const getSchedules = async () => {
-      client
+      instance
         .get("/schedule")
         .then(({ data }) => {
           setSchedules(data);
