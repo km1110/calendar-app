@@ -43,7 +43,8 @@ export const Header = ({ date, setPrevioustMonth, setNextMonth }: Props) => {
           <Typography variant="h6" component="div">
             {date.format("YYYY年 MM月")}
           </Typography>
-          <Button color="inherit">login</Button>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button color="inherit">logout</Button>
         </Toolbar>
       </AppBar>
     </Box>
