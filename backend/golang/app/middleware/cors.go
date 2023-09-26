@@ -27,7 +27,7 @@ func Cors(r *gin.Engine) {
 			// "application/json",
 			// "Accept-Encoding",
 			// "X-CSRF-Token",
-			// "Authorization",
+			"Authorization",
 			// "withCredentials",
 		},
 		ExposeHeaders: []string{
