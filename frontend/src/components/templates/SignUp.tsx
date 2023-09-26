@@ -10,11 +10,6 @@ type Props = {
 };
 
 export const SignUp = ({ signupData, setSignupData, signup }: Props) => {
-  // const [signupData, setSignupData] = useState({
-  //   email: "",
-  //   password: "",
-  // });
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignupData((prevData) => ({
@@ -42,6 +37,20 @@ export const SignUp = ({ signupData, setSignupData, signup }: Props) => {
           <Typography variant="h5" sx={{ marginBottom: "20px" }}>
             新規登録
           </Typography>
+          <TextField
+            value={signupData.name}
+            onChange={handleChange}
+            required
+            size="small"
+            id="name"
+            name="name"
+            label="ニックネーム"
+            variant="outlined"
+            sx={{
+              width: { xs: "240px", sm: "360px" },
+              marginBottom: "20px",
+            }}
+          />
           <TextField
             value={signupData.email}
             onChange={handleChange}
