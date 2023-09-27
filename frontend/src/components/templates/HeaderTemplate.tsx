@@ -3,8 +3,14 @@ import dayjs from "dayjs";
 
 import { Header } from "@/components/parts/Header";
 import { MonthContext } from "@/provider/CalendarProvider";
+import { useNavigate } from "react-router-dom";
+import { type } from "os";
 
-export const HeaderTemplate = () => {
+type Props = {
+  handleSignOut: () => void;
+};
+
+export const HeaderTemplate = ({ handleSignOut }: Props) => {
   const { month, setMonth } = useContext(MonthContext);
 
   const handlePrevioustMonth = () => {
@@ -23,6 +29,7 @@ export const HeaderTemplate = () => {
       date={date}
       setPrevioustMonth={handlePrevioustMonth}
       setNextMonth={handleNextMonth}
+      handleSignOut={handleSignOut}
     />
   );
 };
