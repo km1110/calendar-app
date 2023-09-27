@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useState } from "react";
 
 import { Box, Typography, TextField, Button } from "@mui/material";
-import { signType } from "@/types/sign";
+import { signupType } from "@/types/sign";
 
 type Props = {
-  signupData: signType;
-  setSignupData: Dispatch<SetStateAction<signType>>;
+  signupData: signupType;
+  setSignupData: Dispatch<SetStateAction<signupType>>;
   signup: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 };
 
