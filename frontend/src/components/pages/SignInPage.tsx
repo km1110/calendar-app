@@ -1,5 +1,10 @@
 import React from "react";
+import { SignInView } from "@/components/views/SignInView";
 
 export const SignInPage = () => {
-  return <div>SignInPage</div>;
+  return (
+    <div>
+      <SignInView />
+    </div>
+  );
 };
