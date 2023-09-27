@@ -6,7 +6,7 @@ import { AddScheduleDialog } from "@/components/templates/AddScheduleDialog";
 import { CurrentScheduleDialog } from "@/components/templates/CurrentScheduleDialog";
 import { ChangeScheduleDialog } from "../templates/ChangeScheduleDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { client, makeIntance } from "@/libs/api/axios";
+import { makeIntance } from "@/libs/api/axios";
 import { scheduleType } from "@/types/schedule";
 
 export const MonthView = () => {
@@ -47,8 +47,8 @@ export const MonthView = () => {
       location: schedule.location,
       description: schedule.description,
     };
-    await client.post("/schedule", body);
-    client.get("/schedule").then(({ data }) => {
+    await instance.post("/schedule", body);
+    instance.get("/schedule").then(({ data }) => {
       setSchedules(data);
     });
 
@@ -69,13 +69,13 @@ export const MonthView = () => {
     const description = schedule.description;
     const location = schedule.location;
 
-    await client.put(`/schedule/${id}`, {
+    await instance.put(`/schedule/${id}`, {
       title,
       date,
       description,
       location,
     });
-    client.get("/schedule").then(({ data }) => {
+    instance.get("/schedule").then(({ data }) => {
       setSchedules(data);
     });
 
@@ -91,8 +91,8 @@ export const MonthView = () => {
   };
 
   const handleDelete = async (id: string) => {
-    await client.delete(`/schedule/${id}`);
-    client.get("/schedule").then(({ data }) => {
+    await instance.delete(`/schedule/${id}`);
+    instance.get("/schedule").then(({ data }) => {
       setSchedules(data);
     });
 
@@ -109,7 +109,6 @@ export const MonthView = () => {
 
   return (
     <div>
-      <HeaderTemplate />
       <MonthCalender />
       <AddScheduleDialog handleSaveSchedule={handleSaveSchedule} />
       <CurrentScheduleDialog handleDelete={handleDelete} />

@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 import { SignUp } from "@/components/templates/SignUp";
 import { app } from "@/libs/firebase";
+import { makeIntance } from "@/libs/api/axios";
 
 export const SignUpView = () => {
   const [signupData, setSignupData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -15,6 +17,8 @@ export const SignUpView = () => {
   const auth = getAuth(app);
 
   const navigate = useNavigate();
+
+  const instance = makeIntance();
 
   const signup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,11 +28,21 @@ export const SignUpView = () => {
         signupData.email,
         signupData.password
       );
+
+      const body = {
+        name: signupData.name,
+        email: signupData.email,
+      };
+      await instance.post("/signup", body);
+
+      // TODO signupDataを空にする
       navigate("/calendar");
     } catch (error) {
+      console.log(error);
       alert("登録に失敗しました");
     }
   };
+
   return (
     <div>
       <SignUp
