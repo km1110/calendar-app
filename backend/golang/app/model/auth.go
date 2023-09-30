@@ -12,7 +12,7 @@ import (
 type UserModel struct {
 }
 
-func NEwUserModel() *UserModel {
+func NewUserModel() *UserModel {
 	return &UserModel{}
 }
 
