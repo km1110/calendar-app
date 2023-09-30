@@ -5,7 +5,7 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/controller"
 )
 
-func initAuthRouter(router *gin.Engine) {
+func initAuthRouter(router *gin.RouterGroup) {
 	router.POST("/signup", controller.CreateUser)
 	router.GET("/signin", controller.GetUser)
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/controller"
 )
 
-func initScheduleRouter(router *gin.Engine) {
+func initScheduleRouter(router *gin.RouterGroup) {
 	s := router.Group("/schedule")
 	s.GET("", controller.FeatchSchedule)
 	s.POST("", controller.AddSchedule)
