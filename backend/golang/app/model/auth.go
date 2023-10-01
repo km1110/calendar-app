@@ -34,3 +34,14 @@ func (um *UserModel) AddUser(ctx context.Context, r entities.SignUp) error {
 
 	return err
 }
+
+func (um *UserModel) GetUser(ctx context.Context, uid string) (string, error) {
+	id_sql := `select id from users where firebase_uid = ?`
+
+	var user_id string
+	if err := Db.QueryRow(id_sql, uid).Scan(&user_id); err != nil {
+		return "", err
+	}
+
+	return user_id, nil
+}
