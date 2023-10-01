@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	firebase "firebase.google.com/go"
@@ -12,7 +11,7 @@ import (
 
 func FirebaseAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("firebase auth middlewear")
+		// init
 		opt := option.WithCredentialsFile("serviceAccountKey.json")
 		app, err := firebase.NewApp(context.Background(), nil, opt)
 		if err != nil {
@@ -21,6 +20,7 @@ func FirebaseAuth() gin.HandlerFunc {
 
 		ctx := c.Request.Context()
 
+		// verify
 		client, err := app.Auth(ctx)
 		if err != nil {
 			log.Fatalf("error getting Auth client: %v\n", err)
@@ -32,8 +32,6 @@ func FirebaseAuth() gin.HandlerFunc {
 		if err != nil {
 			log.Fatalf("error verifying ID token: %v\n", err)
 		}
-
-		// log.Printf("Verified ID token: %v\n", token)
 
 		c.Set("firebaseUID", token.UID)
 		c.Next()
