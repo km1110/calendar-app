@@ -7,7 +7,7 @@ import { app } from "@/libs/firebase";
 export const makeIntance = () => {
   const instance = axios.create({
     baseURL: "http://localhost:8080",
-    timeout: 15000,
+    timeout: 2000,
   });
   // const user = useFirebaseUser();
   const auth = getAuth(app);
