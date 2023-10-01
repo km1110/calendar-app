@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -37,9 +36,18 @@ func CreateUser(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	fmt.Println("test1")
 	uid, _ := c.Get("firebaseUID")
 	firebase_uid := uid.(string)
 
-	fmt.Println("firebase_uid: ", firebase_uid)
+	um := model.NewUserModel()
+
+	user_id, err := um.GetUser(c.Request.Context(), firebase_uid)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.Set("userID", user_id)
+	c.JSON(http.StatusOK, gin.H{"user_id": user_id})
 }
