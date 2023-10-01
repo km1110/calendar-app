@@ -32,7 +32,7 @@ export const SignInView = () => {
       navigate("/calendar");
     } catch (error) {
       console.log(error);
-      alert("登録に失敗しました");
+      alert("ログインに失敗しました");
     }
   };
 
