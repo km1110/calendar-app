@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { signupType } from "@/types/sign";
+import { Link } from "react-router-dom";
 
 type Props = {
   signupData: signupType;
@@ -100,6 +101,9 @@ export const SignUp = ({ signupData, setSignupData, signup }: Props) => {
           >
             登録
           </Button>
+          <Typography sx={{ marginTop: "20px" }}>
+            <Link to={"/signin"}>ログイン</Link>
+          </Typography>
         </Box>
       </Box>
     </form>

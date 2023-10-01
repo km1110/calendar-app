@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { Box, Typography, TextField, Button } from "@mui/material";
 
 import { signinType } from "@/types/sign";
+import { Link } from "react-router-dom";
 
 type Props = {
   signinData: signinType;
@@ -37,7 +38,7 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
             }}
           >
             <Typography variant="h5" sx={{ marginBottom: "20px" }}>
-              ログイン
+              ログイン画面
             </Typography>
             <TextField
               value={signinData.email}
@@ -88,6 +89,9 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
             >
               ログイン
             </Button>
+            <Typography sx={{ marginTop: "20px" }}>
+              <Link to={"/"}>新規登録</Link>
+            </Typography>
           </Box>
         </Box>
       </form>
