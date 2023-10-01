@@ -4,6 +4,7 @@ import "time"
 
 type FeatchScheduleResponse struct {
 	Id          string    `json:"id"`
+	UserID      string    `json:"user_id"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Date        time.Time `json:"date"`
@@ -11,6 +12,7 @@ type FeatchScheduleResponse struct {
 }
 
 type AddScheduleRequest struct {
+	UserID      string    `json:"user_id"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Date        time.Time `json:"date"`
@@ -19,6 +21,7 @@ type AddScheduleRequest struct {
 
 type ChangeScheduleRequest struct {
 	Id          string    `json:"id"`
+	UserID      string    `json:"user_id"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Date        time.Time `json:"date"`
