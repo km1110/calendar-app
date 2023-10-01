@@ -15,9 +15,15 @@ type Props = {
   date: dayjs.Dayjs;
   setPrevioustMonth: () => void;
   setNextMonth: () => void;
+  handleSignOut: () => void;
 };
 
-export const Header = ({ date, setPrevioustMonth, setNextMonth }: Props) => {
+export const Header = ({
+  date,
+  setPrevioustMonth,
+  setNextMonth,
+  handleSignOut,
+}: Props) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -43,7 +49,10 @@ export const Header = ({ date, setPrevioustMonth, setNextMonth }: Props) => {
           <Typography variant="h6" component="div">
             {date.format("YYYY年 MM月")}
           </Typography>
-          <Button color="inherit">login</Button>
+          <Box sx={{ flexGrow: 1 }} />
+          <Button color="inherit" onClick={handleSignOut}>
+            logout
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>

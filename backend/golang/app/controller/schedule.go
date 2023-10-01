@@ -32,9 +32,23 @@ func AddSchedule(c *gin.Context) {
 		})
 	}
 
+	uid, _ := c.Get("firebaseUID")
+	firebase_uid := uid.(string)
+
+	um := model.NewUserModel()
+	user_id, err := um.GetUser(c.Request.Context(), firebase_uid)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
 	sm := model.NewScheduleModel()
 	result, err := sm.AddSchedule(c, entities.Schedule{
 		Title:       req.Title,
+		UserID:      user_id,
 		Description: req.Description,
 		Date:        req.Date,
 		Location:    req.Location,
@@ -44,6 +58,7 @@ func AddSchedule(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	json, err := json.Marshal(result)
@@ -52,6 +67,7 @@ func AddSchedule(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, string(json))
@@ -64,6 +80,7 @@ func UpdateSchedule(c *gin.Context) {
 		c.JSON(400, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	id := c.Param("schedule_id")
@@ -81,6 +98,7 @@ func UpdateSchedule(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	json, err := json.Marshal(result)

@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/km1110/calendar-app/backend/golang/model/entities"
 	"github.com/oklog/ulid"
 )
@@ -17,10 +18,20 @@ func NewScheduleModel() *SchedulesModel {
 	return &SchedulesModel{}
 }
 
-func (sm *SchedulesModel) GetSchedules(ctx context.Context) ([]*entities.Schedule, error) {
-	sql := `select id, title, description, date, location from schedules`
+func (sm *SchedulesModel) GetSchedules(c *gin.Context) ([]*entities.Schedule, error) {
+	id_sql := `select id from users where firebase_uid = ?`
 
-	rows, err := Db.Query(sql)
+	uid, _ := c.Get("firebaseUID")
+	firebase_uid := uid.(string)
+
+	var user_id string
+	if err := Db.QueryRow(id_sql, firebase_uid).Scan(&user_id); err != nil {
+		return nil, err
+	}
+
+	sql := `select id, title, description, date, location from schedules WHERE user_id = ?`
+
+	rows, err := Db.Query(sql, user_id)
 	if err != nil {
 		return nil, err
 	}
@@ -58,15 +69,16 @@ func (sm *SchedulesModel) AddSchedule(ctx context.Context, r entities.Schedule) 
 
 	req := entities.Schedule{
 		Id:          id.String(),
+		UserID:      r.UserID,
 		Title:       r.Title,
 		Description: r.Description,
 		Date:        r.Date,
 		Location:    r.Location,
 	}
 
-	sql := `INSERT INTO schedules(id, title, description, date, location) VALUES(?, ?, ?, ?, ?)`
+	sql := `INSERT INTO schedules(id, user_id, title, description, date, location) VALUES(?, ?, ?, ?, ?, ?)`
 
-	result, err := Db.Exec(sql, req.Id, req.Title, req.Description, req.Date, req.Location)
+	result, err := Db.Exec(sql, req.Id, req.UserID, req.Title, req.Description, req.Date, req.Location)
 
 	if err != nil {
 		return result, err
