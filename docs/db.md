@@ -10,6 +10,7 @@ erDiagram
     users ||--o{ schedules : ""
     users ||--o{ projects : ""
     users ||--o{ tasks : ""
+    users ||--o{ diarys : ""
 
     projects ||--o{ tasks : ""
 
@@ -50,6 +51,7 @@ erDiagram
       varchar project_id FK "プロジェクトID"
       varchar tag_id FK "タグID"
       varchar name "タスク名"
+      datetime date  "日付"
       boolean status "状態"
       timestamp created_at "作成日時"
       timestamp updated_at "更新日時"
@@ -58,5 +60,14 @@ erDiagram
     tags {
       varchar id PK "ID"
       varchar name "タグ名"
+    }
+
+    diarys {
+      varchar id PK "ID"
+      varchar user_id FK "ユーザーID"
+      datetime date  "日付"
+      text comment "日記内容"
+      timestamp created_at "作成日時"
+      timestamp updated_at "更新日時"
     }
 ```
