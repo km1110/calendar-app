@@ -23,12 +23,7 @@ func Cors() gin.HandlerFunc {
 			"Access-Control-Allow-Credentials",
 			"Access-Control-Allow-Headers",
 			"Content-Type",
-			// "Content-Length",
-			// "application/json",
-			// "Accept-Encoding",
-			// "X-CSRF-Token",
 			"Authorization",
-			// "withCredentials",
 		},
 		ExposeHeaders: []string{
 			"Location",
