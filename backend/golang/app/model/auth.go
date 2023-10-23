@@ -16,7 +16,7 @@ func NewUserModel() *UserModel {
 	return &UserModel{}
 }
 
-func (um *UserModel) AddUser(ctx context.Context, r entities.SignUp) error {
+func (um *UserModel) AddUser(ctx context.Context, r entities.SignUp) (entities.SignUp, error) {
 	t := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixMicro())), 0)
 	id := ulid.MustNew(ulid.Timestamp(t), entropy)
@@ -32,7 +32,7 @@ func (um *UserModel) AddUser(ctx context.Context, r entities.SignUp) error {
 
 	_, err := Db.Exec(sql, req.Id, req.Firebase_uid, req.Username, req.Email)
 
-	return err
+	return req, err
 }
 
 func (um *UserModel) GetUser(ctx context.Context, uid string) (string, error) {
