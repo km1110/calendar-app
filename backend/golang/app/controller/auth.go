@@ -23,16 +23,18 @@ func CreateUser(c *gin.Context) {
 
 	um := model.NewUserModel()
 
-	if err := um.AddUser(c, entities.SignUp{
+	res, err := um.AddUser(c, entities.SignUp{
 		Firebase_uid: firebase_uid,
 		Username:     req.Name,
 		Email:        req.Email,
-	}); err != nil {
+	})
+
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "user created successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": res})
 }
 
 func GetUser(c *gin.Context) {
