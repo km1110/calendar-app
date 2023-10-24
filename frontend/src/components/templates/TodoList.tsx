@@ -4,12 +4,14 @@ import { Box, Button, Card, Typography, Grid, IconButton } from "@mui/material";
 import { CheckBox, Edit } from "@mui/icons-material";
 
 import { todoType } from "@/types/todo";
+import { AddTodoDialog } from "./AddTodoDialog";
 
 type Props = {
   todos: todoType[];
 };
 
 export const TodoList = ({ todos }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   return (
     <Box
@@ -31,7 +33,8 @@ export const TodoList = ({ todos }: Props) => {
           >
             TODO
           </Typography>
-          <Button>追加</Button>
+          <Button onClick={() => setIsOpen(true)}>追加</Button>
+          <AddTodoDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </Box>
         <Box sx={{ borderBottom: "1px solid" }}>
           <Grid container>
