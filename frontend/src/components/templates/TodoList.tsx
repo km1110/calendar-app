@@ -1,12 +1,16 @@
-import { CheckBox } from "@mui/icons-material";
-import { Box, Button, Card, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+
+import { Box, Button, Card, Typography, Grid, IconButton } from "@mui/material";
+import { CheckBox, Edit } from "@mui/icons-material";
+
+import { todoType } from "@/types/todo";
 
 type Props = {
-  todos: any;
+  todos: todoType[];
 };
 
 export const TodoList = ({ todos }: Props) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   return (
     <Box
       marginTop="20px"
@@ -15,7 +19,7 @@ export const TodoList = ({ todos }: Props) => {
       flexDirection="column"
       alignItems="center"
     >
-      <Card variant="outlined" sx={{ width: "80%" }}>
+      <Card variant="outlined" sx={{ width: "80%", border: "1px solid" }}>
         <Box
           display="flex"
           flexDirection="row"
@@ -29,32 +33,63 @@ export const TodoList = ({ todos }: Props) => {
           </Typography>
           <Button>追加</Button>
         </Box>
-        <Box
-          display="flex"
-          flexDirection="row"
-          sx={{ borderBottom: "1px solid" }}
-        >
-          <Typography variant="h6" sx={{ marginLeft: "1%" }}>
-            完了
-          </Typography>
-          <Typography variant="h6">タスク名</Typography>
-          <Typography variant="h6">カテゴリー</Typography>
-          <Typography variant="h6">日付</Typography>
-          <Typography variant="h6">プロジェクト名</Typography>
+        <Box sx={{ borderBottom: "1px solid" }}>
+          <Grid container>
+            <Grid item xs={1}>
+              <Typography variant="h6" sx={{ marginLeft: "10px" }}>
+                完了
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant="h6">タスク名</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography variant="h6">カテゴリー</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography variant="h6">日付</Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography variant="h6">プロジェクト名</Typography>
+            </Grid>
+          </Grid>
         </Box>
-        <Box display="flex" flexDirection="row">
-          {todos.map((item: any, index: number) => (
-            <>
-              <div>
+        {todos.map((item: todoType, index: number) => (
+          <Grid
+            container
+            // spacing={3}
+            key={index}
+            alignItems="center"
+            style={{ minHeight: "40px" }}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            <Grid item xs={1}>
+              <Typography sx={{ marginLeft: "10px" }}>
                 <CheckBox />
-              </div>
-              <Typography>hogehoge</Typography>
-              <Typography>school</Typography>
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography>{item.name}</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography>{item.tag}</Typography>
+            </Grid>
+            <Grid item xs={2}>
               <Typography>2023/10/19</Typography>
-              <Typography>修士研究</Typography>
-            </>
-          ))}
-        </Box>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography>{item.project}</Typography>
+            </Grid>
+            <Grid item xs={1}>
+              {hoveredIndex === index && (
+                <IconButton>
+                  <Edit />
+                </IconButton>
+              )}
+            </Grid>
+          </Grid>
+        ))}
       </Card>
     </Box>
   );
