@@ -10,8 +10,6 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Edit, DeleteForever } from "@mui/icons-material";
-// import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import dayjs from "dayjs";
 
 import { todoType } from "@/types/todo";
 import { AddTodoDialog } from "./AddTodoDialog";
@@ -27,6 +25,7 @@ export const TodoList = ({ todos, setTodo }: Props) => {
   const [selectedItem, setSelectedItem] = useState<todoType | null>(null);
 
   const handleEditClick = (item: todoType) => {
+    setTodo((prevTodo) => ({ ...prevTodo, id: item.id }));
     setSelectedItem(item);
     setIsOpen(true);
   };
