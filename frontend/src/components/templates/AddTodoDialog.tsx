@@ -9,8 +9,6 @@ import {
   Button,
   MenuItem,
 } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { todoType } from "@/types/todo";
@@ -70,22 +68,22 @@ export const AddTodoDialog = ({
           ))}
         </TextField>
         <Typography>日付</Typography>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <TextField
-            size="medium"
-            defaultValue={selectedItem ? selectedItem.date : ""}
-            id="date"
-            name="date"
-            variant="outlined"
-            type="date"
-            sx={{
-              width: { xs: "200px", sm: "360px" },
-              background: "white",
-              marginBottom: { xs: "20px" },
-            }}
-            onChange={handleChange}
-          />
-        </LocalizationProvider>
+        <TextField
+          size="medium"
+          defaultValue={
+            selectedItem ? selectedItem.date.format("YYYY-MM-DD") : ""
+          }
+          id="date"
+          name="date"
+          variant="outlined"
+          type="date"
+          sx={{
+            width: { xs: "200px", sm: "360px" },
+            background: "white",
+            marginBottom: { xs: "20px" },
+          }}
+          onChange={handleChange}
+        />
       </DialogContent>
       <DialogActions>
         <Box display="flex" flexDirection="column" alignItems="center">
