@@ -17,9 +17,10 @@ import { AddTodoDialog } from "./AddTodoDialog";
 type Props = {
   todos: todoType[];
   setTodo: React.Dispatch<React.SetStateAction<todoType>>;
+  handleUpdateStatus: (id: string) => void;
 };
 
-export const TodoList = ({ todos, setTodo }: Props) => {
+export const TodoList = ({ todos, setTodo, handleUpdateStatus }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedItem, setSelectedItem] = useState<todoType | null>(null);
@@ -114,7 +115,7 @@ export const TodoList = ({ todos, setTodo }: Props) => {
                     checked={item.status}
                     id="status"
                     name="status"
-                    onChange={handleChange}
+                    onChange={() => handleUpdateStatus(item.id)}
                   />
                 </Typography>
               </Grid>
