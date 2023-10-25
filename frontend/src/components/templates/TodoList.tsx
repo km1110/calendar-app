@@ -18,17 +18,10 @@ import { AddTodoDialog } from "./AddTodoDialog";
 
 type Props = {
   todos: todoType[];
+  setTodo: React.Dispatch<React.SetStateAction<todoType>>;
 };
 
-export const TodoList = ({ todos }: Props) => {
-  const [todo, setTodo] = useState<todoType>({
-    id: "",
-    name: "",
-    tag: "",
-    date: dayjs(),
-    project: "",
-    status: false,
-  });
+export const TodoList = ({ todos, setTodo }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedItem, setSelectedItem] = useState<todoType | null>(null);
