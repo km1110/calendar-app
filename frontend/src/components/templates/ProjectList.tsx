@@ -1,8 +1,8 @@
-import { todoType } from "@/types/todo";
-import { CheckBox, Edit } from "@mui/icons-material";
+import { useState } from "react";
 import { Box, Button, Card, Grid, IconButton, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { AddTodoDialog } from "./AddTodoDialog";
+import { CheckBox, Edit } from "@mui/icons-material";
+
+import { AddProjectDialog } from "./AddProjectDialog";
 import { projectType } from "@/types/project";
 
 type Props = {
@@ -10,8 +10,22 @@ type Props = {
 };
 
 export const ProjectList = ({ projects }: Props) => {
+  const [project, setProject] = useState<projectType>({
+    id: "",
+    title: "",
+    description: "",
+    num: 0,
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProject((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   return (
     <Box
@@ -36,27 +50,30 @@ export const ProjectList = ({ projects }: Props) => {
             Project
           </Typography>
           <Button onClick={() => setIsOpen(true)}>追加</Button>
-          <AddTodoDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
+          <AddProjectDialog
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            handleChange={handleChange}
+          />
         </Box>
         <Box sx={{ borderBottom: "1px solid" }}>
           <Grid container>
             <Grid item xs={3}>
-              <Typography variant="h6" sx={{ marginLeft: "10px" }}>
+              <Typography sx={{ marginLeft: "10px", fontSize: "18px" }}>
                 進捗率
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="h6">プロジェクト名</Typography>
+              <Typography sx={{ fontSize: "18px" }}>プロジェクト名</Typography>
             </Grid>
             <Grid item xs={2}>
-              <Typography variant="h6">タスク数</Typography>
+              <Typography sx={{ fontSize: "18px" }}>タスク数</Typography>
             </Grid>
           </Grid>
         </Box>
         {projects.map((item: projectType, index: number) => (
           <Grid
             container
-            // spacing={3}
             key={index}
             alignItems="center"
             style={{ minHeight: "40px" }}
