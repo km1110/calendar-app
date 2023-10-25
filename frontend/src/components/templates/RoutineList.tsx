@@ -2,15 +2,30 @@ import { todoType } from "@/types/todo";
 import { CheckBox, Edit } from "@mui/icons-material";
 import { Box, Card, Typography, Button, Grid, IconButton } from "@mui/material";
 import React, { useState } from "react";
-import { AddTodoDialog } from "./AddTodoDialog";
+import { AddRoutineDialog } from "./AddRoutineDialog";
+import { routineType } from "@/types/routine";
 
 type Props = {
   routines: any;
 };
 
 export const RoutineList = ({ routines }: Props) => {
+  const [routine, setRoutine] = useState<routineType>({
+    id: "",
+    title: "",
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setRoutine((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <Box
       marginTop="20px"
@@ -33,10 +48,14 @@ export const RoutineList = ({ routines }: Props) => {
           >
             Routine
           </Typography>
-          {/* <Button onClick={() => setIsOpen(true)}>追加</Button>
-          <AddTodoDialog isOpen={isOpen} onClose={() => setIsOpen(false)} /> */}
+          <Button onClick={() => setIsOpen(true)}>追加</Button>
+          <AddRoutineDialog
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            handleChange={handleChange}
+          />
         </Box>
-        <Box sx={{ borderBottom: "1px solid" }}>
+        {/* <Box sx={{ borderBottom: "1px solid" }}>
           <Grid container>
             <Grid item xs={3}>
               <Typography variant="h6" sx={{ marginLeft: "10px" }}>
@@ -50,7 +69,7 @@ export const RoutineList = ({ routines }: Props) => {
               <Typography variant="h6">タスク数</Typography>
             </Grid>
           </Grid>
-        </Box>
+        </Box> */}
         {routines.map((item: todoType, index: number) => (
           <Grid
             container
