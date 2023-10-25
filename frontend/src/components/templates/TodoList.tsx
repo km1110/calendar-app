@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 
-import { Box, Button, Card, Typography, Grid, IconButton } from "@mui/material";
-import { CheckBox, Edit } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Card,
+  Typography,
+  Grid,
+  IconButton,
+  Checkbox,
+} from "@mui/material";
+import { Edit, DeleteForever } from "@mui/icons-material";
+// import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import dayjs from "dayjs";
 
 import { todoType } from "@/types/todo";
 import { AddTodoDialog } from "./AddTodoDialog";
@@ -11,8 +21,31 @@ type Props = {
 };
 
 export const TodoList = ({ todos }: Props) => {
+  const [todo, setTodo] = useState<todoType>({
+    id: "",
+    name: "",
+    tag: "",
+    date: dayjs(),
+    project: "",
+    status: false,
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState<todoType | null>(null);
+
+  const handleEditClick = (item: todoType) => {
+    setSelectedItem(item);
+    setIsOpen(true);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setTodo((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <Box
       marginTop="20px"
@@ -27,6 +60,7 @@ export const TodoList = ({ todos }: Props) => {
         sx={{
           width: "80%",
           border: "1px solid",
+          // minHeight: "calc(40px * 10)",
         }}
       >
         <Box
@@ -38,7 +72,12 @@ export const TodoList = ({ todos }: Props) => {
             TODO
           </Typography>
           <Button onClick={() => setIsOpen(true)}>追加</Button>
-          <AddTodoDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
+          <AddTodoDialog
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            handleChange={handleChange}
+            selectedItem={selectedItem}
+          />
         </Box>
         <Box sx={{ borderBottom: "1px solid" }}>
           <Grid container>
@@ -61,7 +100,13 @@ export const TodoList = ({ todos }: Props) => {
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{ overflowY: "auto", minHeight: "calc(40px * 10)" }}>
+        <Box
+          sx={{
+            overflowY: "auto",
+            minHeight: "calc(40px * 10)",
+            maxHeight: "calc(40px * 10)",
+          }}
+        >
           {todos.map((item: todoType, index: number) => (
             <Grid
               container
@@ -73,7 +118,12 @@ export const TodoList = ({ todos }: Props) => {
             >
               <Grid item xs={1}>
                 <Typography sx={{ marginLeft: "10px" }}>
-                  <CheckBox />
+                  <Checkbox
+                    checked={item.status}
+                    id="status"
+                    name="status"
+                    onChange={handleChange}
+                  />
                 </Typography>
               </Grid>
               <Grid item xs={3}>
@@ -83,15 +133,22 @@ export const TodoList = ({ todos }: Props) => {
                 <Typography>{item.tag}</Typography>
               </Grid>
               <Grid item xs={2}>
-                <Typography>2023/10/19</Typography>
+                <Typography>{item.date.format("YYYY/MM/DD")}</Typography>
               </Grid>
               <Grid item xs={3}>
                 <Typography>{item.project}</Typography>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={0.5}>
                 {hoveredIndex === index && (
-                  <IconButton>
+                  <IconButton onClick={() => handleEditClick(item)}>
                     <Edit />
+                  </IconButton>
+                )}
+              </Grid>
+              <Grid item xs={0.5}>
+                {hoveredIndex === index && (
+                  <IconButton onClick={() => handleEditClick(item)}>
+                    <DeleteForever />
                   </IconButton>
                 )}
               </Grid>
