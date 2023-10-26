@@ -27,8 +27,6 @@ export const TodoListView = () => {
     status: false,
   });
 
-  console.log(todos);
-
   const instance = makeIntance();
 
   // useEffect(() => {
@@ -45,7 +43,7 @@ export const TodoListView = () => {
   //   getTodoLists();
   // }, []);
 
-  const handleSubmit = async () => {
+  const handleCreate = async () => {
     const body = {
       name: todo.name,
       tag: todo.tag,
@@ -54,6 +52,20 @@ export const TodoListView = () => {
       status: todo.status,
     };
     await instance.post("/todos", body);
+    instance.get("/todos").then(({ data }) => {
+      setTodos(data);
+    });
+  };
+
+  const handleUpdate = async () => {
+    const body = {
+      name: todo.name,
+      tag: todo.tag,
+      date: todo.date.toISOString(),
+      project: todo.project,
+      status: todo.status,
+    };
+    await instance.patch(`/todos/${todo.id}`, body);
     instance.get("/todos").then(({ data }) => {
       setTodos(data);
     });
@@ -87,6 +99,7 @@ export const TodoListView = () => {
       <Box width="100%" height="50%">
         <TodoList
           todos={todos}
+          todo={todo}
           setTodo={setTodo}
           handleUpdateStatus={handleUpdateStatus}
         />
