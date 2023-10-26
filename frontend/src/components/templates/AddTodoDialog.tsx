@@ -2,24 +2,27 @@ import { todoType } from "@/types/todo";
 import { TodoDialog } from "../parts/TodoDialog";
 
 type Props = {
+  todo: todoType;
   isOpen: boolean;
   onClose: () => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  todo: todoType;
+  handleSumbit: () => void;
 };
 
 export const AddTodoDialog = ({
+  todo,
   isOpen,
   onClose,
   handleChange,
-  todo,
+  handleSumbit,
 }: Props) => {
   return (
     <TodoDialog
+      todo={todo}
       isOpen={isOpen}
       onClose={onClose}
       handleChange={handleChange}
-      todo={todo}
+      handleSumbit={handleSumbit}
     />
   );
 };
