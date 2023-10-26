@@ -92,7 +92,18 @@ export const TodoListView = () => {
       });
   };
 
-  const handleDelete = async () => {};
+  const handleDelete = async (id: string) => {
+    await instance
+      .delete(`/todos/${id}`)
+      .then(() => {
+        instance.get("/todos").then(({ data }) => {
+          setTodos(data);
+        });
+      })
+      .catch((error) => {
+        console.error("An error occurred while deleting the todo:", error);
+      });
+  };
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" width="100%">
