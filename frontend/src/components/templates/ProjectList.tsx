@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Box, Button, Card, Grid, IconButton, Typography } from "@mui/material";
-import { CheckBox, Edit } from "@mui/icons-material";
+import { DeleteForever, Edit } from "@mui/icons-material";
 
 import { AddProjectDialog } from "./AddProjectDialog";
 import { projectType } from "@/types/project";
 
 type Props = {
   projects: any;
+  handleDelete: () => void;
 };
 
-export const ProjectList = ({ projects }: Props) => {
+export const ProjectList = ({ projects, handleDelete }: Props) => {
   const [project, setProject] = useState<projectType>({
     id: "",
     title: "",
@@ -58,13 +59,15 @@ export const ProjectList = ({ projects }: Props) => {
         </Box>
         <Box sx={{ borderBottom: "1px solid" }}>
           <Grid container>
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
               <Typography sx={{ marginLeft: "10px", fontSize: "18px" }}>
                 進捗率
               </Typography>
-            </Grid>
+            </Grid> */}
             <Grid item xs={6}>
-              <Typography sx={{ fontSize: "18px" }}>プロジェクト名</Typography>
+              <Typography sx={{ marginLeft: "10px", fontSize: "18px" }}>
+                プロジェクト名
+              </Typography>
             </Grid>
             <Grid item xs={2}>
               <Typography sx={{ fontSize: "18px" }}>タスク数</Typography>
@@ -80,13 +83,13 @@ export const ProjectList = ({ projects }: Props) => {
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
               <Typography sx={{ marginLeft: "10px" }}>
                 <CheckBox />
               </Typography>
-            </Grid>
+            </Grid> */}
             <Grid item xs={6}>
-              <Typography>{item.title}</Typography>
+              <Typography sx={{ marginLeft: "10px" }}>{item.title}</Typography>
             </Grid>
             <Grid item xs={2}>
               <Typography>{item.num}</Typography>
@@ -95,6 +98,13 @@ export const ProjectList = ({ projects }: Props) => {
               {hoveredIndex === index && (
                 <IconButton>
                   <Edit />
+                </IconButton>
+              )}
+            </Grid>
+            <Grid item xs={0.5}>
+              {hoveredIndex === index && (
+                <IconButton onClick={() => handleDelete()}>
+                  <DeleteForever />
                 </IconButton>
               )}
             </Grid>
