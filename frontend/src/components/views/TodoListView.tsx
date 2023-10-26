@@ -27,6 +27,8 @@ export const TodoListView = () => {
     status: false,
   });
 
+  console.log(todos);
+
   const instance = makeIntance();
 
   // useEffect(() => {
@@ -57,12 +59,37 @@ export const TodoListView = () => {
     });
   };
 
+  const handleUpdateStatus = async (itemId: string) => {
+    let newStatus;
+    const newTodos = todos.map((item) => {
+      if (item.id === itemId) {
+        newStatus = !item.status;
+        return { ...item, status: newStatus };
+      } else {
+        return item;
+      }
+    });
+    setTodos(newTodos);
+
+    await instance
+      .put(`/todos/${itemId}/status`, {
+        status: newStatus,
+      })
+      .catch((error) => {
+        console.error("An error occurred while updating the status:", error);
+      });
+  };
+
   const handleDelete = async () => {};
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" width="100%">
       <Box width="100%" height="50%">
-        <TodoList todos={todos} setTodo={setTodo} />
+        <TodoList
+          todos={todos}
+          setTodo={setTodo}
+          handleUpdateStatus={handleUpdateStatus}
+        />
       </Box>
       <Box
         display="flex"
