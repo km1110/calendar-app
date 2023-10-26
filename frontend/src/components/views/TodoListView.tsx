@@ -55,6 +55,15 @@ export const TodoListView = () => {
     instance.get("/todos").then(({ data }) => {
       setTodos(data);
     });
+
+    setTodo({
+      id: "",
+      name: "",
+      tag: "",
+      date: dayjs(),
+      project: "",
+      status: false,
+    });
   };
 
   const handleUpdate = async () => {
@@ -68,6 +77,15 @@ export const TodoListView = () => {
     await instance.patch(`/todos/${todo.id}`, body);
     instance.get("/todos").then(({ data }) => {
       setTodos(data);
+    });
+
+    setTodo({
+      id: "",
+      name: "",
+      tag: "",
+      date: dayjs(),
+      project: "",
+      status: false,
     });
   };
 
@@ -103,6 +121,15 @@ export const TodoListView = () => {
       .catch((error) => {
         console.error("An error occurred while deleting the todo:", error);
       });
+
+    setTodo({
+      id: "",
+      name: "",
+      tag: "",
+      date: dayjs(),
+      project: "",
+      status: false,
+    });
   };
 
   return (
@@ -112,7 +139,10 @@ export const TodoListView = () => {
           todos={todos}
           todo={todo}
           setTodo={setTodo}
+          handleCreate={handleCreate}
+          handleUpdate={handleUpdate}
           handleUpdateStatus={handleUpdateStatus}
+          handleDelete={handleDelete}
         />
       </Box>
       <Box
