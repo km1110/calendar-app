@@ -13,22 +13,35 @@ import { Edit, DeleteForever } from "@mui/icons-material";
 
 import { todoType } from "@/types/todo";
 import { AddTodoDialog } from "./AddTodoDialog";
+import { ChangeTodoDialog } from "./ChangeTodoDialog";
+import dayjs from "dayjs";
 
 type Props = {
   todos: todoType[];
+  todo: todoType;
   setTodo: React.Dispatch<React.SetStateAction<todoType>>;
+  handleCreate: () => void;
+  handleUpdate: () => void;
   handleUpdateStatus: (id: string) => void;
+  handleDelete: (id: string) => void;
 };
 
-export const TodoList = ({ todos, setTodo, handleUpdateStatus }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const TodoList = ({
+  todos,
+  todo,
+  setTodo,
+  handleCreate,
+  handleUpdate,
+  handleUpdateStatus,
+  handleDelete,
+}: Props) => {
+  const [isOpenAdd, setIsOpenAdd] = useState(false);
+  const [isOpenChange, setIsOpenChange] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [selectedItem, setSelectedItem] = useState<todoType | null>(null);
 
-  const handleEditClick = (item: todoType) => {
-    setTodo((prevTodo) => ({ ...prevTodo, id: item.id }));
-    setSelectedItem(item);
-    setIsOpen(true);
+  const handleChangeClick = (item: todoType) => {
+    setTodo((prevTodo) => ({ ...prevTodo, ...item }));
+    setIsOpenChange(true);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +50,19 @@ export const TodoList = ({ todos, setTodo, handleUpdateStatus }: Props) => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleClosed = () => {
+    setTodo({
+      id: "",
+      name: "",
+      tag: "",
+      date: dayjs(),
+      project: "",
+      status: false,
+    });
+    setIsOpenAdd(false);
+    setIsOpenChange(false);
   };
 
   return (
@@ -64,12 +90,20 @@ export const TodoList = ({ todos, setTodo, handleUpdateStatus }: Props) => {
           <Typography sx={{ flexGrow: 1, marginTop: "1%", marginLeft: "2%" }}>
             TODO
           </Typography>
-          <Button onClick={() => setIsOpen(true)}>追加</Button>
+          <Button onClick={() => setIsOpenAdd(true)}>追加</Button>
           <AddTodoDialog
-            isOpen={isOpen}
-            onClose={() => setIsOpen(false)}
+            todo={todo}
+            isOpen={isOpenAdd}
+            onClose={handleClosed}
             handleChange={handleChange}
-            selectedItem={selectedItem}
+            handleSumbit={handleCreate}
+          />
+          <ChangeTodoDialog
+            todo={todo}
+            isOpen={isOpenChange}
+            onClose={handleClosed}
+            handleChange={handleChange}
+            handleSumbit={handleUpdate}
           />
         </Box>
         <Box sx={{ borderBottom: "1px solid" }}>
@@ -133,14 +167,14 @@ export const TodoList = ({ todos, setTodo, handleUpdateStatus }: Props) => {
               </Grid>
               <Grid item xs={0.5}>
                 {hoveredIndex === index && (
-                  <IconButton onClick={() => handleEditClick(item)}>
+                  <IconButton onClick={() => handleChangeClick(item)}>
                     <Edit />
                   </IconButton>
                 )}
               </Grid>
               <Grid item xs={0.5}>
                 {hoveredIndex === index && (
-                  <IconButton onClick={() => handleEditClick(item)}>
+                  <IconButton onClick={() => handleDelete(item.id)}>
                     <DeleteForever />
                   </IconButton>
                 )}
