@@ -16,13 +16,20 @@ import { currencies } from "@/mock/tag";
 import { todoType } from "@/types/todo";
 
 type Props = {
+  todo: todoType;
   isOpen: boolean;
   onClose: () => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  todo: todoType;
+  handleSumbit: () => void;
 };
 
-export const TodoDialog = ({ isOpen, onClose, handleChange, todo }: Props) => {
+export const TodoDialog = ({
+  todo,
+  isOpen,
+  onClose,
+  handleChange,
+  handleSumbit,
+}: Props) => {
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="xs">
       <DialogActions>
@@ -83,7 +90,7 @@ export const TodoDialog = ({ isOpen, onClose, handleChange, todo }: Props) => {
         <Box display="flex" flexDirection="column" alignItems="center">
           <Button
             onClick={() => {
-              // onSubmit();
+              handleSumbit();
               onClose();
             }}
             size="small"
