@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 import { makeIntance } from "@/libs/api/axios";
-import { tagType, todoType } from "@/types/todo";
+import { todoType } from "@/types/todo";
 
 import { TodoList } from "../templates/TodoList";
 import { Box } from "@mui/material";
@@ -13,6 +13,7 @@ import { projectType } from "@/types/project";
 import { initialTodos } from "@/mock/todo";
 import { initialProjects } from "@/mock/project";
 import { initialTags } from "@/mock/tag";
+import { tagType } from "@/types/tag";
 
 export const TodoListView = () => {
   const [todos, setTodos] = useState<todoType[]>(initialTodos);
