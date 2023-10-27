@@ -1,18 +1,20 @@
-export const currencies = [
+import { tagType } from "@/types/tag";
+
+export const initialTags: tagType[] = [
   {
-    value: "schoole",
-    label: "学校",
+    id: "1",
+    name: "仕事",
   },
   {
-    value: "job",
-    label: "仕事",
+    id: "2",
+    name: "個人",
   },
   {
-    value: "hobby",
-    label: "趣味",
+    id: "3",
+    name: "趣味",
   },
   {
-    value: "play",
-    label: "遊び",
+    id: "4",
+    name: "学校",
   },
 ];
