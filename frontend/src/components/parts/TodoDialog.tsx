@@ -12,14 +12,17 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { currencies } from "@/mock/tag";
+import { initialTags } from "@/mock/tag";
 import { todoType } from "@/types/todo";
+import { initialProjects } from "@/mock/project";
 
 type Props = {
   todo: todoType;
   isOpen: boolean;
   onClose: () => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTagChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleProjectChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSumbit: () => void;
 };
 
@@ -28,6 +31,8 @@ export const TodoDialog = ({
   isOpen,
   onClose,
   handleChange,
+  handleTagChange,
+  handleProjectChange,
   handleSumbit,
 }: Props) => {
   return (
@@ -57,16 +62,16 @@ export const TodoDialog = ({
         <TextField
           select
           size="medium"
-          defaultValue={todo ? todo.tag : ""}
+          value={todo ? todo.tag.name : ""}
           id="tag"
           name="tag"
           variant="outlined"
           sx={{ width: { xs: "200px", sm: "360px" }, marginBottom: "20px" }}
-          onChange={handleChange}
+          onChange={handleTagChange}
         >
-          {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {initialTags.map((item) => (
+            <MenuItem key={item.id} value={item.name}>
+              {item.name}
             </MenuItem>
           ))}
         </TextField>
@@ -85,6 +90,23 @@ export const TodoDialog = ({
           }}
           onChange={handleChange}
         />
+        <Typography>プロジェクト</Typography>
+        <TextField
+          select
+          size="medium"
+          value={todo ? todo.project.title : ""}
+          id="project"
+          name="project"
+          variant="outlined"
+          sx={{ width: { xs: "200px", sm: "360px" }, marginBottom: "20px" }}
+          onChange={handleProjectChange}
+        >
+          {initialProjects.map((item) => (
+            <MenuItem key={item.id} value={item.title}>
+              {item.title}
+            </MenuItem>
+          ))}
+        </TextField>
       </DialogContent>
       <DialogActions>
         <Box display="flex" flexDirection="column" alignItems="center">
