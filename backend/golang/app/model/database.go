@@ -35,7 +35,7 @@ func init() {
 		email VARCHAR(100) UNIQUE NOT NULL,
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-)`
+	)`
 
 	_, err = Db.Exec(userSQL)
 
@@ -63,36 +63,14 @@ func init() {
 		return
 	}
 
-	todoSQL := `CREATE TABLE IF NOT EXISTS todos(
-			id varchar(26) not null PRIMARY KEY,
-			user_id varchar(26),
-			project_id varchar(26),
-			tag_id varchar(26),
-			name text not null,
-			date datetime not null,
-			status boolean not null,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-			foreign key (user_id) references users(id),
-			foreign key (project_id) references projects(id),
-			foreign key (tag_id) references tags(id)
-	)`
-
-	_, err = Db.Exec(todoSQL)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
 	projectSQL := `CREATE TABLE IF NOT EXISTS projects(
-			id varchar(26) not null PRIMARY KEY,
-			user_id varchar(26),
-			title text not null,
-			description text not null,
-			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-			foreign key (user_id) references users(id)
+		id varchar(26) not null PRIMARY KEY,
+		user_id varchar(26),
+		title text not null,
+		description text,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		foreign key (user_id) references users(id)
 	)`
 
 	_, err = Db.Exec(projectSQL)
@@ -103,11 +81,33 @@ func init() {
 	}
 
 	tagSQL := `CREATE TABLE IF NOT EXISTS tags(
-			id varchar(26) not null PRIMARY KEY,
-			name text not null,
+		id varchar(26) not null PRIMARY KEY,
+		name text not null
 	)`
 
 	_, err = Db.Exec(tagSQL)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	todoSQL := `CREATE TABLE IF NOT EXISTS todos(
+			id varchar(26) not null PRIMARY KEY,
+			user_id varchar(26),
+			project_id varchar(26),
+			tag_id varchar(26),
+			name text not null,
+			date datetime not null,
+			status boolean not null,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			foreign key (user_id) references users(id),
+			foreign key (project_id) references projects(id),
+			foreign key (tag_id) references tags(id)
+	)`
+
+	_, err = Db.Exec(todoSQL)
 
 	if err != nil {
 		fmt.Println(err)
