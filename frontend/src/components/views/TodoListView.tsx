@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 import { makeIntance } from "@/libs/api/axios";
-import { todoType } from "@/types/todo";
+import { tagType, todoType } from "@/types/todo";
 
 import { TodoList } from "../templates/TodoList";
 import { Box } from "@mui/material";
@@ -12,18 +12,26 @@ import { RoutineList } from "../templates/RoutineList";
 import { projectType } from "@/types/project";
 import { initialTodos } from "@/mock/todo";
 import { initialProjects } from "@/mock/project";
+import { initialTags } from "@/mock/tag";
 
 export const TodoListView = () => {
   const [todos, setTodos] = useState<todoType[]>(initialTodos);
   const [projects, setProjects] = useState<projectType[]>(initialProjects);
   const [routines, setRoutines] = useState([]);
+  const [tags, setTags] = useState<tagType[]>(initialTags);
 
   const [todo, setTodo] = useState<todoType>({
     id: "",
     name: "",
-    tag: "",
+    tag: {
+      id: "",
+      name: "",
+    },
+    project: {
+      id: "",
+      title: "",
+    },
     date: dayjs(),
-    project: "",
     status: false,
   });
 
@@ -59,9 +67,9 @@ export const TodoListView = () => {
     setTodo({
       id: "",
       name: "",
-      tag: "",
+      tag: { id: "", name: "" },
       date: dayjs(),
-      project: "",
+      project: { id: "", title: "" },
       status: false,
     });
   };
@@ -82,9 +90,9 @@ export const TodoListView = () => {
     setTodo({
       id: "",
       name: "",
-      tag: "",
+      tag: { id: "", name: "" },
       date: dayjs(),
-      project: "",
+      project: { id: "", title: "" },
       status: false,
     });
   };
@@ -125,9 +133,9 @@ export const TodoListView = () => {
     setTodo({
       id: "",
       name: "",
-      tag: "",
+      tag: { id: "", name: "" },
       date: dayjs(),
-      project: "",
+      project: { id: "", title: "" },
       status: false,
     });
   };
@@ -139,6 +147,8 @@ export const TodoListView = () => {
           todos={todos}
           todo={todo}
           setTodo={setTodo}
+          tags={tags}
+          projects={projects}
           handleCreate={handleCreate}
           handleUpdate={handleUpdate}
           handleUpdateStatus={handleUpdateStatus}
