@@ -11,15 +11,20 @@ import {
 } from "@mui/material";
 import { Edit, DeleteForever } from "@mui/icons-material";
 
-import { todoType } from "@/types/todo";
-import { AddTodoDialog } from "./AddTodoDialog";
-import { ChangeTodoDialog } from "./ChangeTodoDialog";
 import dayjs from "dayjs";
+
+import { AddTodoDialog } from "@/components/templates/AddTodoDialog";
+import { ChangeTodoDialog } from "@/components/templates//ChangeTodoDialog";
+import { todoType } from "@/types/todo";
+import { tagType } from "@/types/tag";
+import { projectType } from "@/types/project";
 
 type Props = {
   todos: todoType[];
   todo: todoType;
   setTodo: React.Dispatch<React.SetStateAction<todoType>>;
+  tags: tagType[];
+  projects: projectType[];
   handleCreate: () => void;
   handleUpdate: () => void;
   handleUpdateStatus: (id: string) => void;
@@ -30,6 +35,8 @@ export const TodoList = ({
   todos,
   todo,
   setTodo,
+  tags,
+  projects,
   handleCreate,
   handleUpdate,
   handleUpdateStatus,
@@ -44,7 +51,7 @@ export const TodoList = ({
     setIsOpenChange(true);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setTodo((prevData) => ({
       ...prevData,
@@ -52,13 +59,39 @@ export const TodoList = ({
     }));
   };
 
+  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const tagName = e.target.value;
+    const selectTag = tags.find((tag) => tag.name === tagName);
+
+    if (selectTag) {
+      setTodo((prevData) => ({
+        ...prevData,
+        tag: selectTag,
+      }));
+    }
+  };
+
+  const handleProjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const projectTitle = e.target.value;
+    const selectProject = projects.find(
+      (project) => project.title === projectTitle
+    );
+
+    if (selectProject) {
+      setTodo((prevData) => ({
+        ...prevData,
+        project: selectProject,
+      }));
+    }
+  };
+
   const handleClosed = () => {
     setTodo({
       id: "",
       name: "",
-      tag: "",
+      tag: { id: "", name: "" },
       date: dayjs(),
-      project: "",
+      project: { id: "", title: "" },
       status: false,
     });
     setIsOpenAdd(false);
@@ -95,14 +128,18 @@ export const TodoList = ({
             todo={todo}
             isOpen={isOpenAdd}
             onClose={handleClosed}
-            handleChange={handleChange}
+            handleTextChange={handleTextChange}
+            handleTagChange={handleTagChange}
+            handleProjectChange={handleProjectChange}
             handleSumbit={handleCreate}
           />
           <ChangeTodoDialog
             todo={todo}
             isOpen={isOpenChange}
             onClose={handleClosed}
-            handleChange={handleChange}
+            handleTextChange={handleTextChange}
+            handleTagChange={handleTagChange}
+            handleProjectChange={handleProjectChange}
             handleSumbit={handleUpdate}
           />
         </Box>
@@ -157,13 +194,13 @@ export const TodoList = ({
                 <Typography>{item.name}</Typography>
               </Grid>
               <Grid item xs={2}>
-                <Typography>{item.tag}</Typography>
+                <Typography>{item.tag.name}</Typography>
               </Grid>
               <Grid item xs={2}>
                 <Typography>{item.date.format("YYYY/MM/DD")}</Typography>
               </Grid>
               <Grid item xs={3}>
-                <Typography>{item.project}</Typography>
+                <Typography>{item.project.title}</Typography>
               </Grid>
               <Grid item xs={0.5}>
                 {hoveredIndex === index && (
