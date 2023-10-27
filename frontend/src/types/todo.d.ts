@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
+import { tagType, projectType } from "@/types/project";
 
 export interface todoType {
   id: string;
   name: string;
-  tag: string;
+  tag: tagType;
   date: dayjs.Dayjs;
-  project: string;
+  project: projectType;
   status: boolean;
 }
