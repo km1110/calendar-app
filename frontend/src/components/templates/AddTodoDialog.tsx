@@ -5,7 +5,9 @@ type Props = {
   todo: todoType;
   isOpen: boolean;
   onClose: () => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTextChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTagChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleProjectChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSumbit: () => void;
 };
 
@@ -13,7 +15,9 @@ export const AddTodoDialog = ({
   todo,
   isOpen,
   onClose,
-  handleChange,
+  handleTextChange,
+  handleTagChange,
+  handleProjectChange,
   handleSumbit,
 }: Props) => {
   return (
@@ -21,7 +25,9 @@ export const AddTodoDialog = ({
       todo={todo}
       isOpen={isOpen}
       onClose={onClose}
-      handleChange={handleChange}
+      handleChange={handleTextChange}
+      handleTagChange={handleTagChange}
+      handleProjectChange={handleProjectChange}
       handleSumbit={handleSumbit}
     />
   );
