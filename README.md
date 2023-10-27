@@ -1,6 +1,6 @@
-# calender-app
+# task-copilot
 
-カレンダーの Web アプリケーション
+タスク管理の Web アプリケーション
 
 ## Demo
 
