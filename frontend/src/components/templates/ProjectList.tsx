@@ -14,8 +14,6 @@ export const ProjectList = ({ projects, handleDelete }: Props) => {
   const [project, setProject] = useState<projectType>({
     id: "",
     title: "",
-    description: "",
-    num: 0,
   });
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -69,9 +67,9 @@ export const ProjectList = ({ projects, handleDelete }: Props) => {
                 プロジェクト名
               </Typography>
             </Grid>
-            <Grid item xs={2}>
+            {/* <Grid item xs={2}>
               <Typography sx={{ fontSize: "18px" }}>タスク数</Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
         {projects.map((item: projectType, index: number) => (
@@ -91,9 +89,9 @@ export const ProjectList = ({ projects, handleDelete }: Props) => {
             <Grid item xs={6}>
               <Typography sx={{ marginLeft: "10px" }}>{item.title}</Typography>
             </Grid>
-            <Grid item xs={2}>
+            {/* <Grid item xs={2}>
               <Typography>{item.num}</Typography>
-            </Grid>
+            </Grid> */}
             <Grid item xs={1}>
               {hoveredIndex === index && (
                 <IconButton>
