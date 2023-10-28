@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { initialTags } from "@/mock/tag";
 import { todoType } from "@/types/todo";
 import { initialProjects } from "@/mock/project";
+import dayjs from "dayjs";
 
 type Props = {
   todo: todoType;
@@ -78,7 +79,7 @@ export const TodoDialog = ({
         <Typography>日付</Typography>
         <TextField
           size="medium"
-          defaultValue={todo ? todo.date.format("YYYY-MM-DD") : ""}
+          defaultValue={todo ? dayjs(todo.date).format("YYYY-MM-DD") : ""}
           id="date"
           name="date"
           variant="outlined"
