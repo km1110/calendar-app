@@ -111,7 +111,7 @@ export const TodoListView = () => {
     setTodos(newTodos);
 
     await instance
-      .put(`/todos/${itemId}/status`, {
+      .patch(`/todos/${itemId}/status`, {
         status: newStatus,
       })
       .catch((error) => {
