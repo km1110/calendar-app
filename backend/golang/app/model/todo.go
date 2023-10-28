@@ -60,7 +60,7 @@ func (tm *TodoModel) GetTodos(firebase_uid string) ([]*response.TodosResponse, e
 			status                                                bool
 		)
 
-		if err := rows.Scan(&id, &project_id, &tag_id, &name, &date, &status); err != nil {
+		if err := rows.Scan(&id, &name, &date, &status, &project_id, &project_title, &tag_id, &tag_name); err != nil {
 			return nil, err
 		}
 
@@ -106,6 +106,54 @@ func (tm *TodoModel) AddTodos(ctx context.Context, user_id string, r request.Cre
 	insertQuery := `INSERT INTO todos(id, user_id, name, date, status, project_id, tag_id) VALUES(?, ?, ?, ?, ?, ?, ?)`
 
 	_, err := Db.Exec(insertQuery, res.Id, user_id, res.Name, res.Date, res.Status, res.Project.Id, res.Tag.Id)
+
+	if err != nil {
+		return response.TodosResponse{}, err
+	}
+
+	return res, nil
+}
+
+func (tm *TodoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) (response.TodosResponse, error) {
+	// responseを作成
+	res := response.TodosResponse{
+		Id:     r.Id,
+		Name:   r.Name,
+		Date:   r.Date,
+		Status: r.Status,
+		Project: response.ProjectResponse{
+			Id:    r.Project.Id,
+			Title: r.Project.Title,
+		},
+		Tag: response.TagResponse{
+			Id:   r.Tag.Id,
+			Name: r.Tag.Name,
+		},
+	}
+
+	// sqlの作成と実行
+	updateQuery := `UPDATE todos SET name = ?, date = ?, status = ?, project_id = ?, tag_id = ? WHERE id = ?`
+
+	_, err := Db.Exec(updateQuery, res.Name, res.Date, res.Status, res.Project.Id, res.Tag.Id, res.Id)
+
+	if err != nil {
+		return response.TodosResponse{}, err
+	}
+
+	return res, nil
+}
+
+func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, r request.UpdateTodoStatusRequest) (response.TodosResponse, error) {
+	// responseを作成
+	res := response.TodosResponse{
+		Id:     r.Id,
+		Status: r.Status,
+	}
+
+	// sqlの作成と実行
+	updateQuery := `UPDATE todos SET status = ? WHERE id = ?`
+
+	_, err := Db.Exec(updateQuery, res.Status, res.Id)
 
 	if err != nil {
 		return response.TodosResponse{}, err
