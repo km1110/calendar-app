@@ -161,3 +161,16 @@ func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, r request.UpdateTodoS
 
 	return res, nil
 }
+
+func (tm *TodoModel) DeleteTodo(ctx context.Context, id string) error {
+	// sqlの作成と実行
+	deleteQuery := `DELETE FROM todos WHERE id = ?`
+
+	_, err := Db.Exec(deleteQuery, id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

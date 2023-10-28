@@ -107,3 +107,17 @@ func UpdateTodoStatus(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res)
 }
+
+func DeleteTodo(c *gin.Context) {
+	id := c.Param("todo_id")
+
+	tm := model.NewTodoModel()
+	err := tm.DeleteTodo(c, id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
+}
