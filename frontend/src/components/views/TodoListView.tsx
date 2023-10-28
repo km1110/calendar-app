@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
-import { makeIntance } from "@/libs/api/axios";
+import { makeInstance } from "@/libs/api/axios";
 import { todoType } from "@/types/todo";
 
 import { TodoList } from "../templates/TodoList";
@@ -16,7 +16,7 @@ import { initialTags } from "@/mock/tag";
 import { tagType } from "@/types/tag";
 
 export const TodoListView = () => {
-  const [todos, setTodos] = useState<todoType[]>(initialTodos);
+  const [todos, setTodos] = useState<todoType[]>([]);
   const [projects, setProjects] = useState<projectType[]>(initialProjects);
   const [routines, setRoutines] = useState([]);
   const [tags, setTags] = useState<tagType[]>(initialTags);
@@ -36,21 +36,21 @@ export const TodoListView = () => {
     status: false,
   });
 
-  const instance = makeIntance();
+  const instance = makeInstance();
 
-  // useEffect(() => {
-  //   const getTodoLists = async () => {
-  //     instance
-  //       .get("/todos")
-  //       .then(({ data }) => {
-  //         setTodos(data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("An error occurred while fetching the todos:", error);
-  //       });
-  //   };
-  //   getTodoLists();
-  // }, []);
+  useEffect(() => {
+    const getTodoLists = async () => {
+      instance
+        .get("/todos")
+        .then(({ data }) => {
+          setTodos(data);
+        })
+        .catch((error) => {
+          console.error("An error occurred while fetching the todos:", error);
+        });
+    };
+    getTodoLists();
+  }, []);
 
   const handleCreate = async () => {
     const body = {

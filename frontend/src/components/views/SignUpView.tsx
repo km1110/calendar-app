@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { SignUp } from "@/components/templates/SignUp";
 import { app } from "@/libs/firebase";
-import { makeIntance } from "@/libs/api/axios";
+import { makeInstance } from "@/libs/api/axios";
 
 export const SignUpView = () => {
   const [signupData, setSignupData] = useState({
@@ -18,7 +18,7 @@ export const SignUpView = () => {
 
   const navigate = useNavigate();
 
-  const instance = makeIntance();
+  const instance = makeInstance();
 
   const signup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
