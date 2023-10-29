@@ -82,7 +82,9 @@ func init() {
 
 	tagSQL := `CREATE TABLE IF NOT EXISTS tags(
 		id varchar(26) not null PRIMARY KEY,
-		name text not null
+		user_id varchar(26),
+		name text not null,
+		foreign key (user_id) references users(id)
 	)`
 
 	_, err = Db.Exec(tagSQL)
