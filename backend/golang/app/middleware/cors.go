@@ -16,6 +16,7 @@ func Cors() gin.HandlerFunc {
 			"GET",
 			"POST",
 			"PUT",
+			"PATCH",
 			"DELETE",
 			"OPTIONS",
 		},
