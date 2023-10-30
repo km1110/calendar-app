@@ -18,7 +18,14 @@ func FetchTodo(c *gin.Context) {
 		return
 	}
 
-	todos, err := tm.GetTodos(firebaseUID.(string))
+	um := model.NewUserModel()
+	userID, err := um.GetUser(c.Request.Context(), firebaseUID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	todos, err := tm.GetTodos(userID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

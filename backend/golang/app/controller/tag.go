@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,15 +10,22 @@ import (
 func FetchTag(c *gin.Context) {
 	tm := model.NewTagModel()
 
-	userID, exists := c.Get("userID")
+	// firebaseUIDの取得
+	firebaseUID, exists := c.Get("firebaseUID")
 	if !exists {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "userID not provided"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "firebaseUID not provided"})
 		return
 	}
 
-	fmt.Println("userID: ", userID)
+	// userIDの取得
+	um := model.NewUserModel()
+	userID, err := um.GetUser(c.Request.Context(), firebaseUID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-	tags, err := tm.GetTags(userID.(string))
+	tags, err := tm.GetTags(userID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
