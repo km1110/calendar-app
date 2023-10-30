@@ -13,11 +13,10 @@ import { Edit, DeleteForever } from "@mui/icons-material";
 
 import dayjs from "dayjs";
 
-import { AddTodoDialog } from "@/components/templates/AddTodoDialog";
-import { ChangeTodoDialog } from "@/components/templates//ChangeTodoDialog";
 import { todoType } from "@/types/todo";
 import { tagType } from "@/types/tag";
 import { projectType } from "@/types/project";
+import { TodoDialog } from "@/components/parts/TodoDialog";
 
 type Props = {
   todos: todoType[];
@@ -42,13 +41,19 @@ export const TodoList = ({
   handleUpdateStatus,
   handleDelete,
 }: Props) => {
-  const [isOpenAdd, setIsOpenAdd] = useState(false);
-  const [isOpenChange, setIsOpenChange] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [typeDialog, setTypeDialog] = useState<"add" | "change">("add");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const handleAddClick = () => {
+    setTypeDialog("add");
+    setIsOpen(true);
+  };
 
   const handleChangeClick = (item: todoType) => {
     setTodo((prevTodo) => ({ ...prevTodo, ...item }));
-    setIsOpenChange(true);
+    setTypeDialog("change");
+    setIsOpen(true);
   };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,8 +99,7 @@ export const TodoList = ({
       project: { id: "", title: "" },
       status: false,
     });
-    setIsOpenAdd(false);
-    setIsOpenChange(false);
+    setIsOpen(false);
   };
 
   return (
@@ -112,7 +116,6 @@ export const TodoList = ({
         sx={{
           width: "80%",
           border: "1px solid",
-          // minHeight: "calc(40px * 10)",
         }}
       >
         <Box
@@ -123,25 +126,7 @@ export const TodoList = ({
           <Typography sx={{ flexGrow: 1, marginTop: "1%", marginLeft: "2%" }}>
             TODO
           </Typography>
-          <Button onClick={() => setIsOpenAdd(true)}>追加</Button>
-          <AddTodoDialog
-            todo={todo}
-            isOpen={isOpenAdd}
-            onClose={handleClosed}
-            handleTextChange={handleTextChange}
-            handleTagChange={handleTagChange}
-            handleProjectChange={handleProjectChange}
-            handleSumbit={handleCreate}
-          />
-          <ChangeTodoDialog
-            todo={todo}
-            isOpen={isOpenChange}
-            onClose={handleClosed}
-            handleTextChange={handleTextChange}
-            handleTagChange={handleTagChange}
-            handleProjectChange={handleProjectChange}
-            handleSumbit={handleUpdate}
-          />
+          <Button onClick={() => handleAddClick()}>追加</Button>
         </Box>
         <Box sx={{ borderBottom: "1px solid" }}>
           <Grid container>
@@ -171,53 +156,69 @@ export const TodoList = ({
             maxHeight: "calc(40px * 10)",
           }}
         >
-          {todos.map((item: todoType, index: number) => (
-            <Grid
-              container
-              key={index}
-              alignItems="center"
-              style={{ minHeight: "40px" }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <Grid item xs={1}>
-                <Typography sx={{ marginLeft: "10px" }}>
-                  <Checkbox
-                    checked={item.status}
-                    id="status"
-                    name="status"
-                    onChange={() => handleUpdateStatus(item.id)}
-                  />
-                </Typography>
+          {todos &&
+            todos.map((item: todoType, index: number) => (
+              <Grid
+                container
+                key={index}
+                alignItems="center"
+                style={{ minHeight: "40px" }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <Grid item xs={1}>
+                  <Typography sx={{ marginLeft: "10px" }}>
+                    <Checkbox
+                      checked={item.status}
+                      id="status"
+                      name="status"
+                      onChange={() => handleUpdateStatus(item.id)}
+                    />
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography>{item.name}</Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography>{item.tag.name}</Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <Typography>
+                    {dayjs(item.date).format("YYYY/MM/DD")}
+                  </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Typography>{item.project.title}</Typography>
+                </Grid>
+                <Grid item xs={0.5}>
+                  {hoveredIndex === index && (
+                    <IconButton onClick={() => handleChangeClick(item)}>
+                      <Edit />
+                    </IconButton>
+                  )}
+                </Grid>
+                <Grid item xs={0.5}>
+                  {hoveredIndex === index && (
+                    <IconButton onClick={() => handleDelete(item.id)}>
+                      <DeleteForever />
+                    </IconButton>
+                  )}
+                </Grid>
               </Grid>
-              <Grid item xs={3}>
-                <Typography>{item.name}</Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography>{item.tag.name}</Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography>{item.date.format("YYYY/MM/DD")}</Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography>{item.project.title}</Typography>
-              </Grid>
-              <Grid item xs={0.5}>
-                {hoveredIndex === index && (
-                  <IconButton onClick={() => handleChangeClick(item)}>
-                    <Edit />
-                  </IconButton>
-                )}
-              </Grid>
-              <Grid item xs={0.5}>
-                {hoveredIndex === index && (
-                  <IconButton onClick={() => handleDelete(item.id)}>
-                    <DeleteForever />
-                  </IconButton>
-                )}
-              </Grid>
-            </Grid>
-          ))}
+            ))}
+          <TodoDialog
+            todo={todo}
+            tags={tags}
+            projects={projects}
+            typeDialog={typeDialog}
+            isOpen={isOpen}
+            onClose={handleClosed}
+            handleTextChange={handleTextChange}
+            handleTagChange={handleTagChange}
+            handleProjectChange={handleProjectChange}
+            handleCreate={handleCreate}
+            handleUpdate={handleUpdate}
+          />
         </Box>
       </Card>
     </Box>
