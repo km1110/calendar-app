@@ -12,29 +12,38 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { initialTags } from "@/mock/tag";
-import { todoType } from "@/types/todo";
-import { initialProjects } from "@/mock/project";
 import dayjs from "dayjs";
+
+import { todoType } from "@/types/todo";
+import { tagType } from "@/types/tag";
+import { projectType } from "@/types/project";
 
 type Props = {
   todo: todoType;
+  tags: tagType[];
+  projects: projectType[];
+  typeDialog: "add" | "change";
   isOpen: boolean;
   onClose: () => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleTextChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleTagChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleProjectChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleSumbit: () => void;
+  handleCreate: () => void;
+  handleUpdate: () => void;
 };
 
 export const TodoDialog = ({
   todo,
+  tags,
+  projects,
+  typeDialog,
   isOpen,
   onClose,
-  handleChange,
+  handleTextChange,
   handleTagChange,
   handleProjectChange,
-  handleSumbit,
+  handleCreate,
+  handleUpdate,
 }: Props) => {
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="xs">
@@ -57,7 +66,7 @@ export const TodoDialog = ({
             background: "white",
             marginBottom: { xs: "20px" },
           }}
-          onChange={handleChange}
+          onChange={handleTextChange}
         />
         <Typography>カテゴリー</Typography>
         <TextField
@@ -70,7 +79,7 @@ export const TodoDialog = ({
           sx={{ width: { xs: "200px", sm: "360px" }, marginBottom: "20px" }}
           onChange={handleTagChange}
         >
-          {initialTags.map((item) => (
+          {tags.map((item) => (
             <MenuItem key={item.id} value={item.name}>
               {item.name}
             </MenuItem>
@@ -79,7 +88,7 @@ export const TodoDialog = ({
         <Typography>日付</Typography>
         <TextField
           size="medium"
-          defaultValue={todo ? dayjs(todo.date).format("YYYY-MM-DD") : ""}
+          value={todo ? dayjs(todo.date).format("YYYY-MM-DD") : ""}
           id="date"
           name="date"
           variant="outlined"
@@ -89,7 +98,7 @@ export const TodoDialog = ({
             background: "white",
             marginBottom: { xs: "20px" },
           }}
-          onChange={handleChange}
+          onChange={handleTextChange}
         />
         <Typography>プロジェクト</Typography>
         <TextField
@@ -102,7 +111,7 @@ export const TodoDialog = ({
           sx={{ width: { xs: "200px", sm: "360px" }, marginBottom: "20px" }}
           onChange={handleProjectChange}
         >
-          {initialProjects.map((item) => (
+          {projects.map((item) => (
             <MenuItem key={item.id} value={item.title}>
               {item.title}
             </MenuItem>
@@ -113,7 +122,8 @@ export const TodoDialog = ({
         <Box display="flex" flexDirection="column" alignItems="center">
           <Button
             onClick={() => {
-              handleSumbit();
+              if (typeDialog === "add") handleCreate();
+              else handleUpdate();
               onClose();
             }}
             size="small"
