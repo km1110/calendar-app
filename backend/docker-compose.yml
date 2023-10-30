@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   go:
-    container_name: calendar-server
+    container_name: task-copilot-server
     build:
       context: ./golang
       dockerfile: Dockerfile
@@ -19,7 +19,7 @@ services:
         target: /go/src
 
   db:
-    container_name: calendar-db
+    container_name: task-copilot-db
     build:
       context: ./mysql
       dockerfile: Dockerfile
