@@ -16,15 +16,15 @@ func NewTodoModel() *TodoModel {
 	return &TodoModel{}
 }
 
-func (tm *TodoModel) GetTodos(firebase_uid string) ([]*response.TodosResponse, error) {
-	sql := `select id from users where firebase_uid = ?`
+func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error) {
+	// sql := `select id from users where firebase_uid = ?`
 
-	var user_id string
-	if err := Db.QueryRow(sql, firebase_uid).Scan(&user_id); err != nil {
-		return nil, err
-	}
+	// var user_id string
+	// if err := Db.QueryRow(sql, firebase_uid).Scan(&user_id); err != nil {
+	// 	return nil, err
+	// }
 
-	sql = `
+	sql := `
 				SELECT 
 						t.id, 
 						t.name, 
