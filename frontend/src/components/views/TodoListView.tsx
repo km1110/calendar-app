@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
 
 import { makeInstance } from "@/libs/api/axios";
 import { todoType } from "@/types/todo";
 
-import { TodoList } from "../templates/TodoList";
+import { TodoList } from "@/components/templates/TodoList";
 import { Box } from "@mui/material";
 import { ProjectList } from "../templates/ProjectList";
 import { RoutineList } from "../templates/RoutineList";
 import { projectType } from "@/types/project";
-import { initialTodos } from "@/mock/todo";
-import { initialProjects } from "@/mock/project";
-import { initialTags } from "@/mock/tag";
 import { tagType } from "@/types/tag";
 
 export const TodoListView = () => {
   const [todos, setTodos] = useState<todoType[]>([]);
-  const [projects, setProjects] = useState<projectType[]>(initialProjects);
+  const [projects, setProjects] = useState<projectType[]>([]);
   const [routines, setRoutines] = useState([]);
-  const [tags, setTags] = useState<tagType[]>(initialTags);
+  const [tags, setTags] = useState<tagType[]>([]);
 
   const [todo, setTodo] = useState<todoType>({
     id: "",
@@ -38,25 +35,31 @@ export const TodoListView = () => {
 
   const instance = makeInstance();
 
+  // todo, tag, projectのデータを取得
   useEffect(() => {
-    const getTodoLists = async () => {
-      instance
-        .get("/todos")
-        .then(({ data }) => {
-          setTodos(data);
-        })
-        .catch((error) => {
-          console.error("An error occurred while fetching the todos:", error);
-        });
+    const fetchData = async () => {
+      try {
+        const [todos, projects, tags] = await Promise.all([
+          instance.get("/todos"),
+          instance.get("/projects"),
+          instance.get("/tags"),
+        ]);
+        setTodos(todos.data);
+        setProjects(projects.data);
+        setTags(tags.data);
+      } catch (error) {
+        console.error("An error occurred while fetching the todo:", error);
+      }
     };
-    getTodoLists();
+    fetchData();
   }, []);
 
+  // todoの作成
   const handleCreate = async () => {
     const body = {
       name: todo.name,
       tag: todo.tag,
-      date: todo.date.toISOString(),
+      date: dayjs(todo.date),
       project: todo.project,
       status: todo.status,
     };
@@ -75,11 +78,12 @@ export const TodoListView = () => {
     });
   };
 
+  // todoの更新
   const handleUpdate = async () => {
     const body = {
       name: todo.name,
       tag: todo.tag,
-      date: todo.date.toISOString(),
+      date: dayjs(todo.date),
       project: todo.project,
       status: todo.status,
     };
@@ -98,6 +102,7 @@ export const TodoListView = () => {
     });
   };
 
+  // todoのステータス更新
   const handleUpdateStatus = async (itemId: string) => {
     let newStatus;
     const newTodos = todos.map((item) => {
@@ -119,6 +124,7 @@ export const TodoListView = () => {
       });
   };
 
+  // todoの削除
   const handleDelete = async (id: string) => {
     await instance
       .delete(`/todos/${id}`)
