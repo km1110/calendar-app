@@ -12,7 +12,7 @@ docker compose up -d
 ```
 docker compose exec db bash
 mysql -u root -p
-password: root_password
+password: password
 ```
 
 ### MySQL

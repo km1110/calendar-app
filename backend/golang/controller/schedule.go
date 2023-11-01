@@ -10,7 +10,7 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/model/entities"
 )
 
-func FeatchSchedule(c *gin.Context) {
+func FetchSchedule(c *gin.Context) {
 	sm := model.NewScheduleModel()
 
 	schedules, err := sm.GetSchedules(c)

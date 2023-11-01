@@ -9,12 +9,13 @@ title: "タイトル"
 erDiagram
     users ||--o{ schedules : ""
     users ||--o{ projects : ""
-    users ||--o{ tasks : ""
+    users ||--o{ todos : ""
     users ||--o{ diarys : ""
+    users ||--o{ tags : ""
 
-    projects ||--o{ tasks : ""
+    projects ||--o{ todos : ""
 
-    tasks ||--o{ tags : ""
+    todos ||--o{ tags : ""
 
     users {
       varchar id PK "ID"
@@ -45,7 +46,7 @@ erDiagram
       timestamp updated_at "更新日時"
     }
 
-    tasks {
+    todos {
       varchar id PK "ID"
       varchar user_id FK "ユーザーID"
       varchar project_id FK "プロジェクトID"
@@ -59,6 +60,7 @@ erDiagram
 
     tags {
       varchar id PK "ID"
+      varchar id FK "ユーザID"
       varchar name "タグ名"
     }
 

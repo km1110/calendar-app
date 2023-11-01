@@ -15,6 +15,9 @@ func Router() *gin.Engine {
 	{
 		initAuthRouter(firebaseRequiredGroup)
 		initScheduleRouter(firebaseRequiredGroup)
+		initTodoRouter(firebaseRequiredGroup)
+		initProjectRouter(firebaseRequiredGroup)
+		initTagRouter(firebaseRequiredGroup)
 	}
 
 	return router

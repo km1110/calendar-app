@@ -16,6 +16,7 @@ type Props = {
   setPrevioustMonth: () => void;
   setNextMonth: () => void;
   handleSignOut: () => void;
+  onClickMenu?: () => void;
 };
 
 export const Header = ({
@@ -23,6 +24,7 @@ export const Header = ({
   setPrevioustMonth,
   setNextMonth,
   handleSignOut,
+  onClickMenu,
 }: Props) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -34,6 +36,7 @@ export const Header = ({
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={onClickMenu}
           >
             <MenuIcon />
           </IconButton>

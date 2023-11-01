@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"log"
+	"strings"
 
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,8 @@ func FirebaseAuth() gin.HandlerFunc {
 			log.Fatalf("error getting Auth client: %v\n", err)
 		}
 
-		idToken := c.Request.Header.Get("Authorization")
+		authHeader := c.Request.Header.Get("Authorization")
+		idToken := strings.TrimSpace(strings.TrimPrefix(authHeader, "Bearer"))
 
 		token, err := client.VerifyIDToken(ctx, idToken)
 		if err != nil {
