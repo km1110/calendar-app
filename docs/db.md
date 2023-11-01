@@ -11,6 +11,7 @@ erDiagram
     users ||--o{ projects : ""
     users ||--o{ todos : ""
     users ||--o{ diarys : ""
+    users ||--o{ tags : ""
 
     projects ||--o{ todos : ""
 
@@ -59,6 +60,7 @@ erDiagram
 
     tags {
       varchar id PK "ID"
+      varchar id FK "ユーザID"
       varchar name "タグ名"
     }
 
