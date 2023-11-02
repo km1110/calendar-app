@@ -8,7 +8,8 @@ import (
 func Router() *gin.Engine {
 	router := gin.Default()
 	router.Use(middleware.Cors())
-	// router.Use(middleware.FirebaseAuth())
+
+	initHealthRouter(router)
 
 	firebaseRequiredGroup := router.Group("/")
 	firebaseRequiredGroup.Use(middleware.FirebaseAuth())
