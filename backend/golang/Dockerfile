@@ -4,7 +4,7 @@
 # WORKDIR /go/src
 
 # 本番環境用
-FROM golang:1.20.4-alpine3.18
+FROM --platform=linux/amd64 golang:1.20.4-alpine3.18
 
 WORKDIR /app
 
