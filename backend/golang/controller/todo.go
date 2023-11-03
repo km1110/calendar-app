@@ -84,7 +84,7 @@ func UpdateTodo(c *gin.Context) {
 		Name:    req.Name,
 		Date:    req.Date,
 		Status:  req.Status,
-		Project: response.ProjectResponse(req.Project),
+		Project: response.ProjectsResponse(req.Project),
 		Tag:     response.TagResponse(req.Tag),
 	})
 
