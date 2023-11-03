@@ -68,7 +68,7 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 			Id:   id,
 			Name: name,
 			Date: date,
-			Project: response.ProjectResponse{
+			Project: response.ProjectsResponse{
 				Id:    project_id,
 				Title: project_title,
 			},
@@ -92,7 +92,7 @@ func (tm *TodoModel) AddTodos(ctx context.Context, user_id string, r request.Cre
 		Name:   r.Name,
 		Date:   r.Date,
 		Status: r.Status,
-		Project: response.ProjectResponse{
+		Project: response.ProjectsResponse{
 			Id:    r.Project.Id,
 			Title: r.Project.Title,
 		},
@@ -121,7 +121,7 @@ func (tm *TodoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) 
 		Name:   r.Name,
 		Date:   r.Date,
 		Status: r.Status,
-		Project: response.ProjectResponse{
+		Project: response.ProjectsResponse{
 			Id:    r.Project.Id,
 			Title: r.Project.Title,
 		},
