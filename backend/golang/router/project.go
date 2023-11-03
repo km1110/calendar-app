@@ -8,4 +8,7 @@ import (
 func initProjectRouter(router *gin.RouterGroup) {
 	p := router.Group("/projects")
 	p.GET("", controller.FetchProject)
+	p.POST("", controller.CreateProject)
+	p.PATCH("/:id", controller.UpdateProject)
+	p.DELETE("/:id", controller.DeleteProject)
 }
