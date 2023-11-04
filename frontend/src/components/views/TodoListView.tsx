@@ -11,12 +11,13 @@ import { Box } from "@mui/material";
 import { projectsType } from "@/types/project";
 import { tagType } from "@/types/tag";
 import { projectState } from "@/atoms/projectState";
+import { tagState } from "@/atoms/tagState";
 
 export const TodoListView = () => {
   const [todos, setTodos] = useState<todoType[]>([]);
   const [projects, setProjects] = useRecoilState<projectsType[]>(projectState);
   const [routines, setRoutines] = useState([]);
-  const [tags, setTags] = useState<tagType[]>([]);
+  const [tags, setTags] = useRecoilState<tagType[]>(tagState);
 
   const [todo, setTodo] = useState<todoType>({
     id: "",

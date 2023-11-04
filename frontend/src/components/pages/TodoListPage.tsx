@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { HeaderView } from "@/components/views/HeaderView";
 import { TodoListView } from "@/components/views/TodoListView";
 import { ProjectListView } from "@/components/views/ProjectListView";
+import { TagListView } from "../views/TagListView";
 
 export const TodoListPage = () => {
   return (
@@ -23,10 +24,11 @@ export const TodoListPage = () => {
             flexDirection="row"
             // alignItems="center"
             justifyContent="center"
-            // gap="20px"
+            gap="20px"
             width="100%"
           >
             <ProjectListView />
+            <TagListView />
           </Box>
         </Box>
       </Box>
