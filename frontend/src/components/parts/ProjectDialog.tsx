@@ -11,14 +11,27 @@ import {
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
+import { projectsType } from "@/types/project";
 
 type Props = {
+  project: projectsType;
+  typeDialog: "add" | "change";
   isOpen: boolean;
   onClose: () => void;
+  handleCreate: () => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleUpdate: () => void;
 };
 
-export const AddProjectDialog = ({ isOpen, onClose, handleChange }: Props) => {
+export const ProjectDialog = ({
+  project,
+  typeDialog,
+  isOpen,
+  onClose,
+  handleCreate,
+  handleChange,
+  handleUpdate,
+}: Props) => {
   return (
     <Dialog open={isOpen} onClose={onClose} maxWidth="xs">
       <DialogActions>
@@ -30,7 +43,7 @@ export const AddProjectDialog = ({ isOpen, onClose, handleChange }: Props) => {
         <Typography>プロジェクト名</Typography>
         <TextField
           size="medium"
-          defaultValue=""
+          defaultValue={project ? project.title : ""}
           id="title"
           name="title"
           variant="outlined"
@@ -42,7 +55,7 @@ export const AddProjectDialog = ({ isOpen, onClose, handleChange }: Props) => {
           }}
           onChange={handleChange}
         />
-        <Typography>概要</Typography>
+        {/* <Typography>概要</Typography>
         <TextField
           size="medium"
           defaultValue=""
@@ -56,13 +69,17 @@ export const AddProjectDialog = ({ isOpen, onClose, handleChange }: Props) => {
             marginBottom: { xs: "20px" },
           }}
           onChange={handleChange}
-        />
+        /> */}
       </DialogContent>
       <DialogActions>
         <Box display="flex" flexDirection="column" alignItems="center">
           <Button
             onClick={() => {
-              // onSubmit();
+              if (typeDialog === "add") {
+                handleCreate();
+              } else {
+                handleUpdate();
+              }
               onClose();
             }}
             size="small"
@@ -77,7 +94,7 @@ export const AddProjectDialog = ({ isOpen, onClose, handleChange }: Props) => {
               fontSize: "20px",
             }}
           >
-            追加
+            {typeDialog === "add" ? "追加" : "更新"}
           </Button>
         </Box>
       </DialogActions>

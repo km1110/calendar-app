@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 
 import dayjs from "dayjs";
+import { useRecoilState } from "recoil";
 
 import { makeInstance } from "@/libs/api/axios";
 import { todoType } from "@/types/todo";
 
 import { TodoList } from "@/components/templates/TodoList";
 import { Box } from "@mui/material";
-import { ProjectList } from "../templates/ProjectList";
-import { RoutineList } from "../templates/RoutineList";
-import { projectType } from "@/types/project";
+import { projectsType } from "@/types/project";
 import { tagType } from "@/types/tag";
+import { projectState } from "@/atoms/projectState";
 
 export const TodoListView = () => {
   const [todos, setTodos] = useState<todoType[]>([]);
-  const [projects, setProjects] = useState<projectType[]>([]);
+  const [projects, setProjects] = useRecoilState<projectsType[]>(projectState);
   const [routines, setRoutines] = useState([]);
   const [tags, setTags] = useState<tagType[]>([]);
 
@@ -148,30 +148,18 @@ export const TodoListView = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" width="100%">
-      <Box width="100%" height="50%">
-        <TodoList
-          todos={todos}
-          todo={todo}
-          setTodo={setTodo}
-          tags={tags}
-          projects={projects}
-          handleCreate={handleCreate}
-          handleUpdate={handleUpdate}
-          handleUpdateStatus={handleUpdateStatus}
-          handleDelete={handleDelete}
-        />
-      </Box>
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        gap="20px"
-        width="100%"
-      >
-        {/* <ProjectList projects={projects} handleDelete={handleDelete} />
-        <RoutineList routines={routines} /> */}
-      </Box>
+    <Box>
+      <TodoList
+        todos={todos}
+        todo={todo}
+        setTodo={setTodo}
+        tags={tags}
+        projects={projects}
+        handleCreate={handleCreate}
+        handleUpdate={handleUpdate}
+        handleUpdateStatus={handleUpdateStatus}
+        handleDelete={handleDelete}
+      />
     </Box>
   );
 };
