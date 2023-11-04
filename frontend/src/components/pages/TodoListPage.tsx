@@ -18,14 +18,14 @@ export const TodoListPage = () => {
         <Box width="100%" height="50%">
           <TodoListView />
         </Box>
-        <Box width="100%" height="50%">
+        <Box width="100%" height="50%" display="flex" justifyContent="center">
           <Box
             display="flex"
             flexDirection="row"
-            // alignItems="center"
             justifyContent="center"
             gap="20px"
-            width="100%"
+            width="60%"
+            marginTop="20px"
           >
             <ProjectListView />
             <TagListView />
