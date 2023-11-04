@@ -56,68 +56,55 @@ export const TagList = ({
   };
 
   return (
-    <Box
-      marginTop="20px"
-      marginLeft="10%"
-      width="40%"
-      display="flex"
-      flexDirection="column"
-      // alignItems="center"
-    >
-      <Card variant="outlined" sx={{ width: "100%", border: "1px solid" }}>
-        <Box
-          display="flex"
-          flexDirection="row"
-          sx={{ borderBottom: "1px solid" }}
-        >
-          <Typography
-            variant="h5"
-            sx={{ flexGrow: 1, marginTop: "1%", marginLeft: "2%" }}
-          >
-            タグ
-          </Typography>
-          <Button onClick={() => handleAddClick()}>追加</Button>
-        </Box>
-        <Box
-          sx={{
-            overflowY: "auto",
-            height: "120px",
-          }}
-        >
-          {tags &&
-            tags.map((item: tagType, index: number) => (
-              <Grid
-                container
-                key={index}
-                style={{ minHeight: "40px" }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                <Grid item xs={11}>
-                  <Typography sx={{ marginLeft: "10px" }}>
-                    {item.name}
-                  </Typography>
-                </Grid>
-                <Grid item xs={1}>
-                  {hoveredIndex === index && (
-                    <IconButton onClick={() => handleChangeClick(item)}>
-                      <Edit />
-                    </IconButton>
-                  )}
-                </Grid>
+    <Card variant="outlined" sx={{ width: "100%", border: "1px solid" }}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        sx={{ borderBottom: "1px solid" }}
+      >
+        <Typography sx={{ flexGrow: 1, marginTop: "5px", marginLeft: "10px" }}>
+          タグ
+        </Typography>
+        <Button onClick={() => handleAddClick()}>追加</Button>
+      </Box>
+      <Box
+        sx={{
+          overflowY: "auto",
+          height: "120px",
+        }}
+      >
+        {tags &&
+          tags.map((item: tagType, index: number) => (
+            <Grid
+              container
+              key={index}
+              alignContent="center"
+              style={{ minHeight: "40px" }}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <Grid item xs={11}>
+                <Typography sx={{ marginLeft: "10px" }}>{item.name}</Typography>
               </Grid>
-            ))}
-          <TagDialog
-            tag={tag}
-            typeDialog={typeDialog}
-            isOpen={isOpen}
-            onClose={handleClosed}
-            handleCreate={handleCreate}
-            handleChange={handleChange}
-            handleUpdate={handleUpdate}
-          />
-        </Box>
-      </Card>
-    </Box>
+              <Grid item xs={1}>
+                {hoveredIndex === index && (
+                  <IconButton onClick={() => handleChangeClick(item)}>
+                    <Edit />
+                  </IconButton>
+                )}
+              </Grid>
+            </Grid>
+          ))}
+        <TagDialog
+          tag={tag}
+          typeDialog={typeDialog}
+          isOpen={isOpen}
+          onClose={handleClosed}
+          handleCreate={handleCreate}
+          handleChange={handleChange}
+          handleUpdate={handleUpdate}
+        />
+      </Box>
+    </Card>
   );
 };
