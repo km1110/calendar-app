@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 
 type Props = {
   date: dayjs.Dayjs;
+  page: string;
   setPrevioustMonth: () => void;
   setNextMonth: () => void;
   handleSignOut: () => void;
@@ -21,6 +22,7 @@ type Props = {
 
 export const Header = ({
   date,
+  page,
   setPrevioustMonth,
   setNextMonth,
   handleSignOut,
@@ -40,18 +42,30 @@ export const Header = ({
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div">
-            Calender
-          </Typography>
-          <IconButton size="small" color="inherit" onClick={setPrevioustMonth}>
-            <ArrowBackIosNewIcon />
-          </IconButton>
-          <IconButton size="small" color="inherit" onClick={setNextMonth}>
-            <ArrowForwardIosIcon />
-          </IconButton>
-          <Typography variant="h6" component="div">
-            {date.format("YYYY年 MM月")}
-          </Typography>
+          {page === "calendar" ? (
+            <>
+              <Typography variant="h6" component="div">
+                Calender
+              </Typography>
+              <IconButton
+                size="small"
+                color="inherit"
+                onClick={setPrevioustMonth}
+              >
+                <ArrowBackIosNewIcon />
+              </IconButton>
+              <IconButton size="small" color="inherit" onClick={setNextMonth}>
+                <ArrowForwardIosIcon />
+              </IconButton>
+              <Typography variant="h6" component="div">
+                {date.format("YYYY年 MM月")}
+              </Typography>
+            </>
+          ) : (
+            <Typography variant="h6" component="div">
+              {page}
+            </Typography>
+          )}
           <Box sx={{ flexGrow: 1 }} />
           <Button color="inherit" onClick={handleSignOut}>
             logout

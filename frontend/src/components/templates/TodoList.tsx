@@ -114,7 +114,7 @@ export const TodoList = ({
       <Card
         variant="outlined"
         sx={{
-          width: "80%",
+          width: "60%",
           border: "1px solid",
         }}
       >
@@ -123,7 +123,9 @@ export const TodoList = ({
           flexDirection="row"
           sx={{ borderBottom: "1px solid" }}
         >
-          <Typography sx={{ flexGrow: 1, marginTop: "1%", marginLeft: "2%" }}>
+          <Typography
+            sx={{ flexGrow: 1, marginTop: "5px", marginLeft: "10px" }}
+          >
             TODO
           </Typography>
           <Button onClick={() => handleAddClick()}>追加</Button>

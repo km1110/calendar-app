@@ -9,13 +9,17 @@ import {
 } from "@mui/material";
 
 import { Home, CalendarMonth, PlaylistAddCheck } from "@mui/icons-material";
+import { SetterOrUpdater } from "recoil";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
+  setPage: SetterOrUpdater<string>;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const DrawerWrapper = ({ isOpen, onClose }: Props) => {
+export const DrawerWrapper = ({ setPage, isOpen, onClose }: Props) => {
+  const navigate = useNavigate();
   return (
     <Drawer anchor="left" open={isOpen} onClose={onClose}>
       <Box
@@ -29,7 +33,12 @@ export const DrawerWrapper = ({ isOpen, onClose }: Props) => {
       >
         <List sx={{ width: "300px" }}>
           <ListItem disablePadding>
-            <ListItemButton href="/">
+            <ListItemButton
+              onClick={() => {
+                setPage("main");
+                navigate("/");
+              }}
+            >
               <ListItemIcon>
                 <Home />
               </ListItemIcon>
@@ -37,7 +46,13 @@ export const DrawerWrapper = ({ isOpen, onClose }: Props) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton href="/todolist">
+            <ListItemButton
+              onClick={() => {
+                setPage("todolist");
+                navigate("/todolist");
+                onClose();
+              }}
+            >
               <ListItemIcon>
                 <PlaylistAddCheck />
               </ListItemIcon>
@@ -45,7 +60,13 @@ export const DrawerWrapper = ({ isOpen, onClose }: Props) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton href="/calendar">
+            <ListItemButton
+              onClick={() => {
+                setPage("calendar");
+                navigate("/calendar");
+                onClose();
+              }}
+            >
               <ListItemIcon>
                 <CalendarMonth />
               </ListItemIcon>
