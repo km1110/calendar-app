@@ -7,7 +7,7 @@ type CreateTodoRequest struct {
 	Date    time.Time      `json:"date"`
 	Status  bool           `json:"status"`
 	Project ProjectRequest `json:"project"`
-	Tag     TagRequest     `json:"tag"`
+	Tag     TagsRequest    `json:"tag"`
 }
 
 type UpdateTodoRequest struct {
@@ -15,7 +15,7 @@ type UpdateTodoRequest struct {
 	Date    time.Time      `json:"date"`
 	Status  bool           `json:"status"`
 	Project ProjectRequest `json:"project"`
-	Tag     TagRequest     `json:"tag"`
+	Tag     TagsRequest    `json:"tag"`
 }
 
 type UpdateTodoStatusRequest struct {
