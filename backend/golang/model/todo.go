@@ -17,13 +17,6 @@ func NewTodoModel() *TodoModel {
 }
 
 func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error) {
-	// sql := `select id from users where firebase_uid = ?`
-
-	// var user_id string
-	// if err := Db.QueryRow(sql, firebase_uid).Scan(&user_id); err != nil {
-	// 	return nil, err
-	// }
-
 	sql := `
 				SELECT 
 						t.id, 
@@ -65,9 +58,10 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 		}
 
 		todos = append(todos, &response.TodosResponse{
-			Id:   id,
-			Name: name,
-			Date: date,
+			Id:     id,
+			Name:   name,
+			Date:   date,
+			Status: status,
 			Project: response.ProjectsResponse{
 				Id:    project_id,
 				Title: project_title,
@@ -143,10 +137,10 @@ func (tm *TodoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) 
 	return res, nil
 }
 
-func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, r request.UpdateTodoStatusRequest) (response.TodosResponse, error) {
+func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, id string, r request.UpdateTodoStatusRequest) (response.TodosResponse, error) {
 	// responseを作成
 	res := response.TodosResponse{
-		Id:     r.Id,
+		Id:     id,
 		Status: r.Status,
 	}
 
