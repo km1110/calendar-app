@@ -29,7 +29,7 @@ export const SignInView = () => {
       );
       await instance.get("/signin");
       // TODO signupDataを空にする
-      navigate("/todolist");
+      navigate("/main");
     } catch (error) {
       console.log(error);
       alert("ログインに失敗しました");
