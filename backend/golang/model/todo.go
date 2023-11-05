@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/km1110/calendar-app/backend/golang/utils"
@@ -74,6 +75,49 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 	}
 
 	return todos, nil
+}
+
+func (tm *TodoModel) GetYearCount(user_id string, start_year string, end_year string) ([]*response.TodoCountResponse, error) {
+	getQuery := `	SELECT 
+										DATE(date) AS date, COUNT(*) AS count 
+								FROM 
+										todos 
+								WHERE 
+										user_id = ? AND status = true AND date >= ? AND date < ? 
+								GROUP BY 
+										DATE(date) 
+								ORDER BY 
+										DATE(date)
+							`
+
+	rows, err := Db.Query(getQuery, user_id, start_year, end_year)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var res []*response.TodoCountResponse
+
+	for rows.Next() {
+		var (
+			date  time.Time
+			count int
+		)
+
+		if err := rows.Scan(&date, &count); err != nil {
+			return nil, err
+		}
+
+		res = append(res, &response.TodoCountResponse{
+			Date:  date,
+			Count: count,
+		})
+	}
+
+	fmt.Println(res)
+
+	return res, nil
 }
 
 func (tm *TodoModel) AddTodos(ctx context.Context, user_id string, r request.CreateTodoRequest) (response.TodosResponse, error) {

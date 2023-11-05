@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,6 +34,38 @@ func FetchTodo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, todos)
+}
+
+func FetchTodoCount(c *gin.Context) {
+	tm := model.NewTodoModel()
+
+	firebaseUID, exists := c.Get("firebaseUID")
+	if !exists {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "firebaseUID not provided"})
+		return
+	}
+
+	um := model.NewUserModel()
+	userID, err := um.GetUser(c.Request.Context(), firebaseUID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	start := c.Query("start")
+	end := c.Query("end")
+
+	startYear := fmt.Sprintf("%s-01-01", start)
+	endYear := fmt.Sprintf("%s-01-01", end)
+
+	res, err := tm.GetYearCount(userID, startYear, endYear)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
 func CreateTodo(c *gin.Context) {
