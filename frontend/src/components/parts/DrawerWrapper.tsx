@@ -36,7 +36,7 @@ export const DrawerWrapper = ({ setPage, isOpen, onClose }: Props) => {
             <ListItemButton
               onClick={() => {
                 setPage("main");
-                navigate("/");
+                navigate("/main");
               }}
             >
               <ListItemIcon>
