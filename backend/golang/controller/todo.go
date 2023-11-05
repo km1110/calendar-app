@@ -104,8 +104,10 @@ func UpdateTodoStatus(c *gin.Context) {
 		return
 	}
 
+	id := c.Param("todo_id")
+
 	tm := model.NewTodoModel()
-	res, err := tm.UpdateTodoStatus(c, req)
+	res, err := tm.UpdateTodoStatus(c, id, req)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
