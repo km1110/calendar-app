@@ -2,9 +2,9 @@ package model
 
 import (
 	"context"
-	"fmt"
 	"time"
 
+	"github.com/km1110/calendar-app/backend/golang/model/entities"
 	"github.com/km1110/calendar-app/backend/golang/utils"
 	"github.com/km1110/calendar-app/backend/golang/view/request"
 	"github.com/km1110/calendar-app/backend/golang/view/response"
@@ -77,7 +77,7 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 	return todos, nil
 }
 
-func (tm *TodoModel) GetYearCount(user_id string, start_year string, end_year string) ([]*response.TodoCountResponse, error) {
+func (tm *TodoModel) GetDateCount(user_id string, start_year string, end_year string) ([]*entities.TodoDateCount, error) {
 	getQuery := `	SELECT 
 										DATE(date) AS date, COUNT(*) AS count 
 								FROM 
@@ -97,7 +97,7 @@ func (tm *TodoModel) GetYearCount(user_id string, start_year string, end_year st
 
 	defer rows.Close()
 
-	var res []*response.TodoCountResponse
+	var res []*entities.TodoDateCount
 
 	for rows.Next() {
 		var (
@@ -109,13 +109,11 @@ func (tm *TodoModel) GetYearCount(user_id string, start_year string, end_year st
 			return nil, err
 		}
 
-		res = append(res, &response.TodoCountResponse{
+		res = append(res, &entities.TodoDateCount{
 			Date:  date,
 			Count: count,
 		})
 	}
-
-	fmt.Println(res)
 
 	return res, nil
 }
