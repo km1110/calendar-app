@@ -11,7 +11,7 @@ type TodosResponse struct {
 	Tag     TagResponse      `json:"tag"`
 }
 
-type TodoCountResponse struct {
+type TodoDateRatio struct {
 	Date  time.Time `json:"date"`
-	Count int       `json:"count"`
+	Ratio int       `json:"ratio"`
 }
