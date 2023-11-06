@@ -58,14 +58,21 @@ func FetchTodoCount(c *gin.Context) {
 	startYear := fmt.Sprintf("%s-01-01", start)
 	endYear := fmt.Sprintf("%s-01-01", end)
 
-	res, err := tm.GetYearCount(userID, startYear, endYear)
+	res, err := tm.GetDateCount(userID, startYear, endYear)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, res)
+	fmt.Println("start")
+
+	rm := model.NewRatioModel()
+	resRatio, _ := rm.GetRatio(res, startYear, endYear)
+
+	fmt.Println("end")
+
+	c.JSON(http.StatusOK, resRatio)
 }
 
 func CreateTodo(c *gin.Context) {
