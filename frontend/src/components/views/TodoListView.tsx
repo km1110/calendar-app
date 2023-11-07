@@ -39,14 +39,8 @@ export const TodoListView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [todos, projects, tags] = await Promise.all([
-          instance.get("/todos"),
-          instance.get("/projects"),
-          instance.get("/tags"),
-        ]);
+        const todos = await instance.get("/todos");
         setTodos(todos.data);
-        setProjects(projects.data);
-        setTags(tags.data);
       } catch (error) {
         console.error("An error occurred while fetching the todo:", error);
       }
