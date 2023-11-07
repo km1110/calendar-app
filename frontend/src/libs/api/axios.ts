@@ -5,7 +5,7 @@ import { redirect } from "react-router-dom";
 
 export const makeInstance = () => {
   const instance = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: process.env.REACT_APP_BASE_URL,
     timeout: 20000,
   });
 
