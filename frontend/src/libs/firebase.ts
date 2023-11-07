@@ -6,13 +6,13 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDA7e427wEmrq-g7afcTj_EBQ4MqoXqzGM",
-  authDomain: "calendar-app-7087e.firebaseapp.com",
-  projectId: "calendar-app-7087e",
-  storageBucket: "calendar-app-7087e.appspot.com",
-  messagingSenderId: "719382295349",
-  appId: "1:719382295349:web:1aaae8fbebea0c064bd27c",
-  measurementId: "G-JX21MCT6FR",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
