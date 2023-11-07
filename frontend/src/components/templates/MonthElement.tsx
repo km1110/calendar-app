@@ -1,12 +1,9 @@
 import { Typography } from "@mui/material";
 
-// import dayjs from "dayjs";
-
 import { Schedule } from "@/components/templates/Schedule";
-// import { isSameDay } from "@/libs/service/calender";
+
 import { useContext } from "react";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { scheduleType } from "@/types/schedule";
 
 type Props = {
   day: any;
@@ -15,9 +12,6 @@ type Props = {
 
 export const MonthElement = ({ day, schedule }: Props) => {
   const { setShowDialog, setSchedule } = useContext(MonthContext);
-
-  // const today = dayjs();
-  // const isToday = isSameDay(day, today);
 
   return (
     <div>

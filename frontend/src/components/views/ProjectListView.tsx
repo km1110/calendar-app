@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ProjectList } from "../templates/ProjectList";
 import { projectsType } from "@/types/project";
 import { Box } from "@mui/material";
 import { makeInstance } from "@/libs/api/axios";
-import { set } from "date-fns";
 import { useRecoilState } from "recoil";
 import { projectState } from "@/atoms/projectState";
 

@@ -16,7 +16,6 @@ import { tagState } from "@/atoms/tagState";
 export const TodoListView = () => {
   const [todos, setTodos] = useState<todoType[]>([]);
   const [projects, setProjects] = useRecoilState<projectsType[]>(projectState);
-  const [routines, setRoutines] = useState([]);
   const [tags, setTags] = useRecoilState<tagType[]>(tagState);
 
   const [todo, setTodo] = useState<todoType>({
@@ -40,14 +39,8 @@ export const TodoListView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [todos, projects, tags] = await Promise.all([
-          instance.get("/todos"),
-          instance.get("/projects"),
-          instance.get("/tags"),
-        ]);
+        const todos = await instance.get("/todos");
         setTodos(todos.data);
-        setProjects(projects.data);
-        setTags(tags.data);
       } catch (error) {
         console.error("An error occurred while fetching the todo:", error);
       }

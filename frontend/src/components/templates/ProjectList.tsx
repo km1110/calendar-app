@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Button, Card, Grid, IconButton, Typography } from "@mui/material";
-import { DeleteForever, Edit } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 
 import { projectType, projectsType } from "@/types/project";
 import { ProjectDialog } from "../parts/ProjectDialog";
@@ -103,13 +103,6 @@ export const ProjectList = ({
                   </IconButton>
                 )}
               </Grid>
-              {/* <Grid item xs={0.5}>
-              {hoveredIndex === index && (
-                <IconButton onClick={() => handleDelete()}>
-                  <DeleteForever />
-                </IconButton>
-              )}
-            </Grid> */}
             </Grid>
           ))}
         <ProjectDialog
