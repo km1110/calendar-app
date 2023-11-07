@@ -79,11 +79,12 @@ export const TodoDialog = ({
           sx={{ width: { xs: "200px", sm: "360px" }, marginBottom: "20px" }}
           onChange={handleTagChange}
         >
-          {tags.map((item) => (
-            <MenuItem key={item.id} value={item.name}>
-              {item.name}
-            </MenuItem>
-          ))}
+          {tags &&
+            tags.map((item) => (
+              <MenuItem key={item.id} value={item.name}>
+                {item.name}
+              </MenuItem>
+            ))}
         </TextField>
         <Typography>日付</Typography>
         <TextField
@@ -111,11 +112,12 @@ export const TodoDialog = ({
           sx={{ width: { xs: "200px", sm: "360px" }, marginBottom: "20px" }}
           onChange={handleProjectChange}
         >
-          {projects.map((item) => (
-            <MenuItem key={item.id} value={item.title}>
-              {item.title}
-            </MenuItem>
-          ))}
+          {projects &&
+            projects.map((item) => (
+              <MenuItem key={item.id} value={item.title}>
+                {item.title}
+              </MenuItem>
+            ))}
         </TextField>
       </DialogContent>
       <DialogActions>
