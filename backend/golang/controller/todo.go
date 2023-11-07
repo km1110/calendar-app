@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,6 +34,41 @@ func FetchTodo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, todos)
+}
+
+func FetchTodoCount(c *gin.Context) {
+	tm := model.NewTodoModel()
+
+	firebaseUID, exists := c.Get("firebaseUID")
+	if !exists {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "firebaseUID not provided"})
+		return
+	}
+
+	um := model.NewUserModel()
+	userID, err := um.GetUser(c.Request.Context(), firebaseUID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	start := c.Query("start")
+	end := c.Query("end")
+
+	startYear := fmt.Sprintf("%s-01-01", start)
+	endYear := fmt.Sprintf("%s-01-01", end)
+
+	res, err := tm.GetDateCount(userID, startYear, endYear)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	rm := model.NewRatioModel()
+	resRatio, _ := rm.GetRatio(res, startYear, endYear)
+
+	c.JSON(http.StatusOK, resRatio)
 }
 
 func CreateTodo(c *gin.Context) {
@@ -104,8 +140,10 @@ func UpdateTodoStatus(c *gin.Context) {
 		return
 	}
 
+	id := c.Param("todo_id")
+
 	tm := model.NewTodoModel()
-	res, err := tm.UpdateTodoStatus(c, req)
+	res, err := tm.UpdateTodoStatus(c, id, req)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

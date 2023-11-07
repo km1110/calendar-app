@@ -8,6 +8,7 @@ import (
 func initTodoRouter(router *gin.RouterGroup) {
 	t := router.Group("/todos")
 	t.GET("", controller.FetchTodo)
+	t.GET("/day-count", controller.FetchTodoCount)
 	t.POST("", controller.CreateTodo)
 	t.PATCH("/:todo_id", controller.UpdateTodo)
 	t.PATCH("/:todo_id/status", controller.UpdateTodoStatus)

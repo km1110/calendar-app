@@ -9,3 +9,8 @@ export interface todoType {
   project: projectType;
   status: boolean;
 }
+
+export interface todoDayRatioType {
+  date: dayjs.Dayjs;
+  ratio: int;
+}

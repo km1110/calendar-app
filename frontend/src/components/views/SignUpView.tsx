@@ -36,7 +36,7 @@ export const SignUpView = () => {
       await instance.post("/signup", body);
 
       // TODO signupDataを空にする
-      navigate("/calendar");
+      navigate("/main");
     } catch (error) {
       console.log(error);
       alert("登録に失敗しました");

@@ -10,3 +10,8 @@ type TodosResponse struct {
 	Project ProjectsResponse `json:"project"`
 	Tag     TagResponse      `json:"tag"`
 }
+
+type TodoDateRatio struct {
+	Date  time.Time `json:"date"`
+	Ratio int       `json:"ratio"`
+}

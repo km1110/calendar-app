@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/km1110/calendar-app/backend/golang/model/entities"
 	"github.com/km1110/calendar-app/backend/golang/utils"
 	"github.com/km1110/calendar-app/backend/golang/view/request"
 	"github.com/km1110/calendar-app/backend/golang/view/response"
@@ -17,13 +18,6 @@ func NewTodoModel() *TodoModel {
 }
 
 func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error) {
-	// sql := `select id from users where firebase_uid = ?`
-
-	// var user_id string
-	// if err := Db.QueryRow(sql, firebase_uid).Scan(&user_id); err != nil {
-	// 	return nil, err
-	// }
-
 	sql := `
 				SELECT 
 						t.id, 
@@ -65,9 +59,10 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 		}
 
 		todos = append(todos, &response.TodosResponse{
-			Id:   id,
-			Name: name,
-			Date: date,
+			Id:     id,
+			Name:   name,
+			Date:   date,
+			Status: status,
 			Project: response.ProjectsResponse{
 				Id:    project_id,
 				Title: project_title,
@@ -80,6 +75,47 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 	}
 
 	return todos, nil
+}
+
+func (tm *TodoModel) GetDateCount(user_id string, start_year string, end_year string) ([]*entities.TodoDateCount, error) {
+	getQuery := `	SELECT 
+										DATE(date) AS date, COUNT(*) AS count 
+								FROM 
+										todos 
+								WHERE 
+										user_id = ? AND status = true AND date >= ? AND date < ? 
+								GROUP BY 
+										DATE(date) 
+								ORDER BY 
+										DATE(date)
+							`
+
+	rows, err := Db.Query(getQuery, user_id, start_year, end_year)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var res []*entities.TodoDateCount
+
+	for rows.Next() {
+		var (
+			date  time.Time
+			count int
+		)
+
+		if err := rows.Scan(&date, &count); err != nil {
+			return nil, err
+		}
+
+		res = append(res, &entities.TodoDateCount{
+			Date:  date,
+			Count: count,
+		})
+	}
+
+	return res, nil
 }
 
 func (tm *TodoModel) AddTodos(ctx context.Context, user_id string, r request.CreateTodoRequest) (response.TodosResponse, error) {
@@ -143,10 +179,10 @@ func (tm *TodoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) 
 	return res, nil
 }
 
-func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, r request.UpdateTodoStatusRequest) (response.TodosResponse, error) {
+func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, id string, r request.UpdateTodoStatusRequest) (response.TodosResponse, error) {
 	// responseを作成
 	res := response.TodosResponse{
-		Id:     r.Id,
+		Id:     id,
 		Status: r.Status,
 	}
 
