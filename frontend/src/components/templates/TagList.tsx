@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
 import { Box, Button, Card, Grid, IconButton, Typography } from "@mui/material";
+import Edit from "@mui/icons-material/Edit";
 
 import { tagType } from "@/types/tag";
-import Edit from "@mui/icons-material/Edit";
-import { Tag } from "@mui/icons-material";
-import { TagDialog } from "../parts/TagDialog";
+import { TagDialog } from "@/components/parts/TagDialog";
 
 type Props = {
   tag: tagType;

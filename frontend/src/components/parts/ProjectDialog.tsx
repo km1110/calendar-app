@@ -7,7 +7,6 @@ import {
   TextField,
   Box,
   Button,
-  MenuItem,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -55,21 +54,6 @@ export const ProjectDialog = ({
           }}
           onChange={handleChange}
         />
-        {/* <Typography>概要</Typography>
-        <TextField
-          size="medium"
-          defaultValue=""
-          id="description"
-          name="description"
-          variant="outlined"
-          type="text"
-          sx={{
-            width: { xs: "200px", sm: "360px" },
-            background: "white",
-            marginBottom: { xs: "20px" },
-          }}
-          onChange={handleChange}
-        /> */}
       </DialogContent>
       <DialogActions>
         <Box display="flex" flexDirection="column" alignItems="center">

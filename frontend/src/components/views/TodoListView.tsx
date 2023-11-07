@@ -16,7 +16,6 @@ import { tagState } from "@/atoms/tagState";
 export const TodoListView = () => {
   const [todos, setTodos] = useState<todoType[]>([]);
   const [projects, setProjects] = useRecoilState<projectsType[]>(projectState);
-  const [routines, setRoutines] = useState([]);
   const [tags, setTags] = useRecoilState<tagType[]>(tagState);
 
   const [todo, setTodo] = useState<todoType>({

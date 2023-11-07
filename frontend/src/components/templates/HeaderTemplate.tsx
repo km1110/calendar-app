@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import dayjs from "dayjs";
 
 import { Header } from "@/components/parts/Header";
 import { MonthContext } from "@/provider/CalendarProvider";
-import { useNavigate } from "react-router-dom";
 import { DrawerWrapper } from "@/components/parts/DrawerWrapper";
 import { useRecoilState } from "recoil";
 import { pageState } from "@/atoms/pageState";

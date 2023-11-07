@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { signupType } from "@/types/sign";
