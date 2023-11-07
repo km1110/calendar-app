@@ -65,12 +65,8 @@ func FetchTodoCount(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("start")
-
 	rm := model.NewRatioModel()
 	resRatio, _ := rm.GetRatio(res, startYear, endYear)
-
-	fmt.Println("end")
 
 	c.JSON(http.StatusOK, resRatio)
 }

@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/km1110/calendar-app/backend/golang/model/entities"
@@ -58,8 +57,6 @@ func calcRatio(count int, max int) int {
 }
 
 func (rm *RatioModel) GetRatio(counts []*entities.TodoDateCount, start string, end string) ([]*response.TodoDateRatio, error) {
-
-	fmt.Println(start, end)
 	var ratios []*response.TodoDateRatio
 
 	max := findMaxCount(counts)
