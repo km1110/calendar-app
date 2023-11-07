@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { todoDayCountType } from "@/types/todo";
+import { todoDayRatioType } from "@/types/todo";
 import { makeInstance } from "@/libs/api/axios";
 import dayjs from "dayjs";
+import { Contribution } from "../templates/Contribution";
 
 export const MainView = () => {
-  const [dayCount, setDayCount] = useState<todoDayCountType[]>([]);
+  const [dayRatio, setDayRatio] = useState<todoDayRatioType[]>([]);
 
   const instance = makeInstance();
 
@@ -17,13 +18,13 @@ export const MainView = () => {
 
     const fetchData = async () => {
       try {
-        const dayCount = await instance.get("/todos/day-count", {
+        const dayRatio = await instance.get("/todos/day-count", {
           params: {
             start: startYear,
             end: endYear,
           },
         });
-        setDayCount(dayCount.data);
+        setDayRatio(dayRatio.data);
       } catch (error) {
         console.error("An error occurred while fetching the todo:", error);
       }
@@ -31,7 +32,9 @@ export const MainView = () => {
     fetchData();
   }, []);
 
-  console.log(dayCount);
-
-  return <div>MainView</div>;
+  return (
+    <div>
+      <Contribution dayRatio={dayRatio} />
+    </div>
+  );
 };
