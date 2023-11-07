@@ -64,8 +64,11 @@ func (rm *RatioModel) GetRatio(counts []*entities.TodoDateCount, start string, e
 	cday := start
 
 	for {
+		ratio := 0
 		count := containsDate(counts, cday)
-		ratio := calcRatio(count, max)
+		if max > 0 {
+			ratio = calcRatio(count, max)
+		}
 
 		parseDate, _ := time.Parse("2006-01-02", cday)
 		ratios = append(ratios, &response.TodoDateRatio{
