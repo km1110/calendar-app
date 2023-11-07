@@ -10,7 +10,7 @@ export interface todoType {
   status: boolean;
 }
 
-export interface todoDayCountType {
+export interface todoDayRatioType {
   date: dayjs.Dayjs;
-  count: number;
+  ratio: int;
 }
