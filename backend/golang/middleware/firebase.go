@@ -13,7 +13,7 @@ import (
 func FirebaseAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// init
-		opt := option.WithCredentialsFile("serviceAccountKey.json")
+		opt := option.WithCredentialsFile("./secrets/FIREBASE_CREDENTIALS")
 		app, err := firebase.NewApp(context.Background(), nil, opt)
 		if err != nil {
 			log.Fatalf("error initializing app: %v", err)
