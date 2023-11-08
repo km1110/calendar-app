@@ -3,6 +3,7 @@ package model
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,12 +14,15 @@ var Db *sql.DB
 func init() {
 	var err error
 
-	user := os.Getenv("MYSQL_USER")
-	password := os.Getenv("MYSQL_PASSWORD")
-	database := os.Getenv("MYSQL_DATABASE")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	host := os.Getenv("DB_HOST")
+	database := os.Getenv("DB_NAME")
 
-	dsn := fmt.Sprintf("%s:%s@tcp(db:3306)/%s?charset=utf8&parseTime=true", user, password, database)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, password, host, database)
 	Db, err = sql.Open("mysql", dsn)
+
+	log.Printf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, password, host, database)
 
 	if err != nil {
 		fmt.Println(err)
@@ -32,7 +36,11 @@ func init() {
 		return
 	}
 
-	userSQL := `CREATE TABLE IF NOT EXISTS users(
+	env := os.Getenv("ENV")
+
+	if env == "local" {
+		fmt.Println("Connected to local database")
+		userSQL := `CREATE TABLE IF NOT EXISTS users(
 		id varchar(26) not null PRIMARY KEY,
 		firebase_uid VARCHAR(255) UNIQUE NOT NULL,
 		username VARCHAR(50) NOT NULL,
@@ -41,14 +49,14 @@ func init() {
 		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 	)`
 
-	_, err = Db.Exec(userSQL)
+		_, err = Db.Exec(userSQL)
 
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-	scheduleSQL := `CREATE TABLE IF NOT EXISTS schedules(
+		scheduleSQL := `CREATE TABLE IF NOT EXISTS schedules(
 			id varchar(26) not null PRIMARY KEY,
 			user_id varchar(26),
 			title text not null,
@@ -60,14 +68,14 @@ func init() {
 			FOREIGN KEY (user_id) REFERENCES users(id)
 	)`
 
-	_, err = Db.Exec(scheduleSQL)
+		_, err = Db.Exec(scheduleSQL)
 
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-	projectSQL := `CREATE TABLE IF NOT EXISTS projects(
+		projectSQL := `CREATE TABLE IF NOT EXISTS projects(
 		id varchar(26) not null PRIMARY KEY,
 		user_id varchar(26),
 		title text not null,
@@ -77,28 +85,28 @@ func init() {
 		foreign key (user_id) references users(id)
 	)`
 
-	_, err = Db.Exec(projectSQL)
+		_, err = Db.Exec(projectSQL)
 
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-	tagSQL := `CREATE TABLE IF NOT EXISTS tags(
+		tagSQL := `CREATE TABLE IF NOT EXISTS tags(
 		id varchar(26) not null PRIMARY KEY,
 		user_id varchar(26),
 		name text not null,
 		foreign key (user_id) references users(id)
 	)`
 
-	_, err = Db.Exec(tagSQL)
+		_, err = Db.Exec(tagSQL)
 
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
-	todoSQL := `CREATE TABLE IF NOT EXISTS todos(
+		todoSQL := `CREATE TABLE IF NOT EXISTS todos(
 			id varchar(26) not null PRIMARY KEY,
 			user_id varchar(26),
 			project_id varchar(26),
@@ -113,11 +121,12 @@ func init() {
 			foreign key (tag_id) references tags(id)
 	)`
 
-	_, err = Db.Exec(todoSQL)
+		_, err = Db.Exec(todoSQL)
 
-	if err != nil {
-		fmt.Println(err)
-		return
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
 
 	fmt.Println("Connection has been established!")
