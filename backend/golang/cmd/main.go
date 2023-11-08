@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	err := godotenv.Load(fmt.Sprintf("../%s.env", os.Getenv("GO_ENV")))
+	err := godotenv.Load(".env")
 	if err != nil {
 		// .env読めなかった場合の処理
 		fmt.Println("error: ", err)
