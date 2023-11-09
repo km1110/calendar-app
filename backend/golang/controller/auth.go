@@ -43,7 +43,7 @@ func GetUser(c *gin.Context) {
 
 	um := model.NewUserModel()
 
-	user_id, err := um.GetUser(c.Request.Context(), firebase_uid)
+	user_id, err := um.GetUser(firebase_uid)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
