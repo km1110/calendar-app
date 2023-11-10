@@ -140,7 +140,7 @@ export const TodoDialog = ({
               fontSize: "20px",
             }}
           >
-            追加
+            {typeDialog === "add" ? "追加" : "更新"}
           </Button>
         </Box>
       </DialogActions>
