@@ -36,7 +36,7 @@ func AddSchedule(c *gin.Context) {
 	firebase_uid := uid.(string)
 
 	um := model.NewUserModel()
-	user_id, err := um.GetUser(c.Request.Context(), firebase_uid)
+	user_id, err := um.GetUser(firebase_uid)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{

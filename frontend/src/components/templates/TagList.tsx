@@ -77,7 +77,7 @@ export const TagList = ({
             <Grid
               container
               key={index}
-              alignContent="center"
+              alignItems="center"
               style={{ minHeight: "40px" }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}

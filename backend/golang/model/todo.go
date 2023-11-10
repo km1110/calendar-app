@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/km1110/calendar-app/backend/golang/model/entities"
@@ -18,27 +19,28 @@ func NewTodoModel() *TodoModel {
 }
 
 func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error) {
-	sql := `
-				SELECT 
-						t.id, 
-						t.name, 
-						t.date, 
-						t.status, 
-						p.id AS project_id, 
-						p.title AS project_title, 
-						tg.id AS tag_id, 
-						tg.name AS tag_name
-				FROM 
-						todos t
-				LEFT JOIN 
-						projects p ON t.project_id = p.id
-				LEFT JOIN 
-						tags tg ON t.tag_id = tg.id
-				WHERE 
-						t.user_id = ?
-				`
 
-	rows, err := Db.Query(sql, user_id)
+	getQuery := `
+							SELECT 
+									t.id, 
+									t.name, 
+									t.date, 
+									t.status, 
+									p.id AS project_id, 
+									p.title AS project_title, 
+									tg.id AS tag_id, 
+									tg.name AS tag_name
+							FROM 
+									todos t
+							LEFT JOIN 
+									projects p ON t.project_id = p.id
+							LEFT JOIN 
+									tags tg ON t.tag_id = tg.id
+							WHERE 
+									t.user_id = ?
+							`
+
+	rows, err := Db.Query(getQuery, user_id)
 	if err != nil {
 		return nil, err
 	}
@@ -49,13 +51,32 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 
 	for rows.Next() {
 		var (
-			id, name, project_id, project_title, tag_id, tag_name string
-			date                                                  time.Time
-			status                                                bool
+			id, name                                    string
+			project_id, project_title, tag_id, tag_name sql.NullString
+			date                                        time.Time
+			status                                      bool
 		)
 
 		if err := rows.Scan(&id, &name, &date, &status, &project_id, &project_title, &tag_id, &tag_name); err != nil {
 			return nil, err
+		}
+
+		var projectID, projectTitle, tagID, tagName string
+
+		if project_id.Valid {
+			projectID = project_id.String
+		}
+
+		if project_title.Valid {
+			projectTitle = project_title.String
+		}
+
+		if tag_id.Valid {
+			tagID = tag_id.String
+		}
+
+		if tag_name.Valid {
+			tagName = tag_name.String
 		}
 
 		todos = append(todos, &response.TodosResponse{
@@ -64,12 +85,12 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 			Date:   date,
 			Status: status,
 			Project: response.ProjectsResponse{
-				Id:    project_id,
-				Title: project_title,
+				Id:    projectID,
+				Title: projectTitle,
 			},
 			Tag: response.TagResponse{
-				Id:   tag_id,
-				Name: tag_name,
+				Id:   tagID,
+				Name: tagName,
 			},
 		})
 	}
@@ -138,10 +159,14 @@ func (tm *TodoModel) AddTodos(ctx context.Context, user_id string, r request.Cre
 		},
 	}
 
+	// project_idとtag_idが空であればNULLを挿入する
+	projectID := sql.NullString{String: r.Project.Id, Valid: r.Project.Id != ""}
+	tagID := sql.NullString{String: r.Tag.Id, Valid: r.Tag.Id != ""}
+
 	// sqlの作成と実行
 	insertQuery := `INSERT INTO todos(id, user_id, name, date, status, project_id, tag_id) VALUES(?, ?, ?, ?, ?, ?, ?)`
 
-	_, err := Db.Exec(insertQuery, res.Id, user_id, res.Name, res.Date, res.Status, res.Project.Id, res.Tag.Id)
+	_, err := Db.Exec(insertQuery, res.Id, user_id, res.Name, res.Date, res.Status, projectID, tagID)
 
 	if err != nil {
 		return response.TodosResponse{}, err
@@ -167,10 +192,14 @@ func (tm *TodoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) 
 		},
 	}
 
+	// project_idとtag_idが空であればNULLを挿入する
+	projectID := sql.NullString{String: r.Project.Id, Valid: r.Project.Id != ""}
+	tagID := sql.NullString{String: r.Tag.Id, Valid: r.Tag.Id != ""}
+
 	// sqlの作成と実行
 	updateQuery := `UPDATE todos SET name = ?, date = ?, status = ?, project_id = ?, tag_id = ? WHERE id = ?`
 
-	_, err := Db.Exec(updateQuery, res.Name, res.Date, res.Status, res.Project.Id, res.Tag.Id, res.Id)
+	_, err := Db.Exec(updateQuery, res.Name, res.Date, res.Status, projectID, tagID, res.Id)
 
 	if err != nil {
 		return response.TodosResponse{}, err
