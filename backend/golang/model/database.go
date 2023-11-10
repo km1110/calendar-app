@@ -18,14 +18,17 @@ func init() {
 	password := os.Getenv("DB_PASSWORD")
 	host := os.Getenv("DB_HOST")
 	database := os.Getenv("DB_NAME")
+	option := os.Getenv("DB_OPTION")
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, password, host, database)
+	fmt.Println("connecting to database...", database)
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?%s", user, password, host, database, option)
 	Db, err = sql.Open("mysql", dsn)
 
-	log.Printf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true", user, password, host, database)
+	log.Printf("%s:%s@tcp(%s)/%s?%s", user, password, host, database, option)
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Cannot open:", err)
 		return
 	}
 
