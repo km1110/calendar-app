@@ -20,7 +20,7 @@ func FetchTag(c *gin.Context) {
 
 	// userIDの取得
 	um := model.NewUserModel()
-	userID, err := um.GetUser(c.Request.Context(), firebaseUID.(string))
+	userID, err := um.GetUser(firebaseUID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -53,7 +53,7 @@ func CreateTag(c *gin.Context) {
 
 	// userIDの取得
 	um := model.NewUserModel()
-	userID, err := um.GetUser(c.Request.Context(), firebaseUID.(string))
+	userID, err := um.GetUser(firebaseUID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

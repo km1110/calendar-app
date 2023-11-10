@@ -35,7 +35,7 @@ func (um *UserModel) AddUser(ctx context.Context, r entities.SignUp) (entities.S
 	return req, err
 }
 
-func (um *UserModel) GetUser(ctx context.Context, uid string) (string, error) {
+func (um *UserModel) GetUser(uid string) (string, error) {
 	id_sql := `select id from users where firebase_uid = ?`
 
 	var user_id string
