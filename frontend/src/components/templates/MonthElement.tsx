@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { Schedule } from "@/components/templates/Schedule";
 
@@ -14,11 +14,11 @@ export const MonthElement = ({ day, schedule }: Props) => {
   const { setShowDialog, setSchedule } = useContext(MonthContext);
 
   return (
-    <div>
-      <Typography variant="caption" component="div">
+    <Box sx={{ width: "100%", height: "100%" }}>
+      <Typography variant="caption" component="div" sx={{ height: "15%" }}>
         <span>{day.format("D")}</span>
       </Typography>
-      <div className="overflow-y-scroll">
+      <Box sx={{ width: "100%", height: "85%", overflowY: "auto" }}>
         {schedule.map((e: any, index: any) => (
           <Schedule
             key={e.id}
@@ -27,7 +27,7 @@ export const MonthElement = ({ day, schedule }: Props) => {
             setShowDialog={setShowDialog}
           />
         ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
