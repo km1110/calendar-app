@@ -1,7 +1,6 @@
-import React from "react";
 import { Dispatch, SetStateAction } from "react";
-import Paper from "@mui/material/Paper";
-import { Typography, styled } from "@mui/material";
+
+import { Paper, Typography, styled } from "@mui/material";
 
 import { scheduleType } from "@/types/schedule";
 
@@ -35,6 +34,9 @@ export const Schedule = ({ schedule, setSchedule, setShowDialog }: Props) => {
             fontSize: "12px",
             textAlign: "left",
             marginLeft: "10px",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {schedule.title}
