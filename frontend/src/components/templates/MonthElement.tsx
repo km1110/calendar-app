@@ -15,13 +15,21 @@ export const MonthElement = ({ day, schedule }: Props) => {
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      <Typography variant="caption" component="div" sx={{ height: "20%" }}>
-        <span>{day.format("D")}</span>
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "20%",
+        }}
+      >
+        <Typography variant="caption" sx={{ marginRight: "7px" }}>
+          {day.format("D")}
+        </Typography>
+      </Box>
       <Box sx={{ width: "100%", height: "80%", overflowY: "auto" }}>
-        {schedule.map((e: any, index: any) => (
+        {schedule.map((e: any, index: number) => (
           <Schedule
-            key={e.id}
+            key={index}
             schedule={e}
             setSchedule={setSchedule}
             setShowDialog={setShowDialog}
