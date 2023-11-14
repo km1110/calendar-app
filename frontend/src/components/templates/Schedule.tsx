@@ -6,9 +6,9 @@ import { scheduleType } from "@/types/schedule";
 
 const ScheduleStyle = styled(Paper)(({ theme }) => ({
   marginBottom: "4px",
-  border: "1px solid #e0e0e0",
+  borderRadius: "5px",
+  border: "1px solid #EEEEEE",
   height: "20px",
-  background: "#e0e0e0",
 }));
 
 type Props = {
@@ -22,7 +22,7 @@ export const Schedule = ({ schedule, setSchedule, setShowDialog }: Props) => {
     <ScheduleStyle>
       <Paper
         elevation={0}
-        sx={{ background: "#e0e0e0" }}
+        sx={{ background: "#EEEEEE" }}
         onClick={(e) => {
           e.stopPropagation();
           setShowDialog(true);
