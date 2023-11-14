@@ -15,10 +15,10 @@ export const MonthElement = ({ day, schedule }: Props) => {
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      <Typography variant="caption" component="div" sx={{ height: "15%" }}>
+      <Typography variant="caption" component="div" sx={{ height: "20%" }}>
         <span>{day.format("D")}</span>
       </Typography>
-      <Box sx={{ width: "100%", height: "85%", overflowY: "auto" }}>
+      <Box sx={{ width: "100%", height: "80%", overflowY: "auto" }}>
         {schedule.map((e: any, index: any) => (
           <Schedule
             key={e.id}
