@@ -1,6 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
 
+import { Card, Typography, styled } from "@mui/material";
+
 import { scheduleType } from "@/types/schedule";
+
+const ScheduleStyle = styled(Card)(({ theme }) => ({
+  marginBottom: "4px",
+  borderRadius: "5px",
+  height: "22px",
+  background: "#EEEEEE",
+}));
 
 type Props = {
   schedule: scheduleType;
@@ -10,15 +19,29 @@ type Props = {
 
 export const Schedule = ({ schedule, setSchedule, setShowDialog }: Props) => {
   return (
-    <div
-      className={`bg-neutral-200 p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
-      onClick={(e) => {
-        e.stopPropagation();
-        setShowDialog(true);
-        setSchedule(schedule);
-      }}
-    >
-      {schedule.title}
-    </div>
+    <ScheduleStyle>
+      <Card
+        sx={{ background: "#EEEEEE" }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowDialog(true);
+          setSchedule(schedule);
+        }}
+      >
+        <Typography
+          fontStyle={""}
+          sx={{
+            fontWeight: 400,
+            textAlign: "left",
+            marginLeft: "10px",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {schedule.title}
+        </Typography>
+      </Card>
+    </ScheduleStyle>
   );
 };

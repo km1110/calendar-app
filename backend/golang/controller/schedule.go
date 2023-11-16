@@ -11,9 +11,12 @@ import (
 )
 
 func FetchSchedule(c *gin.Context) {
+	startDay := c.Query("start")
+	endDay := c.Query("end")
+
 	sm := model.NewScheduleModel()
 
-	schedules, err := sm.GetSchedules(c)
+	schedules, err := sm.GetSchedules(c, startDay, endDay)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
