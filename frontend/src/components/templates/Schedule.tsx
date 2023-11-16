@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from "react";
 
-import { Paper, Typography, styled } from "@mui/material";
+import { Card, Typography, styled } from "@mui/material";
 
 import { scheduleType } from "@/types/schedule";
 
-const ScheduleStyle = styled(Paper)(({ theme }) => ({
+const ScheduleStyle = styled(Card)(({ theme }) => ({
   marginBottom: "4px",
   borderRadius: "5px",
-  border: "1px solid #EEEEEE",
-  height: "20px",
+  height: "22px",
+  background: "#EEEEEE",
 }));
 
 type Props = {
@@ -20,8 +20,7 @@ type Props = {
 export const Schedule = ({ schedule, setSchedule, setShowDialog }: Props) => {
   return (
     <ScheduleStyle>
-      <Paper
-        elevation={0}
+      <Card
         sx={{ background: "#EEEEEE" }}
         onClick={(e) => {
           e.stopPropagation();
@@ -30,8 +29,9 @@ export const Schedule = ({ schedule, setSchedule, setShowDialog }: Props) => {
         }}
       >
         <Typography
+          fontStyle={""}
           sx={{
-            fontSize: "12px",
+            fontWeight: 400,
             textAlign: "left",
             marginLeft: "10px",
             whiteSpace: "nowrap",
@@ -41,7 +41,7 @@ export const Schedule = ({ schedule, setSchedule, setShowDialog }: Props) => {
         >
           {schedule.title}
         </Typography>
-      </Paper>
+      </Card>
     </ScheduleStyle>
   );
 };

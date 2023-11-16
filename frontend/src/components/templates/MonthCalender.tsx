@@ -55,7 +55,7 @@ export const MonthCalender = () => {
                 borderRight: "1px solid #ccc",
                 borderBottom: "1px solid #ccc;",
                 textAlign: "right",
-                height: "110px",
+                height: "130px",
               }}
             >
               <Box
