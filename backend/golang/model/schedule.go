@@ -18,7 +18,7 @@ func NewScheduleModel() *SchedulesModel {
 	return &SchedulesModel{}
 }
 
-func (sm *SchedulesModel) GetSchedules(c *gin.Context) ([]*entities.Schedule, error) {
+func (sm *SchedulesModel) GetSchedules(c *gin.Context, startDay string, endDay string) ([]*entities.Schedule, error) {
 	id_sql := `select id from users where firebase_uid = ?`
 
 	uid, _ := c.Get("firebaseUID")
@@ -29,9 +29,9 @@ func (sm *SchedulesModel) GetSchedules(c *gin.Context) ([]*entities.Schedule, er
 		return nil, err
 	}
 
-	sql := `select id, title, description, date, location from schedules WHERE user_id = ?`
+	getQuery := `select id, title, description, date, location from schedules WHERE user_id = ? AND date >= ? AND date < ?`
 
-	rows, err := Db.Query(sql, user_id)
+	rows, err := Db.Query(getQuery, user_id, startDay, endDay)
 	if err != nil {
 		return nil, err
 	}

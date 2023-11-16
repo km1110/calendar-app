@@ -7,6 +7,7 @@ import { ChangeScheduleDialog } from "../templates/ChangeScheduleDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { makeInstance } from "@/libs/api/axios";
 import { scheduleType } from "@/types/schedule";
+import { getStartAndEndDate } from "@/libs/service/calender";
 
 export const MonthView = () => {
   const {
@@ -22,9 +23,16 @@ export const MonthView = () => {
   const instance = makeInstance();
 
   useEffect(() => {
+    const { start, end } = getStartAndEndDate(daySelected);
+
     const getSchedules = async () => {
       instance
-        .get("/schedule")
+        .get("/schedule", {
+          params: {
+            start: start,
+            end: end,
+          },
+        })
         .then(({ data }) => {
           setSchedules(data);
         })
@@ -46,10 +54,20 @@ export const MonthView = () => {
       location: schedule.location,
       description: schedule.description,
     };
+
+    const { start, end } = getStartAndEndDate(daySelected);
+
     await instance.post("/schedule", body);
-    instance.get("/schedule").then(({ data }) => {
-      setSchedules(data);
-    });
+    instance
+      .get("/schedule", {
+        params: {
+          start: start,
+          end: end,
+        },
+      })
+      .then(({ data }) => {
+        setSchedules(data);
+      });
 
     setSchedule({
       id: "",
@@ -68,15 +86,24 @@ export const MonthView = () => {
     const description = schedule.description;
     const location = schedule.location;
 
+    const { start, end } = getStartAndEndDate(daySelected);
+
     await instance.put(`/schedule/${id}`, {
       title,
       date,
       description,
       location,
     });
-    instance.get("/schedule").then(({ data }) => {
-      setSchedules(data);
-    });
+    instance
+      .get("/schedule", {
+        params: {
+          start: start,
+          end: end,
+        },
+      })
+      .then(({ data }) => {
+        setSchedules(data);
+      });
 
     setSchedule({
       id: "",
@@ -90,10 +117,19 @@ export const MonthView = () => {
   };
 
   const handleDelete = async (id: string) => {
+    const { start, end } = getStartAndEndDate(daySelected);
+
     await instance.delete(`/schedule/${id}`);
-    instance.get("/schedule").then(({ data }) => {
-      setSchedules(data);
-    });
+    instance
+      .get("/schedule", {
+        params: {
+          start: start,
+          end: end,
+        },
+      })
+      .then(({ data }) => {
+        setSchedules(data);
+      });
 
     setSchedule({
       id: "",
