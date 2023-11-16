@@ -15,6 +15,19 @@ export const createCalender = (month = dayjs().month()) => {
     });
 };
 
+export const getStartAndEndDate = (month: dayjs.Dayjs) => {
+  const startDay = month.startOf("month");
+  const endDay = month.endOf("month");
+
+  const startDayIndex = startDay.day();
+  const endDayIndex = endDay.day();
+
+  const start = startDay.add(-startDayIndex, "day").format("YYYY-MM-DD");
+  const end = endDay.add(6 - endDayIndex, "day").format("YYYY-MM-DD");
+
+  return { start, end };
+};
+
 export const isSameDay = (day1: dayjs.Dayjs, day2: dayjs.Dayjs) => {
   const format = "YYYYMMDD";
   return day1.format(format) === day2.format(format);
