@@ -55,18 +55,18 @@ export const ProjectList = ({
   };
 
   return (
-    <Card variant="outlined" sx={{ width: "100%", border: "1px solid" }}>
+    <Card variant="outlined" sx={{ width: "100%", border: "1px solid #ccc" }}>
       <Box
         display="flex"
         flexDirection="row"
-        sx={{ borderBottom: "1px solid" }}
+        sx={{ borderBottom: "1px solid #ccc" }}
       >
         <Typography sx={{ flexGrow: 1, marginTop: "5px", marginLeft: "10px" }}>
           Project
         </Typography>
         <Button onClick={() => handleAddClick()}>追加</Button>
       </Box>
-      <Box sx={{ borderBottom: "1px solid" }}>
+      {/* <Box sx={{ borderBottom: "1px solid" }}>
         <Grid container>
           <Grid item xs={6}>
             <Typography sx={{ marginLeft: "10px", fontSize: "18px" }}>
@@ -74,7 +74,7 @@ export const ProjectList = ({
             </Typography>
           </Grid>
         </Grid>
-      </Box>
+      </Box> */}
       <Box
         sx={{
           overflowY: "auto",
