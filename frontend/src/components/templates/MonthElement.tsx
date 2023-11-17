@@ -1,16 +1,19 @@
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
+import NoteAltIcon from "@mui/icons-material/NoteAlt";
 
 import { Schedule } from "@/components/templates/Schedule";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MonthContext } from "@/provider/CalendarProvider";
 
 type Props = {
+  index: number;
+  hoveredIndex: number | null;
   day: any;
   schedule: any;
 };
 
-export const MonthElement = ({ day, schedule }: Props) => {
+export const MonthElement = ({ index, hoveredIndex, day, schedule }: Props) => {
   const { setShowDialog, setSchedule } = useContext(MonthContext);
 
   return (
@@ -18,10 +21,24 @@ export const MonthElement = ({ day, schedule }: Props) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "space-between",
           height: "20%",
         }}
       >
+        <Typography variant="caption" sx={{ marginBottom: "10px" }}>
+          {hoveredIndex === index && (
+            <IconButton
+              size="small"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("clicked");
+              }}
+              sx={{ marginBottom: "10px" }}
+            >
+              <NoteAltIcon sx={{ fontSize: "20px" }} />
+            </IconButton>
+          )}
+        </Typography>
         <Typography variant="caption" sx={{ marginRight: "7px" }}>
           {day.format("D")}
         </Typography>
