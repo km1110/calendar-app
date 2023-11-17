@@ -14,6 +14,7 @@ export const MonthCalender = () => {
   const [calendar, setCalendar] = useState(
     margeSchedules(currentMonth, schedules)
   );
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const newCalendar = createCalender(month);
@@ -64,10 +65,14 @@ export const MonthCalender = () => {
                   setDaySelected(item.date);
                   setShowAddDialog(true);
                 }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
                 sx={{ width: "100%", height: "100%" }}
               >
                 <MonthElement
                   key={index}
+                  index={index}
+                  hoveredIndex={hoveredIndex}
                   day={item.date}
                   schedule={item.schedules}
                 />
