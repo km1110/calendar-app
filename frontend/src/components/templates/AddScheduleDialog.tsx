@@ -4,7 +4,7 @@ import { FormDialog } from "../parts/FormDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 
 type Props = {
-  handleSaveSchedule: any;
+  handleSaveSchedule: () => Promise<void>;
 };
 
 export const AddScheduleDialog = ({ handleSaveSchedule }: Props) => {

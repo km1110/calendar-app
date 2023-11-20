@@ -1,20 +1,34 @@
+import { useContext, useState } from "react";
+
 import { Box, IconButton, Typography } from "@mui/material";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
+import dayjs from "dayjs";
 
 import { Schedule } from "@/components/templates/Schedule";
+import { Diary } from "@/components/templates/Diary";
+import { scheduleType } from "@/types/schedule";
 
-import { useContext, useState } from "react";
 import { MonthContext } from "@/provider/CalendarProvider";
 
 type Props = {
   index: number;
   hoveredIndex: number | null;
-  day: any;
-  schedule: any;
+  day: dayjs.Dayjs;
+  schedules: scheduleType[];
 };
 
-export const MonthElement = ({ index, hoveredIndex, day, schedule }: Props) => {
+export const MonthElement = ({
+  index,
+  hoveredIndex,
+  day,
+  schedules,
+}: Props) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { setShowDialog, setSchedule } = useContext(MonthContext);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
@@ -31,7 +45,7 @@ export const MonthElement = ({ index, hoveredIndex, day, schedule }: Props) => {
               size="small"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log("clicked");
+                setIsOpen(true);
               }}
               sx={{ marginBottom: "10px" }}
             >
@@ -44,15 +58,16 @@ export const MonthElement = ({ index, hoveredIndex, day, schedule }: Props) => {
         </Typography>
       </Box>
       <Box sx={{ width: "100%", height: "80%", overflowY: "auto" }}>
-        {schedule.map((e: any, index: number) => (
+        {schedules.map((schedule: scheduleType, index: number) => (
           <Schedule
             key={index}
-            schedule={e}
+            schedule={schedule}
             setSchedule={setSchedule}
             setShowDialog={setShowDialog}
           />
         ))}
       </Box>
+      <Diary day={day} isOpen={isOpen} onClose={handleClose} />
     </Box>
   );
 };
