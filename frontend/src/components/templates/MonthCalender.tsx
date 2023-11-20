@@ -74,7 +74,7 @@ export const MonthCalender = () => {
                   index={index}
                   hoveredIndex={hoveredIndex}
                   day={item.date}
-                  schedule={item.schedules}
+                  schedules={item.schedules}
                 />
               </Box>
             </Grid>
