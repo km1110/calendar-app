@@ -1,10 +1,12 @@
 import { isSameDay } from "@/libs/service/calender";
+import { diaryType } from "@/types/diary";
 import { scheduleType } from "@/types/schedule";
 import dayjs from "dayjs";
 
 export const margeSchedules = (
   calendar: dayjs.Dayjs[],
-  schedules: scheduleType[]
+  schedules: scheduleType[],
+  diarys: diaryType[]
 ) => {
   if (schedules === null) {
     schedules = [];
@@ -14,5 +16,6 @@ export const margeSchedules = (
     schedules: schedules.filter((e: scheduleType) =>
       isSameDay(dayjs(e.date), cday)
     ),
+    diary: diarys.find((e: diaryType) => isSameDay(e.date, cday)),
   }));
 };
