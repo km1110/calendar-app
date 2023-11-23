@@ -9,12 +9,14 @@ import { Diary } from "@/components/templates/Diary";
 import { scheduleType } from "@/types/schedule";
 
 import { MonthContext } from "@/provider/CalendarProvider";
+import { diaryType } from "@/types/diary";
 
 type Props = {
   index: number;
   hoveredIndex: number | null;
   day: dayjs.Dayjs;
   schedules: scheduleType[];
+  diary: diaryType;
 };
 
 export const MonthElement = ({
@@ -22,6 +24,7 @@ export const MonthElement = ({
   hoveredIndex,
   day,
   schedules,
+  diary,
 }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { setShowDialog, setSchedule } = useContext(MonthContext);
@@ -67,7 +70,7 @@ export const MonthElement = ({
           />
         ))}
       </Box>
-      <Diary day={day} isOpen={isOpen} onClose={handleClose} />
+      <Diary day={day} diary={diary} isOpen={isOpen} onClose={handleClose} />
     </Box>
   );
 };

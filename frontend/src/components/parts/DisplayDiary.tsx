@@ -31,7 +31,7 @@ export const DisplayDiary = ({ diary, setIsEdit }: Props) => {
           marginBottom: "10px",
         }}
       >
-        {diary.title}
+        {diary?.title}
       </Typography>
       <Box
         sx={{
@@ -45,7 +45,7 @@ export const DisplayDiary = ({ diary, setIsEdit }: Props) => {
           padding: "10px",
         }}
       >
-        {diary.content}
+        {diary?.content}
       </Box>
       <Button onClick={() => setIsEdit(true)}>編集</Button>
     </Box>

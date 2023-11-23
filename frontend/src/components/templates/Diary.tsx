@@ -20,13 +20,16 @@ import { diaryState } from "@/atoms/diaryState";
 
 type Props = {
   day: dayjs.Dayjs;
+  diary: diaryType;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const Diary = ({ day, isOpen, onClose }: Props) => {
+export const Diary = ({ day, diary, isOpen, onClose }: Props) => {
   const [isEdit, setIsEdit] = useState(false);
-  const [diary, setDiary] = useRecoilState<diaryType>(diaryState);
+  // const [diary, setDiary] = useRecoilState<diaryType>(diaryState);
+  const [currentDiary, setCurrentDiary] = useState<diaryType>(diary);
+
   return (
     <Dialog
       open={isOpen}
@@ -55,14 +58,14 @@ export const Diary = ({ day, isOpen, onClose }: Props) => {
         <Box sx={{ width: "450px", height: "550px" }}>
           {isEdit ? (
             <EditDiary
-              diary={diary}
-              setDiary={setDiary}
+              diary={currentDiary}
+              setDiary={setCurrentDiary}
               setIsEdit={setIsEdit}
             />
           ) : (
             <DisplayDiary
-              diary={diary}
-              setDiary={setDiary}
+              diary={currentDiary}
+              setDiary={setCurrentDiary}
               setIsEdit={setIsEdit}
             />
           )}

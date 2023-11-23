@@ -6,20 +6,25 @@ import { MonthElement } from "@/components/templates/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { margeSchedules } from "@/libs/service/schedule";
+import { diaryType } from "@/types/diary";
 
-export const MonthCalender = () => {
+type Props = {
+  diarys: diaryType[];
+};
+
+export const MonthCalender = ({ diarys }: Props) => {
   const { month, schedules, setDaySelected, setShowAddDialog } =
     useContext(MonthContext);
   const [currentMonth, setCurrentMonth] = useState(createCalender());
   const [calendar, setCalendar] = useState(
-    margeSchedules(currentMonth, schedules)
+    margeSchedules(currentMonth, schedules, diarys)
   );
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const newCalendar = createCalender(month);
     setCurrentMonth(newCalendar);
-    setCalendar(margeSchedules(newCalendar, schedules));
+    setCalendar(margeSchedules(newCalendar, schedules, diarys));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month, schedules]);
 
@@ -75,6 +80,7 @@ export const MonthCalender = () => {
                   hoveredIndex={hoveredIndex}
                   day={item.date}
                   schedules={item.schedules}
+                  diary={item.diary}
                 />
               </Box>
             </Grid>
