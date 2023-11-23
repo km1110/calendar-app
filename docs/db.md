@@ -68,7 +68,8 @@ erDiagram
       varchar id PK "ID"
       varchar user_id FK "ユーザーID"
       datetime date  "日付"
-      text comment "日記内容"
+      text title "タイトル"
+      text content "日記内容"
       timestamp created_at "作成日時"
       timestamp updated_at "更新日時"
     }
