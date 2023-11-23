@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { MonthCalender } from "@/components/templates/MonthCalender";
 import { AddScheduleDialog } from "@/components/templates/AddScheduleDialog";
@@ -8,6 +8,8 @@ import { MonthContext } from "@/provider/CalendarProvider";
 import { makeInstance } from "@/libs/api/axios";
 import { scheduleType } from "@/types/schedule";
 import { getStartAndEndDate } from "@/libs/service/calender";
+import { diaryType } from "@/types/diary";
+import { diaryTestData } from "@/mock/diary";
 
 export const MonthView = () => {
   const {
@@ -19,6 +21,8 @@ export const MonthView = () => {
     setShowChangeDialog,
     setShowDialog,
   } = useContext(MonthContext);
+
+  const [diarys, setDiarys] = useState<diaryType[]>(diaryTestData);
 
   const instance = makeInstance();
 
@@ -144,7 +148,7 @@ export const MonthView = () => {
 
   return (
     <div>
-      <MonthCalender />
+      <MonthCalender diarys={diarys} />
       <AddScheduleDialog handleSaveSchedule={handleSaveSchedule} />
       <CurrentScheduleDialog handleDelete={handleDelete} />
       <ChangeScheduleDialog handleChangeSchedule={handleChangeSchedule} />
