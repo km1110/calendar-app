@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/km1110/calendar-app/backend/golang/model/entities"
+	"github.com/km1110/calendar-app/backend/golang/utils"
 	"github.com/km1110/calendar-app/backend/golang/view/response"
 )
 
@@ -48,4 +50,56 @@ func (dm *diaryModel) GetDiarys(ctx context.Context, user_id string) ([]*respons
 		})
 	}
 	return diarys, nil
+}
+
+func (dm *diaryModel) AddDiary(ctx context.Context, user_id string, e entities.Diary) (response.Diary, error) {
+	id := utils.GenerateId()
+
+	res := response.Diary{
+		Id:      id,
+		Title:   e.Title,
+		Content: e.Content,
+		Date:    e.Date,
+	}
+
+	insertQuery := `INSERT INTO diarys (id, title, content, date, user_id) VALUES (?, ?, ?, ?, ?)`
+
+	_, err := Db.Exec(insertQuery, res.Id, res.Title, res.Content, res.Date, user_id)
+
+	if err != nil {
+		return response.Diary{}, err
+	}
+
+	return res, nil
+}
+
+func (dm *diaryModel) UpdateDiary(ctx context.Context, user_id string, e entities.Diary) (response.Diary, error) {
+	res := response.Diary{
+		Id:      e.Id,
+		Title:   e.Title,
+		Content: e.Content,
+		Date:    e.Date,
+	}
+
+	updateQuery := `UPDATE diarys SET title = ?, content = ?, date = ? WHERE id = ? AND user_id = ?`
+
+	_, err := Db.Exec(updateQuery, res.Title, res.Content, res.Date, res.Id, user_id)
+
+	if err != nil {
+		return response.Diary{}, err
+	}
+
+	return res, nil
+}
+
+func (dm *diaryModel) DeleteDiary(ctx context.Context, user_id string, id string) error {
+	deleteQuery := `DELETE FROM diarys WHERE id = ?`
+
+	_, err := Db.Exec(deleteQuery, id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
