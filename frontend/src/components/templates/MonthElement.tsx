@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import dayjs from "dayjs";
+import { useRecoilState } from "recoil";
 
 import { Schedule } from "@/components/templates/Schedule";
 import { Diary } from "@/components/templates/Diary";
@@ -10,6 +11,7 @@ import { scheduleType } from "@/types/schedule";
 
 import { MonthContext } from "@/provider/CalendarProvider";
 import { diaryType } from "@/types/diary";
+import { diaryState } from "@/atoms/diaryState";
 
 type Props = {
   index: number;
@@ -28,9 +30,17 @@ export const MonthElement = ({
 }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { setShowDialog, setSchedule } = useContext(MonthContext);
+  const [currentDiary, setCurrentDiary] = useRecoilState<diaryType>(diaryState);
 
   const handleClose = () => {
     setIsOpen(false);
+  };
+
+  const initDiary = {
+    id: "",
+    title: "",
+    content: "",
+    date: day,
   };
 
   return (
@@ -48,6 +58,11 @@ export const MonthElement = ({
               size="small"
               onClick={(e) => {
                 e.stopPropagation();
+                if (!diary) {
+                  setCurrentDiary(initDiary);
+                } else {
+                  setCurrentDiary(diary);
+                }
                 setIsOpen(true);
               }}
               sx={{ marginBottom: "10px" }}
@@ -70,7 +85,13 @@ export const MonthElement = ({
           />
         ))}
       </Box>
-      <Diary day={day} diary={diary} isOpen={isOpen} onClose={handleClose} />
+      <Diary
+        day={day}
+        diary={currentDiary}
+        setDiary={setCurrentDiary}
+        isOpen={isOpen}
+        onClose={handleClose}
+      />
     </Box>
   );
 };
