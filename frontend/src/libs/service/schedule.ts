@@ -11,11 +11,14 @@ export const margeSchedules = (
   if (schedules === null) {
     schedules = [];
   }
+  if (diarys === null) {
+    diarys = [];
+  }
   return calendar.map((cday: dayjs.Dayjs) => ({
     date: cday,
     schedules: schedules.filter((e: scheduleType) =>
       isSameDay(dayjs(e.date), cday)
     ),
-    diary: diarys.find((e: diaryType) => isSameDay(e.date, cday)),
+    diary: diarys.find((e: diaryType) => isSameDay(dayjs(e.date), cday)),
   }));
 };
