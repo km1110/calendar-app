@@ -7,10 +7,11 @@ import { diaryType } from "@/types/diary";
 type Props = {
   diary: diaryType;
   setDiary: Dispatch<SetStateAction<diaryType>>;
-  setIsEdit: (isEdit: boolean) => void;
+  handleEditDiary: (diary: diaryType) => void;
 };
 
-export const EditDiary = ({ diary, setDiary, setIsEdit }: Props) => {
+export const EditDiary = ({ diary, setDiary, handleEditDiary }: Props) => {
+  console.log("diary", diary);
   return (
     <Box
       sx={{
@@ -22,14 +23,14 @@ export const EditDiary = ({ diary, setDiary, setIsEdit }: Props) => {
       }}
     >
       <TextField
-        value={diary.title}
+        value={diary?.title}
         onChange={(e) => setDiary({ ...diary, title: e.target.value })}
         variant="standard"
         placeholder="タイトルを追加"
         sx={{ width: "400px", height: "10%", marginBottom: "10px" }}
       />
       <TextField
-        value={diary.content}
+        value={diary?.content}
         onChange={(e) => setDiary({ ...diary, content: e.target.value })}
         multiline
         rows={15}
@@ -41,7 +42,7 @@ export const EditDiary = ({ diary, setDiary, setIsEdit }: Props) => {
           backgroundColor: "#ccc",
         }}
       />
-      <Button onClick={() => setIsEdit(false)}>記録</Button>
+      <Button onClick={() => handleEditDiary(diary)}>記録</Button>
     </Box>
   );
 };
