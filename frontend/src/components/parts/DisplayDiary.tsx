@@ -18,17 +18,19 @@ export const DisplayDiary = ({ diary, setIsEdit }: Props) => {
         alignItems: "center",
       }}
     >
-      <Typography
-        sx={{
-          width: "400px",
-          height: "10%",
-          borderBottom: "1px solid #ccc",
-          backgroundColor: "#fff",
-          marginBottom: "10px",
-        }}
-      >
-        {diary?.title}
-      </Typography>
+      <Box sx={{ height: "5%", marginBottom: "5%" }}>
+        <Typography
+          sx={{
+            width: "400px",
+            borderBottom: "1px solid #ccc",
+            backgroundColor: "#fff",
+            paddingTop: "4px",
+            paddingBottom: "4px",
+          }}
+        >
+          {diary?.title}
+        </Typography>
+      </Box>
       <Box
         sx={{
           width: "400px",
@@ -38,7 +40,7 @@ export const DisplayDiary = ({ diary, setIsEdit }: Props) => {
           backgroundColor: "#fff",
           whiteSpace: "pre-wrap",
           overflowWrap: "break-word",
-          padding: "10px",
+          padding: "15px",
         }}
       >
         {diary?.content}
