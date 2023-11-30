@@ -26,7 +26,7 @@ export const MonthCalender = ({ diarys }: Props) => {
     setCurrentMonth(newCalendar);
     setCalendar(margeSchedules(newCalendar, schedules, diarys));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [month, schedules]);
+  }, [month, schedules, diarys]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
