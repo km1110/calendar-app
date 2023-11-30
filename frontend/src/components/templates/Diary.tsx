@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import {
   Box,
@@ -11,24 +11,87 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
-import { useRecoilState } from "recoil";
+import { SetterOrUpdater, useRecoilState } from "recoil";
 
 import { DisplayDiary } from "@/components/parts/DisplayDiary";
 import { EditDiary } from "@/components/parts/EditDiary";
 import { diaryType } from "@/types/diary";
-import { diaryState } from "@/atoms/diaryState";
+import { getStartAndEndDate } from "@/libs/service/calender";
+import { makeInstance } from "@/libs/api/axios";
+import { MonthContext } from "@/provider/CalendarProvider";
+import { diarysState } from "@/atoms/diarysState";
 
 type Props = {
   day: dayjs.Dayjs;
   diary: diaryType;
+  setDiary: SetterOrUpdater<diaryType>;
   isOpen: boolean;
   onClose: () => void;
 };
 
-export const Diary = ({ day, diary, isOpen, onClose }: Props) => {
+export const Diary = ({ day, diary, setDiary, isOpen, onClose }: Props) => {
   const [isEdit, setIsEdit] = useState(false);
-  // const [diary, setDiary] = useRecoilState<diaryType>(diaryState);
-  const [currentDiary, setCurrentDiary] = useState<diaryType>(diary);
+
+  const [diarys, setDiarys] = useRecoilState<diaryType[]>(diarysState);
+  const { daySelected } = useContext(MonthContext);
+
+  const instance = makeInstance();
+
+  // diaryに関する処理
+  const handleAddDiary = async (diaryInfo: diaryType) => {
+    const body = {
+      title: diaryInfo.title,
+      content: diaryInfo.content,
+      date: diaryInfo.date,
+    };
+
+    const { start, end } = getStartAndEndDate(daySelected);
+
+    await instance.post("/diarys", body);
+    instance
+      .get("/diarys", {
+        params: {
+          start: start,
+          end: end,
+        },
+      })
+      .then(({ data }) => {
+        setDiarys(data);
+      });
+  };
+
+  const handleChangeDiary = async (diaryInfo: diaryType) => {
+    const body = {
+      title: diaryInfo.title,
+      content: diaryInfo.content,
+      date: diaryInfo.date,
+    };
+
+    const { start, end } = getStartAndEndDate(daySelected);
+
+    await instance.patch(`/diarys/${diary.id}`, body);
+    instance
+      .get("/diarys", {
+        params: {
+          start: start,
+          end: end,
+        },
+      })
+      .then(({ data }) => {
+        setDiarys(data);
+      });
+  };
+
+  const handleEditDiary = async (diaryInfo: diaryType) => {
+    console.log(diaryInfo);
+    if (diaryInfo.id) {
+      await handleChangeDiary(diaryInfo);
+    } else {
+      await handleAddDiary(diaryInfo);
+    }
+
+    setIsEdit(false);
+  };
 
   return (
     <Dialog
@@ -58,16 +121,12 @@ export const Diary = ({ day, diary, isOpen, onClose }: Props) => {
         <Box sx={{ width: "450px", height: "550px" }}>
           {isEdit ? (
             <EditDiary
-              diary={currentDiary}
-              setDiary={setCurrentDiary}
-              setIsEdit={setIsEdit}
+              diary={diary}
+              setDiary={setDiary}
+              handleEditDiary={handleEditDiary}
             />
           ) : (
-            <DisplayDiary
-              diary={currentDiary}
-              setDiary={setCurrentDiary}
-              setIsEdit={setIsEdit}
-            />
+            <DisplayDiary diary={diary} setIsEdit={setIsEdit} />
           )}
         </Box>
       </DialogContent>
