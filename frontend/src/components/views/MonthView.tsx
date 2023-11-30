@@ -11,6 +11,7 @@ import { getStartAndEndDate } from "@/libs/service/calender";
 import { diaryType } from "@/types/diary";
 import { useRecoilState } from "recoil";
 import { diarysState } from "@/atoms/diarysState";
+import { pageState } from "@/atoms/pageState";
 
 export const MonthView = () => {
   const {
@@ -24,10 +25,12 @@ export const MonthView = () => {
   } = useContext(MonthContext);
 
   const [diarys, setDiarys] = useRecoilState<diaryType[]>(diarysState);
+  const [page, setPage] = useRecoilState<string>(pageState);
 
   const instance = makeInstance();
 
   useEffect(() => {
+    setPage("calendar");
     const { start, end } = getStartAndEndDate(daySelected);
     const fetchData = async () => {
       try {

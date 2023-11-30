@@ -12,11 +12,13 @@ import { projectsType } from "@/types/project";
 import { tagType } from "@/types/tag";
 import { projectState } from "@/atoms/projectState";
 import { tagState } from "@/atoms/tagState";
+import { pageState } from "@/atoms/pageState";
 
 export const TodoListView = () => {
   const [todos, setTodos] = useState<todoType[]>([]);
   const [projects, setProjects] = useRecoilState<projectsType[]>(projectState);
   const [tags, setTags] = useRecoilState<tagType[]>(tagState);
+  const [page, setPage] = useRecoilState<string>(pageState);
 
   const [todo, setTodo] = useState<todoType>({
     id: "",
@@ -37,6 +39,7 @@ export const TodoListView = () => {
 
   // todo, tag, projectのデータを取得
   useEffect(() => {
+    setPage("todo");
     const fetchData = async () => {
       try {
         const todos = await instance.get("/todos");
