@@ -1,12 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
-
 import { Box, Button, Typography } from "@mui/material";
 
 import { diaryType } from "@/types/diary";
 
 type Props = {
   diary: diaryType;
-  setDiary: Dispatch<SetStateAction<diaryType>>;
   setIsEdit: (isEdit: boolean) => void;
 };
 
@@ -27,7 +24,6 @@ export const DisplayDiary = ({ diary, setIsEdit }: Props) => {
           height: "10%",
           borderBottom: "1px solid #ccc",
           backgroundColor: "#fff",
-          // padding: "10px",
           marginBottom: "10px",
         }}
       >
