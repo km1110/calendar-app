@@ -9,7 +9,8 @@ import { makeInstance } from "@/libs/api/axios";
 import { scheduleType } from "@/types/schedule";
 import { getStartAndEndDate } from "@/libs/service/calender";
 import { diaryType } from "@/types/diary";
-import { diaryTestData } from "@/mock/diary";
+import { useRecoilState } from "recoil";
+import { diarysState } from "@/atoms/diarysState";
 
 export const MonthView = () => {
   const {
@@ -22,35 +23,36 @@ export const MonthView = () => {
     setShowDialog,
   } = useContext(MonthContext);
 
-  const [diarys, setDiarys] = useState<diaryType[]>(diaryTestData);
+  const [diarys, setDiarys] = useRecoilState<diaryType[]>(diarysState);
 
   const instance = makeInstance();
 
   useEffect(() => {
     const { start, end } = getStartAndEndDate(daySelected);
-
-    const getSchedules = async () => {
-      instance
-        .get("/schedule", {
+    const fetchData = async () => {
+      try {
+        const schedules = await instance.get("/schedule", {
           params: {
             start: start,
             end: end,
           },
-        })
-        .then(({ data }) => {
-          setSchedules(data);
-        })
-        .catch((error) => {
-          console.error(
-            "An error occurred while fetching the schedules:",
-            error
-          );
         });
+        const diarys = await instance.get("/diarys", {
+          params: {
+            start: start,
+            end: end,
+          },
+        });
+        setSchedules(schedules.data);
+        setDiarys(diarys.data);
+      } catch (error) {
+        console.error("An error occurred while fetching the schedules:", error);
+      }
     };
-    getSchedules();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchData();
   }, []);
 
+  // scheduleに関する処理
   const handleSaveSchedule = async () => {
     const body = {
       title: schedule.title,
