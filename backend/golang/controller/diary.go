@@ -10,6 +10,9 @@ import (
 )
 
 func FetchDiary(c *gin.Context) {
+	startDay := c.Query("start")
+	endDay := c.Query("end")
+
 	dm := model.NewDiaryModel()
 
 	firebaseUID, err := utils.GetFirebaseUID(c)
@@ -25,7 +28,7 @@ func FetchDiary(c *gin.Context) {
 		return
 	}
 
-	diarys, err := dm.GetDiarys(c, useID)
+	diarys, err := dm.GetDiarys(c, useID, startDay, endDay)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

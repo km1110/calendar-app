@@ -20,10 +20,10 @@ func NewDiaryModel() *diaryModel {
 	return &diaryModel{}
 }
 
-func (dm *diaryModel) GetDiarys(ctx context.Context, user_id string) ([]*response.Diary, error) {
-	getQuery := `SELECT id, title, content, date FROM diarys WHERE user_id = ?`
+func (dm *diaryModel) GetDiarys(ctx context.Context, user_id string, startDay string, endDay string) ([]*response.Diary, error) {
+	getQuery := `SELECT id, title, content, date FROM diarys WHERE user_id = ? AND date >= ? AND date < ?`
 
-	rows, err := Db.Query(getQuery, user_id)
+	rows, err := Db.Query(getQuery, user_id, startDay, endDay)
 	if err != nil {
 		return nil, err
 	}
