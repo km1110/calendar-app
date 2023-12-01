@@ -55,14 +55,14 @@ export const TagList = ({
   };
 
   return (
-    <Card variant="outlined" sx={{ width: "100%", border: "1px solid" }}>
+    <Card variant="outlined" sx={{ width: "100%", border: "1px solid #ccc" }}>
       <Box
         display="flex"
         flexDirection="row"
-        sx={{ borderBottom: "1px solid" }}
+        sx={{ borderBottom: "1px solid #ccc" }}
       >
         <Typography sx={{ flexGrow: 1, marginTop: "5px", marginLeft: "10px" }}>
-          タグ
+          カテゴリー
         </Typography>
         <Button onClick={() => handleAddClick()}>追加</Button>
       </Box>

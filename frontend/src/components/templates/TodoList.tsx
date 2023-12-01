@@ -115,13 +115,13 @@ export const TodoList = ({
         variant="outlined"
         sx={{
           width: "60%",
-          border: "1px solid",
+          border: "1px solid #ccc",
         }}
       >
         <Box
           display="flex"
           flexDirection="row"
-          sx={{ borderBottom: "1px solid" }}
+          sx={{ borderBottom: "1px solid #ccc" }}
         >
           <Typography
             sx={{ flexGrow: 1, marginTop: "5px", marginLeft: "10px" }}
@@ -130,7 +130,7 @@ export const TodoList = ({
           </Typography>
           <Button onClick={() => handleAddClick()}>追加</Button>
         </Box>
-        <Box sx={{ borderBottom: "1px solid" }}>
+        <Box sx={{ borderBottom: "1px solid #ccc" }}>
           <Grid container>
             <Grid item xs={1}>
               <Typography sx={{ fontSize: "18px", marginLeft: "10px" }}>
@@ -154,8 +154,8 @@ export const TodoList = ({
         <Box
           sx={{
             overflowY: "auto",
-            minHeight: "calc(40px * 10)",
-            maxHeight: "calc(40px * 10)",
+            minHeight: "calc(35px * 12)",
+            maxHeight: "calc(35px * 12)",
           }}
         >
           {todos &&
@@ -164,7 +164,7 @@ export const TodoList = ({
                 container
                 key={index}
                 alignItems="center"
-                style={{ minHeight: "40px" }}
+                style={{ height: "35px" }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
@@ -194,14 +194,20 @@ export const TodoList = ({
                 </Grid>
                 <Grid item xs={0.5}>
                   {hoveredIndex === index && (
-                    <IconButton onClick={() => handleChangeClick(item)}>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleChangeClick(item)}
+                    >
                       <Edit />
                     </IconButton>
                   )}
                 </Grid>
                 <Grid item xs={0.5}>
                   {hoveredIndex === index && (
-                    <IconButton onClick={() => handleDelete(item.id)}>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(item.id)}
+                    >
                       <DeleteForever />
                     </IconButton>
                   )}

@@ -1,83 +1,88 @@
 import { useContext, useEffect, useState } from "react";
 
-import { Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 
 import { MonthElement } from "@/components/templates/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { margeSchedules } from "@/libs/service/schedule";
+import { diaryType } from "@/types/diary";
 
-export const MonthCalender = () => {
+type Props = {
+  diarys: diaryType[];
+};
+
+export const MonthCalender = ({ diarys }: Props) => {
   const { month, schedules, setDaySelected, setShowAddDialog } =
     useContext(MonthContext);
   const [currentMonth, setCurrentMonth] = useState(createCalender());
   const [calendar, setCalendar] = useState(
-    margeSchedules(currentMonth, schedules)
+    margeSchedules(currentMonth, schedules, diarys)
   );
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const newCalendar = createCalender(month);
     setCurrentMonth(newCalendar);
-    setCalendar(margeSchedules(newCalendar, schedules));
+    setCalendar(margeSchedules(newCalendar, schedules, diarys));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [month, schedules]);
+  }, [month, schedules, diarys]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
   return (
     <div>
-      <Container sx={{ marginTop: "10px" }}>
-        <Grid container columns={{ xs: 7, sm: 7, md: 7 }}>
+      <Container sx={{ marginTop: "10px", width: "100%", height: "100%" }}>
+        <Grid container columns={7}>
           {days.map((day) => (
             <Grid
               item
               xs={1}
-              sm={1}
-              md={1}
               key={day}
               sx={{
                 borderBottom: "1px solid #ccc",
                 textAlign: "center",
                 fontWeight: "bold",
+                color: "#666",
               }}
             >
               {day}
             </Grid>
           ))}
         </Grid>
-        <Grid
-          container
-          columns={{ xs: 7, sm: 7, md: 7 }}
-          sx={{ borderLeft: "1px solid #ccc" }}
-        >
+        <Grid container columns={7} sx={{ borderLeft: "1px solid #ccc" }}>
           {calendar.map((item: any, index: number) => (
             <Grid
+              className="hoge1"
               item
               xs={1}
-              sm={1}
-              md={1}
               key={index}
               sx={{
                 borderRight: "1px solid #ccc",
                 borderBottom: "1px solid #ccc;",
                 textAlign: "right",
-                width: "40px",
-                height: "100px",
+                height: "130px",
               }}
             >
-              <div
+              <Box
                 onClick={(e) => {
                   e.stopPropagation();
                   setDaySelected(item.date);
                   setShowAddDialog(true);
                 }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                sx={{ width: "100%", height: "100%" }}
               >
                 <MonthElement
                   key={index}
+                  index={index}
+                  hoveredIndex={hoveredIndex}
                   day={item.date}
-                  schedule={item.schedules}
+                  schedules={item.schedules}
+                  diary={item.diary}
                 />
-              </div>
+              </Box>
             </Grid>
           ))}
         </Grid>
