@@ -6,21 +6,27 @@ import { MonthElement } from "@/components/templates/MonthElement";
 import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { margeSchedules } from "@/libs/service/schedule";
+import { diaryType } from "@/types/diary";
 
-export const MonthCalender = () => {
+type Props = {
+  diarys: diaryType[];
+};
+
+export const MonthCalender = ({ diarys }: Props) => {
   const { month, schedules, setDaySelected, setShowAddDialog } =
     useContext(MonthContext);
   const [currentMonth, setCurrentMonth] = useState(createCalender());
   const [calendar, setCalendar] = useState(
-    margeSchedules(currentMonth, schedules)
+    margeSchedules(currentMonth, schedules, diarys)
   );
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const newCalendar = createCalender(month);
     setCurrentMonth(newCalendar);
-    setCalendar(margeSchedules(newCalendar, schedules));
+    setCalendar(margeSchedules(newCalendar, schedules, diarys));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [month, schedules]);
+  }, [month, schedules, diarys]);
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
@@ -64,12 +70,17 @@ export const MonthCalender = () => {
                   setDaySelected(item.date);
                   setShowAddDialog(true);
                 }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
                 sx={{ width: "100%", height: "100%" }}
               >
                 <MonthElement
                   key={index}
+                  index={index}
+                  hoveredIndex={hoveredIndex}
                   day={item.date}
-                  schedule={item.schedules}
+                  schedules={item.schedules}
+                  diary={item.diary}
                 />
               </Box>
             </Grid>

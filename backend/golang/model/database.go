@@ -130,6 +130,23 @@ func init() {
 			fmt.Println(err)
 			return
 		}
+
+		diarySQL := `CREATE TABLE IF NOT EXISTS diarys(
+			id varchar(26) not null PRIMARY KEY,
+			user_id varchar(26),
+			title text,
+			content text,
+			date datetime not null,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			foreign key (user_id) references users(id)
+	)`
+		_, err = Db.Exec(diarySQL)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
 
 	fmt.Println("Connection has been established!")
