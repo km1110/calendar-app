@@ -11,7 +11,6 @@ type Props = {
 };
 
 export const EditDiary = ({ diary, setDiary, handleEditDiary }: Props) => {
-  console.log("diary", diary);
   return (
     <Box
       sx={{

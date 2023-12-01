@@ -83,7 +83,6 @@ export const Diary = ({ day, diary, setDiary, isOpen, onClose }: Props) => {
   };
 
   const handleEditDiary = async (diaryInfo: diaryType) => {
-    console.log(diaryInfo);
     if (diaryInfo.id) {
       await handleChangeDiary(diaryInfo);
     } else {
