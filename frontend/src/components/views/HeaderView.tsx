@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil";
 import { pageState } from "@/atoms/pageState";
 
 export const HeaderView = () => {
-  const [page, setPage] = useRecoilState<string>(pageState); // ["main", "calendar", "schedule"
+  const [page, setPage] = useRecoilState<string>(pageState);
   const { setSchedules } = useContext(MonthContext);
 
   const navigate = useNavigate();

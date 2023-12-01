@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { MonthCalender } from "@/components/templates/MonthCalender";
 import { AddScheduleDialog } from "@/components/templates/AddScheduleDialog";
@@ -8,6 +8,10 @@ import { MonthContext } from "@/provider/CalendarProvider";
 import { makeInstance } from "@/libs/api/axios";
 import { scheduleType } from "@/types/schedule";
 import { getStartAndEndDate } from "@/libs/service/calender";
+import { diaryType } from "@/types/diary";
+import { useRecoilState } from "recoil";
+import { diarysState } from "@/atoms/diarysState";
+import { pageState } from "@/atoms/pageState";
 
 export const MonthView = () => {
   const {
@@ -20,33 +24,38 @@ export const MonthView = () => {
     setShowDialog,
   } = useContext(MonthContext);
 
+  const [diarys, setDiarys] = useRecoilState<diaryType[]>(diarysState);
+  const [page, setPage] = useRecoilState<string>(pageState);
+
   const instance = makeInstance();
 
   useEffect(() => {
+    setPage("calendar");
     const { start, end } = getStartAndEndDate(daySelected);
-
-    const getSchedules = async () => {
-      instance
-        .get("/schedule", {
+    const fetchData = async () => {
+      try {
+        const schedules = await instance.get("/schedule", {
           params: {
             start: start,
             end: end,
           },
-        })
-        .then(({ data }) => {
-          setSchedules(data);
-        })
-        .catch((error) => {
-          console.error(
-            "An error occurred while fetching the schedules:",
-            error
-          );
         });
+        const diarys = await instance.get("/diarys", {
+          params: {
+            start: start,
+            end: end,
+          },
+        });
+        setSchedules(schedules.data);
+        setDiarys(diarys.data);
+      } catch (error) {
+        console.error("An error occurred while fetching the schedules:", error);
+      }
     };
-    getSchedules();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchData();
   }, []);
 
+  // scheduleに関する処理
   const handleSaveSchedule = async () => {
     const body = {
       title: schedule.title,
@@ -144,7 +153,7 @@ export const MonthView = () => {
 
   return (
     <div>
-      <MonthCalender />
+      <MonthCalender diarys={diarys} />
       <AddScheduleDialog handleSaveSchedule={handleSaveSchedule} />
       <CurrentScheduleDialog handleDelete={handleDelete} />
       <ChangeScheduleDialog handleChangeSchedule={handleChangeSchedule} />
