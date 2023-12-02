@@ -1,22 +1,48 @@
 package controller
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/km1110/calendar-app/backend/golang/controller/dto"
 	"github.com/km1110/calendar-app/backend/golang/model"
 	"github.com/km1110/calendar-app/backend/golang/model/entities"
+	"github.com/km1110/calendar-app/backend/golang/utils"
 )
 
-func FetchSchedule(c *gin.Context) {
+type ScheduleController interface {
+	FetchSchedule(c *gin.Context)
+	AddSchedule(c *gin.Context)
+	UpdateSchedule(c *gin.Context)
+	DeleteSchedule(c *gin.Context)
+}
+
+type scheduleController struct {
+	sm model.ScheduleModel
+	um model.UserModel
+}
+
+func NewScheduleController(sm model.ScheduleModel, um model.UserModel) ScheduleController {
+	return &scheduleController{sm, um}
+}
+
+func (sc *scheduleController) FetchSchedule(c *gin.Context) {
 	startDay := c.Query("start")
 	endDay := c.Query("end")
 
-	sm := model.NewScheduleModel()
+	firebaseUID, err := utils.GetFirebaseUID(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
 
-	schedules, err := sm.GetSchedules(c, startDay, endDay)
+	user_id, err := sc.um.GetUser(firebaseUID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	schedules, err := sc.sm.GetSchedules(c, user_id, startDay, endDay)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -26,20 +52,24 @@ func FetchSchedule(c *gin.Context) {
 	c.JSON(http.StatusOK, schedules)
 }
 
-func AddSchedule(c *gin.Context) {
+func (sc *scheduleController) AddSchedule(c *gin.Context) {
 	var req dto.AddScheduleRequest
 
 	if err := c.Bind(&req); err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 	}
 
-	uid, _ := c.Get("firebaseUID")
-	firebase_uid := uid.(string)
+	firebaseUID, err := utils.GetFirebaseUID(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
 
-	um := model.NewUserModel()
-	user_id, err := um.GetUser(firebase_uid)
+	userID, err := sc.um.GetUser(firebaseUID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -48,10 +78,9 @@ func AddSchedule(c *gin.Context) {
 		return
 	}
 
-	sm := model.NewScheduleModel()
-	result, err := sm.AddSchedule(c, entities.Schedule{
+	res, err := sc.sm.AddSchedule(c, entities.Schedule{
 		Title:       req.Title,
-		UserID:      user_id,
+		UserID:      userID,
 		Description: req.Description,
 		Date:        req.Date,
 		Location:    req.Location,
@@ -64,19 +93,10 @@ func AddSchedule(c *gin.Context) {
 		return
 	}
 
-	json, err := json.Marshal(result)
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, string(json))
+	c.JSON(http.StatusOK, res)
 }
 
-func UpdateSchedule(c *gin.Context) {
+func (sc *scheduleController) UpdateSchedule(c *gin.Context) {
 	var req dto.AddScheduleRequest
 
 	if err := c.Bind(&req); err != nil {
@@ -88,8 +108,7 @@ func UpdateSchedule(c *gin.Context) {
 
 	id := c.Param("schedule_id")
 
-	sm := model.NewScheduleModel()
-	result, err := sm.UpdateSchedule(c, entities.Schedule{
+	res, err := sc.sm.UpdateSchedule(c, entities.Schedule{
 		Id:          id,
 		Title:       req.Title,
 		Description: req.Description,
@@ -104,24 +123,13 @@ func UpdateSchedule(c *gin.Context) {
 		return
 	}
 
-	json, err := json.Marshal(result)
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-	}
-
-	c.JSON(http.StatusOK, string(json))
+	c.JSON(http.StatusOK, res)
 }
 
-func DeleteSchedule(c *gin.Context) {
+func (sc *scheduleController) DeleteSchedule(c *gin.Context) {
 	id := c.Param("schedule_id")
 
-	sm := model.NewScheduleModel()
-	result, err := sm.DeleteSchedule(c, entities.Schedule{
-		Id: id,
-	})
+	res, err := sc.sm.DeleteSchedule(c, id)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -129,13 +137,5 @@ func DeleteSchedule(c *gin.Context) {
 		})
 	}
 
-	json, err := json.Marshal(result)
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-	}
-
-	c.JSON(http.StatusOK, string(json))
+	c.JSON(http.StatusOK, res)
 }
