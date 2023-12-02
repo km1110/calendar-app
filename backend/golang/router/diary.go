@@ -5,10 +5,10 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/controller"
 )
 
-func initDiaryRouter(router *gin.RouterGroup) {
+func initDiaryRouter(router *gin.RouterGroup, dc controller.DiaryController) {
 	d := router.Group("/diarys")
-	d.GET("", controller.FetchDiary)
-	d.POST("", controller.CreateDiary)
-	d.PATCH("/:id", controller.UpdateDiary)
-	d.DELETE("/:id", controller.DeleteDiary)
+	d.GET("", dc.FetchDiary)
+	d.POST("", dc.CreateDiary)
+	d.PATCH("/:id", dc.UpdateDiary)
+	d.DELETE("/:id", dc.DeleteDiary)
 }

@@ -5,12 +5,12 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/controller"
 )
 
-func initTodoRouter(router *gin.RouterGroup) {
+func initTodoRouter(router *gin.RouterGroup, tc controller.TodoController) {
 	t := router.Group("/todos")
-	t.GET("", controller.FetchTodo)
-	t.GET("/day-count", controller.FetchTodoCount)
-	t.POST("", controller.CreateTodo)
-	t.PATCH("/:todo_id", controller.UpdateTodo)
-	t.PATCH("/:todo_id/status", controller.UpdateTodoStatus)
-	t.DELETE("/:todo_id", controller.DeleteTodo)
+	t.GET("", tc.FetchTodo)
+	t.GET("/day-count", tc.FetchTodoCount)
+	t.POST("", tc.CreateTodo)
+	t.PATCH("/:todo_id", tc.UpdateTodo)
+	t.PATCH("/:todo_id/status", tc.UpdateTodoStatus)
+	t.DELETE("/:todo_id", tc.DeleteTodo)
 }
