@@ -11,7 +11,7 @@ import (
 
 var Db *sql.DB
 
-func init() {
+func initDB() {
 	var err error
 
 	user := os.Getenv("DB_USER")

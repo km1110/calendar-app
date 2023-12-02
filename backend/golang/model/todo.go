@@ -11,14 +11,24 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/view/response"
 )
 
-type TodoModel struct {
+type TodoModel interface {
+	GetTodos(user_id string) ([]*response.TodosResponse, error)
+	GetDateCount(user_id string, start_year string, end_year string) ([]*entities.TodoDateCount, error)
+	AddTodos(ctx context.Context, user_id string, r request.CreateTodoRequest) (response.TodosResponse, error)
+	UpdateTodos(ctx context.Context, r response.TodosResponse) (response.TodosResponse, error)
+	UpdateTodoStatus(ctx context.Context, id string, r request.UpdateTodoStatusRequest) (response.TodosResponse, error)
+	DeleteTodo(ctx context.Context, id string) error
 }
 
-func NewTodoModel() *TodoModel {
-	return &TodoModel{}
+type todoModel struct {
+	db *sql.DB
 }
 
-func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error) {
+func NewTodoModel(db *sql.DB) TodoModel {
+	return &todoModel{db: db}
+}
+
+func (tm *todoModel) GetTodos(user_id string) ([]*response.TodosResponse, error) {
 
 	getQuery := `
 							SELECT 
@@ -40,7 +50,7 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 									t.user_id = ?
 							`
 
-	rows, err := Db.Query(getQuery, user_id)
+	rows, err := tm.db.Query(getQuery, user_id)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +108,7 @@ func (tm *TodoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 	return todos, nil
 }
 
-func (tm *TodoModel) GetDateCount(user_id string, start_year string, end_year string) ([]*entities.TodoDateCount, error) {
+func (tm *todoModel) GetDateCount(user_id string, start_year string, end_year string) ([]*entities.TodoDateCount, error) {
 	getQuery := `	SELECT 
 										DATE(date) AS date, COUNT(*) AS count 
 								FROM 
@@ -111,7 +121,7 @@ func (tm *TodoModel) GetDateCount(user_id string, start_year string, end_year st
 										DATE(date)
 							`
 
-	rows, err := Db.Query(getQuery, user_id, start_year, end_year)
+	rows, err := tm.db.Query(getQuery, user_id, start_year, end_year)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +149,7 @@ func (tm *TodoModel) GetDateCount(user_id string, start_year string, end_year st
 	return res, nil
 }
 
-func (tm *TodoModel) AddTodos(ctx context.Context, user_id string, r request.CreateTodoRequest) (response.TodosResponse, error) {
+func (tm *todoModel) AddTodos(ctx context.Context, user_id string, r request.CreateTodoRequest) (response.TodosResponse, error) {
 	// todoのidを生成
 	id := utils.GenerateId()
 
@@ -166,7 +176,7 @@ func (tm *TodoModel) AddTodos(ctx context.Context, user_id string, r request.Cre
 	// sqlの作成と実行
 	insertQuery := `INSERT INTO todos(id, user_id, name, date, status, project_id, tag_id) VALUES(?, ?, ?, ?, ?, ?, ?)`
 
-	_, err := Db.Exec(insertQuery, res.Id, user_id, res.Name, res.Date, res.Status, projectID, tagID)
+	_, err := tm.db.Exec(insertQuery, res.Id, user_id, res.Name, res.Date, res.Status, projectID, tagID)
 
 	if err != nil {
 		return response.TodosResponse{}, err
@@ -175,7 +185,7 @@ func (tm *TodoModel) AddTodos(ctx context.Context, user_id string, r request.Cre
 	return res, nil
 }
 
-func (tm *TodoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) (response.TodosResponse, error) {
+func (tm *todoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) (response.TodosResponse, error) {
 	// responseを作成
 	res := response.TodosResponse{
 		Id:     r.Id,
@@ -199,7 +209,7 @@ func (tm *TodoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) 
 	// sqlの作成と実行
 	updateQuery := `UPDATE todos SET name = ?, date = ?, status = ?, project_id = ?, tag_id = ? WHERE id = ?`
 
-	_, err := Db.Exec(updateQuery, res.Name, res.Date, res.Status, projectID, tagID, res.Id)
+	_, err := tm.db.Exec(updateQuery, res.Name, res.Date, res.Status, projectID, tagID, res.Id)
 
 	if err != nil {
 		return response.TodosResponse{}, err
@@ -208,7 +218,7 @@ func (tm *TodoModel) UpdateTodos(ctx context.Context, r response.TodosResponse) 
 	return res, nil
 }
 
-func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, id string, r request.UpdateTodoStatusRequest) (response.TodosResponse, error) {
+func (tm *todoModel) UpdateTodoStatus(ctx context.Context, id string, r request.UpdateTodoStatusRequest) (response.TodosResponse, error) {
 	// responseを作成
 	res := response.TodosResponse{
 		Id:     id,
@@ -218,7 +228,7 @@ func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, id string, r request.
 	// sqlの作成と実行
 	updateQuery := `UPDATE todos SET status = ? WHERE id = ?`
 
-	_, err := Db.Exec(updateQuery, res.Status, res.Id)
+	_, err := tm.db.Exec(updateQuery, res.Status, res.Id)
 
 	if err != nil {
 		return response.TodosResponse{}, err
@@ -227,11 +237,11 @@ func (tm *TodoModel) UpdateTodoStatus(ctx context.Context, id string, r request.
 	return res, nil
 }
 
-func (tm *TodoModel) DeleteTodo(ctx context.Context, id string) error {
+func (tm *todoModel) DeleteTodo(ctx context.Context, id string) error {
 	// sqlの作成と実行
 	deleteQuery := `DELETE FROM todos WHERE id = ?`
 
-	_, err := Db.Exec(deleteQuery, id)
+	_, err := tm.db.Exec(deleteQuery, id)
 
 	if err != nil {
 		return err
