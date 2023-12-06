@@ -23,7 +23,7 @@
 
 - 表示されたカレンダー内の日付に該当するデータのみを取得するようクエリーパラメータを設定した。
 
-### /backend/golang/model
+### model の実装
 
 - Dependency Injection を意識した実装を行った。
 
