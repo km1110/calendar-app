@@ -5,10 +5,10 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/controller"
 )
 
-func initProjectRouter(router *gin.RouterGroup) {
+func initProjectRouter(router *gin.RouterGroup, pc controller.ProjectController) {
 	p := router.Group("/projects")
-	p.GET("", controller.FetchProject)
-	p.POST("", controller.CreateProject)
-	p.PATCH("/:id", controller.UpdateProject)
-	p.DELETE("/:id", controller.DeleteProject)
+	p.GET("", pc.FetchProject)
+	p.POST("", pc.CreateProject)
+	p.PATCH("/:id", pc.UpdateProject)
+	p.DELETE("/:id", pc.DeleteProject)
 }

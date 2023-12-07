@@ -2,27 +2,30 @@ package model
 
 import (
 	"context"
-	"math/rand"
-	"time"
+	"database/sql"
 
 	"github.com/km1110/calendar-app/backend/golang/model/entities"
-	"github.com/oklog/ulid"
+	"github.com/km1110/calendar-app/backend/golang/utils"
 )
 
-type UserModel struct {
+type UserModel interface {
+	AddUser(ctx context.Context, r entities.SignUp) (entities.SignUp, error)
+	GetUser(uid string) (string, error)
 }
 
-func NewUserModel() *UserModel {
-	return &UserModel{}
+type userModel struct {
+	db *sql.DB
 }
 
-func (um *UserModel) AddUser(ctx context.Context, r entities.SignUp) (entities.SignUp, error) {
-	t := time.Now()
-	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixMicro())), 0)
-	id := ulid.MustNew(ulid.Timestamp(t), entropy)
+func NewUserModel(db *sql.DB) UserModel {
+	return &userModel{db: db}
+}
+
+func (um *userModel) AddUser(ctx context.Context, r entities.SignUp) (entities.SignUp, error) {
+	id := utils.GenerateId()
 
 	req := entities.SignUp{
-		Id:           id.String(),
+		Id:           id,
 		Firebase_uid: r.Firebase_uid,
 		Username:     r.Username,
 		Email:        r.Email,
@@ -30,16 +33,16 @@ func (um *UserModel) AddUser(ctx context.Context, r entities.SignUp) (entities.S
 
 	sql := `INSERT INTO users(id, firebase_uid, username, email) VALUES(?, ?, ?, ?)`
 
-	_, err := Db.Exec(sql, req.Id, req.Firebase_uid, req.Username, req.Email)
+	_, err := um.db.Exec(sql, req.Id, req.Firebase_uid, req.Username, req.Email)
 
 	return req, err
 }
 
-func (um *UserModel) GetUser(uid string) (string, error) {
+func (um *userModel) GetUser(uid string) (string, error) {
 	id_sql := `select id from users where firebase_uid = ?`
 
 	var user_id string
-	if err := Db.QueryRow(id_sql, uid).Scan(&user_id); err != nil {
+	if err := um.db.QueryRow(id_sql, uid).Scan(&user_id); err != nil {
 		return "", err
 	}
 
