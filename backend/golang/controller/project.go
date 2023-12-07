@@ -5,62 +5,43 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/km1110/calendar-app/backend/golang/model"
+	"github.com/km1110/calendar-app/backend/golang/utils"
 	"github.com/km1110/calendar-app/backend/golang/view/request"
 )
 
-func FetchProject(c *gin.Context) {
-	pm := model.NewProjectModel()
-
-	// firebaseUIDの取得
-	firebaseUID, exists := c.Get("firebaseUID")
-	if !exists {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "firebaseUID not provided"})
-		return
-	}
-
-	// userIDの取得
-	um := model.NewUserModel()
-	userID, err := um.GetUser(firebaseUID.(string))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	projects, err := pm.GetProjects(userID)
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, projects)
+type ProjectController interface {
+	FetchProject(c *gin.Context)
+	CreateProject(c *gin.Context)
+	UpdateProject(c *gin.Context)
+	DeleteProject(c *gin.Context)
 }
 
-func CreateProject(c *gin.Context) {
-	var req request.CreateProjectRequest
+type projectController struct {
+	pm model.ProjectModel
+	um model.UserModel
+}
 
-	if err := c.Bind(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+func NewProjectController(pm model.ProjectModel, um model.UserModel) ProjectController {
+	return &projectController{pm, um}
+}
 
+func (pc projectController) FetchProject(c *gin.Context) {
 	// firebaseUIDの取得
-	firebaseUID, exists := c.Get("firebaseUID")
-	if !exists {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "firebaseUID not provided"})
+	firebaseUID, err := utils.GetFirebaseUID(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
 	// userIDの取得
-	um := model.NewUserModel()
-	userID, err := um.GetUser(firebaseUID.(string))
+	userID, err := pc.um.GetUser(firebaseUID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	pm := model.NewProjectModel()
-	res, err := pm.AddProject(userID, &req)
+	// プロジェクトの取得
+	res, err := pc.pm.GetProjects(userID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -70,7 +51,40 @@ func CreateProject(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func UpdateProject(c *gin.Context) {
+func (pc projectController) CreateProject(c *gin.Context) {
+	var req request.CreateProjectRequest
+
+	if err := c.Bind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// firebaseUIDの取得
+	firebaseUID, err := utils.GetFirebaseUID(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	// userIDの取得
+	userID, err := pc.um.GetUser(firebaseUID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// プロジェクトの作成
+	res, err := pc.pm.AddProject(userID, &req)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
+func (pc projectController) UpdateProject(c *gin.Context) {
 	var req request.UpdateProjectRequest
 
 	if err := c.Bind(&req); err != nil {
@@ -80,8 +94,7 @@ func UpdateProject(c *gin.Context) {
 
 	id := c.Param("id")
 
-	pm := model.NewProjectModel()
-	res, err := pm.UpdateProject(id, &req)
+	res, err := pc.pm.UpdateProject(id, &req)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -91,11 +104,10 @@ func UpdateProject(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func DeleteProject(c *gin.Context) {
+func (pc projectController) DeleteProject(c *gin.Context) {
 	id := c.Param("id")
 
-	pm := model.NewProjectModel()
-	err := pm.DeleteProject(id)
+	err := pc.pm.DeleteProject(id)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

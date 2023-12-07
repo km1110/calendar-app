@@ -5,10 +5,10 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/controller"
 )
 
-func initScheduleRouter(router *gin.RouterGroup) {
+func initScheduleRouter(router *gin.RouterGroup, sc controller.ScheduleController) {
 	s := router.Group("/schedule")
-	s.GET("", controller.FetchSchedule)
-	s.POST("", controller.AddSchedule)
-	s.PUT("/:schedule_id", controller.UpdateSchedule)
-	s.DELETE("/:schedule_id", controller.DeleteSchedule)
+	s.GET("", sc.FetchSchedule)
+	s.POST("", sc.AddSchedule)
+	s.PUT("/:schedule_id", sc.UpdateSchedule)
+	s.DELETE("/:schedule_id", sc.DeleteSchedule)
 }

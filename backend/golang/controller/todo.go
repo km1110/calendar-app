@@ -10,23 +10,38 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/view/response"
 )
 
-func FetchTodo(c *gin.Context) {
-	tm := model.NewTodoModel()
+type TodoController interface {
+	FetchTodo(c *gin.Context)
+	FetchTodoCount(c *gin.Context)
+	CreateTodo(c *gin.Context)
+	UpdateTodo(c *gin.Context)
+	UpdateTodoStatus(c *gin.Context)
+	DeleteTodo(c *gin.Context)
+}
 
+type todoController struct {
+	tm model.TodoModel
+	um model.UserModel
+}
+
+func NewTodoController(tm model.TodoModel, um model.UserModel) TodoController {
+	return &todoController{tm, um}
+}
+
+func (tc todoController) FetchTodo(c *gin.Context) {
 	firebaseUID, exists := c.Get("firebaseUID")
 	if !exists {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "firebaseUID not provided"})
 		return
 	}
 
-	um := model.NewUserModel()
-	userID, err := um.GetUser(firebaseUID.(string))
+	userID, err := tc.um.GetUser(firebaseUID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	todos, err := tm.GetTodos(userID)
+	todos, err := tc.tm.GetTodos(userID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -36,17 +51,14 @@ func FetchTodo(c *gin.Context) {
 	c.JSON(http.StatusOK, todos)
 }
 
-func FetchTodoCount(c *gin.Context) {
-	tm := model.NewTodoModel()
-
+func (tc todoController) FetchTodoCount(c *gin.Context) {
 	firebaseUID, exists := c.Get("firebaseUID")
 	if !exists {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "firebaseUID not provided"})
 		return
 	}
 
-	um := model.NewUserModel()
-	userID, err := um.GetUser(firebaseUID.(string))
+	userID, err := tc.um.GetUser(firebaseUID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -58,7 +70,7 @@ func FetchTodoCount(c *gin.Context) {
 	startYear := fmt.Sprintf("%s-01-01", start)
 	endYear := fmt.Sprintf("%s-01-01", end)
 
-	res, err := tm.GetDateCount(userID, startYear, endYear)
+	res, err := tc.tm.GetDateCount(userID, startYear, endYear)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -71,7 +83,7 @@ func FetchTodoCount(c *gin.Context) {
 	c.JSON(http.StatusOK, resRatio)
 }
 
-func CreateTodo(c *gin.Context) {
+func (tc todoController) CreateTodo(c *gin.Context) {
 	var req request.CreateTodoRequest
 
 	if err := c.Bind(&req); err != nil {
@@ -85,15 +97,13 @@ func CreateTodo(c *gin.Context) {
 		return
 	}
 
-	um := model.NewUserModel()
-	userID, err := um.GetUser(firebaseUID.(string))
+	userID, err := tc.um.GetUser(firebaseUID.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	tm := model.NewTodoModel()
-	res, err := tm.AddTodos(c, userID, req)
+	res, err := tc.tm.AddTodos(c, userID, req)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -103,7 +113,7 @@ func CreateTodo(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func UpdateTodo(c *gin.Context) {
+func (tc todoController) UpdateTodo(c *gin.Context) {
 	// Requestボディのバリデーション
 	var req request.UpdateTodoRequest
 
@@ -114,8 +124,7 @@ func UpdateTodo(c *gin.Context) {
 
 	id := c.Param("todo_id")
 
-	tm := model.NewTodoModel()
-	res, err := tm.UpdateTodos(c, response.TodosResponse{
+	res, err := tc.tm.UpdateTodos(c, response.TodosResponse{
 		Id:      id,
 		Name:    req.Name,
 		Date:    req.Date,
@@ -132,7 +141,7 @@ func UpdateTodo(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func UpdateTodoStatus(c *gin.Context) {
+func (tc todoController) UpdateTodoStatus(c *gin.Context) {
 	var req request.UpdateTodoStatusRequest
 
 	if err := c.Bind(&req); err != nil {
@@ -142,8 +151,7 @@ func UpdateTodoStatus(c *gin.Context) {
 
 	id := c.Param("todo_id")
 
-	tm := model.NewTodoModel()
-	res, err := tm.UpdateTodoStatus(c, id, req)
+	res, err := tc.tm.UpdateTodoStatus(c, id, req)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -153,11 +161,10 @@ func UpdateTodoStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func DeleteTodo(c *gin.Context) {
+func (tc todoController) DeleteTodo(c *gin.Context) {
 	id := c.Param("todo_id")
 
-	tm := model.NewTodoModel()
-	err := tm.DeleteTodo(c, id)
+	err := tc.tm.DeleteTodo(c, id)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

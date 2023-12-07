@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/km1110/calendar-app/backend/golang/utils"
@@ -10,20 +11,24 @@ import (
 )
 
 type DiaryModel interface {
-	GetDiarys(ctx context.Context, user_id string) ([]*response.Diary, error)
+	GetDiarys(ctx context.Context, user_id string, startDay string, endDay string) ([]*response.Diary, error)
+	AddDiary(ctx context.Context, user_id string, r request.Diary) (response.Diary, error)
+	UpdateDiary(ctx context.Context, id string, r request.Diary) (response.Diary, error)
+	DeleteDiary(ctx context.Context, id string) error
 }
 
 type diaryModel struct {
+	db *sql.DB
 }
 
-func NewDiaryModel() *diaryModel {
-	return &diaryModel{}
+func NewDiaryModel(db *sql.DB) DiaryModel {
+	return &diaryModel{db: db}
 }
 
 func (dm *diaryModel) GetDiarys(ctx context.Context, user_id string, startDay string, endDay string) ([]*response.Diary, error) {
 	getQuery := `SELECT id, title, content, date FROM diarys WHERE user_id = ? AND date >= ? AND date < ?`
 
-	rows, err := Db.Query(getQuery, user_id, startDay, endDay)
+	rows, err := dm.db.Query(getQuery, user_id, startDay, endDay)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +69,7 @@ func (dm *diaryModel) AddDiary(ctx context.Context, user_id string, r request.Di
 
 	insertQuery := `INSERT INTO diarys (id, title, content, date, user_id) VALUES (?, ?, ?, ?, ?)`
 
-	_, err := Db.Exec(insertQuery, res.Id, res.Title, res.Content, res.Date, user_id)
+	_, err := dm.db.Exec(insertQuery, res.Id, res.Title, res.Content, res.Date, user_id)
 
 	if err != nil {
 		return response.Diary{}, err
@@ -83,7 +88,7 @@ func (dm *diaryModel) UpdateDiary(ctx context.Context, id string, r request.Diar
 
 	updateQuery := `UPDATE diarys SET title = ?, content = ?, date = ? WHERE id = ?`
 
-	_, err := Db.Exec(updateQuery, res.Title, res.Content, res.Date, res.Id)
+	_, err := dm.db.Exec(updateQuery, res.Title, res.Content, res.Date, res.Id)
 
 	if err != nil {
 		return response.Diary{}, err
@@ -95,7 +100,7 @@ func (dm *diaryModel) UpdateDiary(ctx context.Context, id string, r request.Diar
 func (dm *diaryModel) DeleteDiary(ctx context.Context, id string) error {
 	deleteQuery := `DELETE FROM diarys WHERE id = ?`
 
-	_, err := Db.Exec(deleteQuery, id)
+	_, err := dm.db.Exec(deleteQuery, id)
 
 	if err != nil {
 		return err

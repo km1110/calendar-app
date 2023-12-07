@@ -9,11 +9,25 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/view/request"
 )
 
-func FetchDiary(c *gin.Context) {
+type DiaryController interface {
+	FetchDiary(c *gin.Context)
+	CreateDiary(c *gin.Context)
+	UpdateDiary(c *gin.Context)
+	DeleteDiary(c *gin.Context)
+}
+
+type diaryController struct {
+	dm model.DiaryModel
+	um model.UserModel
+}
+
+func NewDiaryController(dm model.DiaryModel, um model.UserModel) DiaryController {
+	return &diaryController{dm, um}
+}
+
+func (dc *diaryController) FetchDiary(c *gin.Context) {
 	startDay := c.Query("start")
 	endDay := c.Query("end")
-
-	dm := model.NewDiaryModel()
 
 	firebaseUID, err := utils.GetFirebaseUID(c)
 	if err != nil {
@@ -21,14 +35,13 @@ func FetchDiary(c *gin.Context) {
 		return
 	}
 
-	um := model.NewUserModel()
-	useID, err := um.GetUser(firebaseUID)
+	useID, err := dc.um.GetUser(firebaseUID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	diarys, err := dm.GetDiarys(c, useID, startDay, endDay)
+	diarys, err := dc.dm.GetDiarys(c, useID, startDay, endDay)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -37,7 +50,7 @@ func FetchDiary(c *gin.Context) {
 	c.JSON(http.StatusOK, diarys)
 }
 
-func CreateDiary(c *gin.Context) {
+func (dc *diaryController) CreateDiary(c *gin.Context) {
 	var req request.Diary
 
 	if err := c.Bind(&req); err != nil {
@@ -51,15 +64,13 @@ func CreateDiary(c *gin.Context) {
 		return
 	}
 
-	um := model.NewUserModel()
-	useID, err := um.GetUser(firebaseUID)
+	useID, err := dc.um.GetUser(firebaseUID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	dm := model.NewDiaryModel()
-	res, err := dm.AddDiary(c, useID, req)
+	res, err := dc.dm.AddDiary(c, useID, req)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -69,7 +80,7 @@ func CreateDiary(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func UpdateDiary(c *gin.Context) {
+func (dc *diaryController) UpdateDiary(c *gin.Context) {
 	var req request.Diary
 
 	if err := c.Bind(&req); err != nil {
@@ -79,8 +90,7 @@ func UpdateDiary(c *gin.Context) {
 
 	id := c.Param("id")
 
-	dm := model.NewDiaryModel()
-	res, err := dm.UpdateDiary(c, id, req)
+	res, err := dc.dm.UpdateDiary(c, id, req)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -90,11 +100,10 @@ func UpdateDiary(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func DeleteDiary(c *gin.Context) {
+func (dc *diaryController) DeleteDiary(c *gin.Context) {
 	id := c.Param("id")
 
-	dm := model.NewDiaryModel()
-	err := dm.DeleteDiary(c, id)
+	err := dc.dm.DeleteDiary(c, id)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

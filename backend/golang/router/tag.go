@@ -5,10 +5,10 @@ import (
 	"github.com/km1110/calendar-app/backend/golang/controller"
 )
 
-func initTagRouter(router *gin.RouterGroup) {
+func initTagRouter(router *gin.RouterGroup, tc controller.TagController) {
 	t := router.Group("/tags")
-	t.GET("", controller.FetchTag)
-	t.POST("", controller.CreateTag)
-	t.PATCH("/:id", controller.UpdateTag)
-	t.DELETE("/:id", controller.DeleteTag)
+	t.GET("", tc.FetchTag)
+	t.POST("", tc.CreateTag)
+	t.PATCH("/:id", tc.UpdateTag)
+	t.DELETE("/:id", tc.DeleteTag)
 }
