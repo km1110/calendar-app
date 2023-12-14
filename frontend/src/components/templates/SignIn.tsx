@@ -90,7 +90,7 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
               ログイン
             </Button>
             <Typography sx={{ marginTop: "20px" }}>
-              <Link to={"/"}>新規登録</Link>
+              <Link to={"/signup"}>新規登録</Link>
             </Typography>
           </Box>
         </Box>
