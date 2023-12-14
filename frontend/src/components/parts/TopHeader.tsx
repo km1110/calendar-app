@@ -1,10 +1,17 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
 
 export const TopHeader = () => {
   return (
     <Box>
-      <Typography sx={{ marginTop: "10px", marginLeft: "20px" }}>
+      <Typography
+        sx={{ paddingTop: "20px", paddingLeft: "30px" }}
+        style={{
+          fontFamily: "Arial",
+          fontSize: "20px",
+          fontWeight: "bold",
+          color: "#014A8F",
+        }}
+      >
         TaskCopilot
       </Typography>
     </Box>
