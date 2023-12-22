@@ -15,7 +15,9 @@ erDiagram
 
     projects ||--o{ todos : ""
 
+    schedules　||--o{ tags : ""
     todos ||--o{ tags : ""
+
 
     users {
       varchar id PK "ID"
@@ -29,10 +31,12 @@ erDiagram
     schedules {
       varchar id PK "ID"
       varchar user_id FK "ユーザーID:users.id"
+      varchar tag_id FK "タグID"
       text title "タイトル"
       text description  "概要"
-      text location  "場所"
-      datetime date  "日付"
+      varchar location "場所"
+      datetime start_time  "開始日"
+      datetime end_time "終了日"
       timestamp created_at "作成日時"
       timestamp updated_at "更新日時"
     }
@@ -52,7 +56,8 @@ erDiagram
       varchar project_id FK "プロジェクトID"
       varchar tag_id FK "タグID"
       varchar name "タスク名"
-      datetime date  "日付"
+      datetime deadline "締切日"
+      datetime end_date "終了日"
       boolean status "状態"
       timestamp created_at "作成日時"
       timestamp updated_at "更新日時"
@@ -62,6 +67,7 @@ erDiagram
       varchar id PK "ID"
       varchar id FK "ユーザID"
       varchar name "タグ名"
+      varchar color "色"
     }
 
     diarys {
