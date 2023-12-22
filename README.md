@@ -26,6 +26,6 @@
 ## CORSの作成
 - CORSを作成し、特定のオリジンからしかAPIの結果を取得できないように設定した。
 
-## Doc
-
-- DB: /docs/db.md
+## test account
+- id : test@test.com
+- pw : test123
