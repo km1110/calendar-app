@@ -66,15 +66,6 @@ export const ProjectList = ({
         </Typography>
         <Button onClick={() => handleAddClick()}>追加</Button>
       </Box>
-      {/* <Box sx={{ borderBottom: "1px solid" }}>
-        <Grid container>
-          <Grid item xs={6}>
-            <Typography sx={{ marginLeft: "10px", fontSize: "18px" }}>
-              プロジェクト名
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box> */}
       <Box
         sx={{
           overflowY: "auto",

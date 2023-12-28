@@ -1,6 +1,4 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
-import calendar_img from "@/assets/calendar.png";
 import { Link } from "react-router-dom";
 
 export const Top = () => {
