@@ -37,7 +37,7 @@ export const DailyDialog = ({
         <Typography sx={{ marginBottom: "10px" }}>
           {schedules.length}件の予定があります
         </Typography>
-        <Typography>{day.format("DD")}</Typography>
+        <Typography>{day.format("D")}日</Typography>
         {schedules.map((schedule: scheduleType, index: number) => (
           <DaySchedule
             key={index}
