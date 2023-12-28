@@ -156,11 +156,7 @@ export const MonthView = () => {
   return (
     <div>
       <Box display="flex" flexDirection="row">
-        <AddScheduleBar
-          schedule={schedule}
-          setSchdule={setSchedule}
-          handleSaveSchedule={handleSaveSchedule}
-        />
+        <AddScheduleBar handleSaveSchedule={handleSaveSchedule} />
         <MonthCalender diarys={diarys} />
       </Box>
       <AddScheduleDialog handleSaveSchedule={handleSaveSchedule} />
