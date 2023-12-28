@@ -33,6 +33,8 @@ export const AddScheduleBar = ({ handleSaveSchedule }: Props) => {
   const { daySelected, setDaySelected, schedule, setSchedule } =
     useContext(MonthContext);
 
+  const isError = title === "" || daySelected === null;
+
   const theme = createTheme(
     {},
     jaJP // x-date-pickers translations
@@ -46,6 +48,12 @@ export const AddScheduleBar = ({ handleSaveSchedule }: Props) => {
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
     setSchedule({ ...schedule, title: e.target.value });
+  };
+
+  const handleSave = () => {
+    if (isError) return;
+    handleSaveSchedule();
+    setTitle("");
   };
 
   return (
@@ -90,7 +98,7 @@ export const AddScheduleBar = ({ handleSaveSchedule }: Props) => {
           width: "120px",
           fontSize: "20px",
         }}
-        onClick={handleSaveSchedule}
+        onClick={handleSave}
       >
         追加
       </Button>
