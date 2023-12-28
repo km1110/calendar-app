@@ -4,7 +4,7 @@ import { scheduleType } from "@/types/schedule";
 import dayjs from "dayjs";
 
 export const margeSchedules = (
-  calendar: dayjs.Dayjs[],
+  calendar: dayjs.Dayjs[][],
   schedules: scheduleType[],
   diarys: diaryType[]
 ) => {
@@ -14,11 +14,16 @@ export const margeSchedules = (
   if (diarys === null) {
     diarys = [];
   }
-  return calendar.map((cday: dayjs.Dayjs) => ({
-    date: cday,
-    schedules: schedules.filter((e: scheduleType) =>
-      isSameDay(dayjs(e.date), cday)
-    ),
-    diary: diarys.find((e: diaryType) => isSameDay(dayjs(e.date), cday)),
-  }));
+
+  return calendar.map((cal: dayjs.Dayjs[]) => {
+    return cal.map((cday: dayjs.Dayjs) => {
+      return {
+        date: cday,
+        schedules: schedules.filter((e: scheduleType) =>
+          isSameDay(dayjs(e.date), cday)
+        ),
+        diary: diarys.find((e: diaryType) => isSameDay(dayjs(e.date), cday)),
+      };
+    });
+  });
 };

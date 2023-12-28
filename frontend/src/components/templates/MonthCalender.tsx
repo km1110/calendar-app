@@ -31,62 +31,99 @@ export const MonthCalender = ({ diarys }: Props) => {
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
   return (
-    <div>
-      <Container sx={{ marginTop: "10px", width: "100%", height: "100%" }}>
-        <Grid container columns={7}>
-          {days.map((day) => (
+    <Container sx={{ marginTop: "10px", width: "100%", height: "100%" }}>
+      <Grid container columns={7}>
+        {days.map((day) => (
+          <Grid
+            item
+            display="flex"
+            justifyContent="center"
+            xs={1}
+            key={day}
+            sx={{
+              borderBottom: "1px solid #ccc",
+              textAlign: "center",
+              fontWeight: "bold",
+              color: "#666",
+            }}
+          >
+            {day}
+          </Grid>
+        ))}
+      </Grid>
+      <Grid container columns={7}>
+        {calendar.map((week: any, weekIndex: number) => (
+          <Grid
+            className="weeks"
+            item
+            xs={7}
+            key={weekIndex}
+            sx={{
+              borderBottom: "1px solid #ccc;",
+              textAlign: "right",
+              height: "130px",
+              position: "relative",
+            }}
+          >
             <Grid
-              item
-              xs={1}
-              key={day}
-              sx={{
-                borderBottom: "1px solid #ccc",
-                textAlign: "center",
-                fontWeight: "bold",
-                color: "#666",
-              }}
+              container
+              columns={7}
+              sx={{ borderLeft: "1px solid #ccc", position: "absolute" }}
             >
-              {day}
+              {week.map((item: any, dayIndex: number) => (
+                <Grid
+                  item
+                  xs={1}
+                  key={parseInt(item.date.format("DD"))}
+                  sx={{
+                    borderRight: "1px solid #ccc",
+                    borderBottom: "1px solid #ccc;",
+                    textAlign: "right",
+                    height: "130px",
+                  }}
+                ></Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-        <Grid container columns={7} sx={{ borderLeft: "1px solid #ccc" }}>
-          {calendar.map((item: any, index: number) => (
-            <Grid
-              className="hoge1"
-              item
-              xs={1}
-              key={index}
-              sx={{
-                borderRight: "1px solid #ccc",
-                borderBottom: "1px solid #ccc;",
-                textAlign: "right",
-                height: "130px",
-              }}
-            >
-              <Box
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDaySelected(item.date);
-                  setShowAddDialog(true);
-                }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                sx={{ width: "100%", height: "100%" }}
-              >
-                <MonthElement
-                  key={index}
-                  index={index}
-                  hoveredIndex={hoveredIndex}
-                  day={item.date}
-                  schedules={item.schedules}
-                  diary={item.diary}
-                />
-              </Box>
+            <Grid container columns={7} sx={{ position: "absolute" }}>
+              {week.map((item: any, dayIndex: number) => (
+                <Grid
+                  item
+                  xs={1}
+                  key={parseInt(item.date.format("DD"))}
+                  sx={{
+                    textAlign: "right",
+                    height: "130px",
+                  }}
+                >
+                  <Box
+                    className="hoge3"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDaySelected(item.date);
+                      setShowAddDialog(true);
+                    }}
+                    onMouseEnter={() => {
+                      const d = parseInt(item.date.format("MMDD"));
+                      setHoveredIndex(d);
+                    }}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    sx={{ width: "100%", height: "100%" }}
+                  >
+                    <MonthElement
+                      key={parseInt(item.date.format("MMDD"))}
+                      index={parseInt(item.date.format("MMDD"))}
+                      hoveredIndex={hoveredIndex}
+                      day={item.date}
+                      schedules={item.schedules}
+                      diary={item.diary}
+                    />
+                  </Box>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </div>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   );
 };

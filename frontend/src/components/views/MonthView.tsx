@@ -12,6 +12,8 @@ import { diaryType } from "@/types/diary";
 import { useRecoilState } from "recoil";
 import { diarysState } from "@/atoms/diarysState";
 import { pageState } from "@/atoms/pageState";
+import { Box } from "@mui/material";
+import { AddScheduleBar } from "../templates/AddScheduleBar";
 
 export const MonthView = () => {
   const {
@@ -153,7 +155,10 @@ export const MonthView = () => {
 
   return (
     <div>
-      <MonthCalender diarys={diarys} />
+      <Box display="flex" flexDirection="row">
+        <AddScheduleBar handleSaveSchedule={handleSaveSchedule} />
+        <MonthCalender diarys={diarys} />
+      </Box>
       <AddScheduleDialog handleSaveSchedule={handleSaveSchedule} />
       <CurrentScheduleDialog handleDelete={handleDelete} />
       <ChangeScheduleDialog handleChangeSchedule={handleChangeSchedule} />
