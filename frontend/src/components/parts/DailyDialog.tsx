@@ -1,9 +1,17 @@
 import { scheduleType } from "@/types/schedule";
-import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import { DaySchedule } from "./DaySchedule";
+import dayjs from "dayjs";
 
 type Props = {
+  day: dayjs.Dayjs;
   schedules: scheduleType[];
   setSchedule: React.Dispatch<React.SetStateAction<scheduleType>>;
   showDialog: boolean;
@@ -11,14 +19,23 @@ type Props = {
 };
 
 export const DailyDialog = ({
+  day,
   schedules,
   setSchedule,
   showDialog,
   setShowDialog,
 }: Props) => {
   return (
-    <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
+    <Dialog
+      open={showDialog}
+      onClose={() => setShowDialog(false)}
+      // sx={{ width: "100px", height: "100px" }}
+    >
       <DialogContent>
+        <Typography sx={{ marginBottom: "10px" }}>
+          {schedules.length}件の予定があります
+        </Typography>
+        <Typography>{day.format("DD")}</Typography>
         {schedules.map((schedule: scheduleType, index: number) => (
           <DaySchedule
             key={index}
@@ -29,7 +46,14 @@ export const DailyDialog = ({
         ))}
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setShowDialog(false)}>閉じる</Button>
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDialog(false);
+          }}
+        >
+          閉じる
+        </Button>
       </DialogActions>
     </Dialog>
   );
