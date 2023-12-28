@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Card, IconButton, Typography, styled } from "@mui/material";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import dayjs from "dayjs";
 import { useRecoilState } from "recoil";
@@ -12,6 +12,7 @@ import { scheduleType } from "@/types/schedule";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { diaryType } from "@/types/diary";
 import { diaryState } from "@/atoms/diaryState";
+import { DailyDialog } from "../parts/DailyDialog";
 
 type Props = {
   index: number;
@@ -20,6 +21,13 @@ type Props = {
   schedules: scheduleType[];
   diary: diaryType;
 };
+
+const ScheduleStyle = styled(Card)(({ theme }) => ({
+  marginBottom: "4px",
+  borderRadius: "5px",
+  height: "22px",
+  background: "#fff",
+}));
 
 export const MonthElement = ({
   index,
@@ -31,6 +39,8 @@ export const MonthElement = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { setShowDialog, setSchedule } = useContext(MonthContext);
   const [currentDiary, setCurrentDiary] = useRecoilState<diaryType>(diaryState);
+
+  const [showDailyDialog, setShowDailyDialog] = useState<boolean>(false);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -75,8 +85,15 @@ export const MonthElement = ({
           {day.format("D")}
         </Typography>
       </Box>
-      <Box sx={{ width: "100%", height: "80%", overflowY: "auto" }}>
-        {schedules.map((schedule: scheduleType, index: number) => (
+      <Box
+        sx={{
+          textAlign: "center",
+          marginLeft: "2.5px",
+          width: "95%",
+          height: "80%",
+        }}
+      >
+        {schedules.slice(0, 3).map((schedule: scheduleType, index: number) => (
           <Schedule
             key={index}
             schedule={schedule}
@@ -84,6 +101,27 @@ export const MonthElement = ({
             setShowDialog={setShowDialog}
           />
         ))}
+        {schedules.length > 3 && (
+          <ScheduleStyle>
+            <Box
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowDailyDialog(true);
+              }}
+            >
+              <DailyDialog
+                day={day}
+                schedules={schedules}
+                setSchedule={setSchedule}
+                showDialog={showDailyDialog}
+                setShowDialog={setShowDailyDialog}
+              />
+              <Typography variant="caption" sx={{ marginRight: "10px" }}>
+                他{schedules.length - 3}件
+              </Typography>
+            </Box>
+          </ScheduleStyle>
+        )}
       </Box>
       <Diary
         day={day}
