@@ -113,8 +113,9 @@ export const MonthElement = ({
                 day={day}
                 schedules={schedules}
                 setSchedule={setSchedule}
-                showDialog={showDailyDialog}
-                setShowDialog={setShowDailyDialog}
+                showDailyDialog={showDailyDialog}
+                setShowDailyDialog={setShowDailyDialog}
+                setScheduleDialog={setShowDialog}
               />
               <Typography variant="caption" sx={{ marginRight: "10px" }}>
                 他{schedules.length - 3}件

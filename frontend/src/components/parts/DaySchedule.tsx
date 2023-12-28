@@ -6,7 +6,8 @@ import React, { Dispatch, SetStateAction } from "react";
 type Props = {
   schedule: scheduleType;
   setSchedule: Dispatch<SetStateAction<scheduleType>>;
-  setShowDialog: Dispatch<SetStateAction<boolean>>;
+  setDailyDialog: Dispatch<SetStateAction<boolean>>;
+  setScheduleDialog: Dispatch<SetStateAction<boolean>>;
 };
 
 const ScheduleStyle = styled(Card)(({ theme }) => ({
@@ -19,7 +20,8 @@ const ScheduleStyle = styled(Card)(({ theme }) => ({
 export const DaySchedule = ({
   schedule,
   setSchedule,
-  setShowDialog,
+  setDailyDialog,
+  setScheduleDialog,
 }: Props) => {
   return (
     <ScheduleStyle>
@@ -27,8 +29,9 @@ export const DaySchedule = ({
         sx={{ background: "#EEEEEE", height: "30px" }}
         onClick={(e) => {
           e.stopPropagation();
-          setShowDialog(true);
+          setScheduleDialog(true);
           setSchedule(schedule);
+          setDailyDialog(false);
         }}
       >
         <Typography

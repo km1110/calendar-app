@@ -14,21 +14,23 @@ type Props = {
   day: dayjs.Dayjs;
   schedules: scheduleType[];
   setSchedule: React.Dispatch<React.SetStateAction<scheduleType>>;
-  showDialog: boolean;
-  setShowDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  showDailyDialog: boolean;
+  setShowDailyDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  setScheduleDialog: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const DailyDialog = ({
   day,
   schedules,
   setSchedule,
-  showDialog,
-  setShowDialog,
+  showDailyDialog,
+  setShowDailyDialog,
+  setScheduleDialog,
 }: Props) => {
   return (
     <Dialog
-      open={showDialog}
-      onClose={() => setShowDialog(false)}
+      open={showDailyDialog}
+      onClose={() => setShowDailyDialog(false)}
       // sx={{ width: "100px", height: "100px" }}
     >
       <DialogContent>
@@ -41,7 +43,8 @@ export const DailyDialog = ({
             key={index}
             schedule={schedule}
             setSchedule={setSchedule}
-            setShowDialog={setShowDialog}
+            setDailyDialog={setShowDailyDialog}
+            setScheduleDialog={setScheduleDialog}
           />
         ))}
       </DialogContent>
@@ -49,7 +52,7 @@ export const DailyDialog = ({
         <Button
           onClick={(e) => {
             e.stopPropagation();
-            setShowDialog(false);
+            setShowDailyDialog(false);
           }}
         >
           閉じる
