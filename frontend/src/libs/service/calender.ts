@@ -5,14 +5,16 @@ export const createCalender = (month = dayjs().month()) => {
   const firstDay = dayjs(new Date(year, month, 1));
   const firstDayIndex = firstDay.day();
 
-  return Array(35)
-    .fill(0)
-    .map((_, i) => {
-      const diffFromFirstDay = i - firstDayIndex;
+  const daysMatrix = new Array(5).fill([]).map((_, i) => {
+    return new Array(7).fill(0).map((_, j) => {
+      const diffFromFirstDay = i * 7 + j - firstDayIndex;
       const day = firstDay.add(diffFromFirstDay, "day");
 
       return day;
     });
+  });
+
+  return daysMatrix;
 };
 
 export const getStartAndEndDate = (month: dayjs.Dayjs) => {
