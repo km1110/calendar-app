@@ -1,8 +1,13 @@
 # task-copilot
 
+## 概要
+
 タスク管理の Web アプリケーション
 
-## Demo
+### 想定されるユーザー
+
+- カレンダー、TODO 意外に日記の記録もしたい方
+- 自身の達成度を可視化したい方
 
 ## Requirement
 
@@ -25,6 +30,10 @@
 
 ## CORSの作成
 - CORSを作成し、特定のオリジンからしかAPIの結果を取得できないように設定した。
+
+## Doc
+
+- [DB](/docs/db.md)
 
 ## test account
 - id : test@test.com
