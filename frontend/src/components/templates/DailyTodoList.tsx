@@ -11,15 +11,32 @@ import { Add, MoreHoriz } from "@mui/icons-material";
 
 import dayjs from "dayjs";
 
+import { TodoDialog } from "@/components/parts/TodoDialog";
 import { todoType } from "@/types/todo";
+import { tagType } from "@/types/tag";
+import { projectType } from "@/types/project";
 
 type Props = {
+  todo: todoType;
+  todos: todoType[];
+  tags: tagType[];
+  projects: projectType[];
   setTodo: React.Dispatch<React.SetStateAction<todoType>>;
+  handleCreate: () => void;
+  handleUpdate: () => void;
   handleUpdateStatus: (id: string) => void;
 };
 
-export const DailyTodoList = ({ setTodo, handleUpdateStatus }: Props) => {
-  const today = dayjs().format("MM月DD日");
+export const DailyTodoList = ({
+  todo,
+  todos,
+  tags,
+  projects,
+  setTodo,
+  handleCreate,
+  handleUpdate,
+  handleUpdateStatus,
+}: Props) => {
   const [dailyTodo, setDailyTodo] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -27,17 +44,64 @@ export const DailyTodoList = ({ setTodo, handleUpdateStatus }: Props) => {
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setTodo((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const tagName = e.target.value;
+    const selectTag = tags.find((tag) => tag.name === tagName);
+
+    if (selectTag) {
+      setTodo((prevData) => ({
+        ...prevData,
+        tag: selectTag,
+      }));
+    }
+  };
+
+  const handleProjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const projectTitle = e.target.value;
+    const selectProject = projects.find(
+      (project) => project.title === projectTitle
+    );
+
+    if (selectProject) {
+      setTodo((prevData) => ({
+        ...prevData,
+        project: selectProject,
+      }));
+    }
+  };
+
+  const handleClosed = () => {
+    setTodo({
+      id: "",
+      name: "",
+      tag: { id: "", name: "" },
+      date: dayjs(),
+      project: { id: "", title: "" },
+      status: false,
+    });
+    setIsOpen(false);
+  };
+
   return (
     <Card
       sx={{
         width: "500px",
         height: "470px",
-        border: "2px solid #e1e4e8",
+        border: "2px solid #ebedf0",
         backgroundColor: "#ebedf0",
+        borderRadius: "10px 10px 0px 0px",
       }}
     >
-      <Typography sx={{ height: "8%", margin: "5px" }}>
-        {today} Todo List
+      <Typography sx={{ height: "8%", marginLeft: "10px", marginTop: "10px" }}>
+        Todo List
       </Typography>
       <Box sx={{ height: "80%", overflow: "scroll" }}>
         {dailyTodo.map((todo: todoType, index: number) => (
@@ -47,7 +111,7 @@ export const DailyTodoList = ({ setTodo, handleUpdateStatus }: Props) => {
             alignItems="center"
             sx={{
               width: "100%",
-              border: "1px solid #e1e4e8",
+              border: "1px solid #ebedf0",
               backgroundColor: "#ffffff",
               marginLeft: "5px",
               marginRight: "5px",
@@ -83,6 +147,19 @@ export const DailyTodoList = ({ setTodo, handleUpdateStatus }: Props) => {
           </Grid>
         ))}
       </Box>
+      <TodoDialog
+        todo={todo}
+        tags={tags}
+        projects={projects}
+        typeDialog={typeDialog}
+        isOpen={isOpen}
+        onClose={handleClosed}
+        handleTextChange={handleTextChange}
+        handleTagChange={handleTagChange}
+        handleProjectChange={handleProjectChange}
+        handleCreate={handleCreate}
+        handleUpdate={handleUpdate}
+      />
       <Box sx={{ height: "12%", display: "flex", justifyContent: "center" }}>
         <IconButton
           sx={{
