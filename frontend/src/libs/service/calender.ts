@@ -17,6 +17,22 @@ export const createCalender = (month = dayjs().month()) => {
   return daysMatrix;
 };
 
+export const createYearCalender = (year = dayjs().year()) => {
+  const firstDay = dayjs(new Date(year, 0, 1));
+  const firstDayIndex = firstDay.day();
+
+  const yearMatrix = new Array(53).fill([]).map((_, i) => {
+    return new Array(7).fill(0).map((_, j) => {
+      const diffFromFirstDay = i * 7 + j - firstDayIndex;
+      const day = firstDay.add(diffFromFirstDay, "day");
+
+      return day;
+    });
+  });
+
+  return yearMatrix;
+};
+
 export const getStartAndEndDate = (month: dayjs.Dayjs) => {
   const startDay = month.startOf("month");
   const endDay = month.endOf("month");
