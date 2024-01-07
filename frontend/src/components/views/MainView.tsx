@@ -1,15 +1,33 @@
 import { useEffect, useState } from "react";
 
-import { todoDayRatioType } from "@/types/todo";
+import { Box } from "@mui/material";
+
+import { todoDayRatioType, todoType } from "@/types/todo";
 import { makeInstance } from "@/libs/api/axios";
 import dayjs from "dayjs";
 import { Contribution } from "../templates/Contribution";
 import { useRecoilState } from "recoil";
 import { pageState } from "@/atoms/pageState";
-import { set } from "date-fns";
+import { DailyTodoList } from "../templates/DailyTodoList";
 
 export const MainView = () => {
   const [dayRatio, setDayRatio] = useState<todoDayRatioType[]>([]);
+  const [todo, setTodo] = useState<todoType>({
+    id: "",
+    name: "",
+    tag: {
+      id: "",
+      name: "",
+    },
+    project: {
+      id: "",
+      title: "",
+    },
+    date: dayjs(),
+    status: false,
+  });
+  const [todos, setTodos] = useState<todoType[]>([]);
+
   const [page, setPage] = useRecoilState<string>(pageState);
 
   const instance = makeInstance();
@@ -37,9 +55,36 @@ export const MainView = () => {
     fetchData();
   }, []);
 
+  const handleUpdateStatus = async (itemId: string) => {
+    let newStatus;
+    const newTodos = todos.map((item) => {
+      if (item.id === itemId) {
+        newStatus = !item.status;
+        return { ...item, status: newStatus };
+      } else {
+        return item;
+      }
+    });
+    setTodos(newTodos);
+
+    await instance
+      .patch(`/todos/${itemId}/status`, {
+        status: newStatus,
+      })
+      .catch((error) => {
+        console.error("An error occurred while updating the status:", error);
+      });
+  };
+
   return (
-    <div>
+    <Box display="flex" flexDirection="column" alignItems="center">
       <Contribution dayRatio={dayRatio} />
-    </div>
+      <Box>
+        <DailyTodoList
+          setTodo={setTodo}
+          handleUpdateStatus={handleUpdateStatus}
+        />
+      </Box>
+    </Box>
   );
 };
