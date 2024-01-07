@@ -55,6 +55,66 @@ export const MainView = () => {
     fetchData();
   }, []);
 
+  // todoの作成
+  const handleCreate = async () => {
+    const body = {
+      name: todo.name,
+      tag: todo.tag,
+      date: dayjs(todo.date),
+      project: todo.project,
+      status: todo.status,
+    };
+    await instance.post("/todos", body);
+    instance
+      .get("/todos", {
+        params: {
+          date: dayjs(todo.date).format("YYYY-MM-DD"),
+        },
+      })
+      .then(({ data }) => {
+        setTodos(data);
+      });
+
+    setTodo({
+      id: "",
+      name: "",
+      tag: { id: "", name: "" },
+      date: dayjs(),
+      project: { id: "", title: "" },
+      status: false,
+    });
+  };
+
+  // todoの更新
+  const handleUpdate = async () => {
+    const body = {
+      name: todo.name,
+      tag: todo.tag,
+      date: dayjs(todo.date),
+      project: todo.project,
+      status: todo.status,
+    };
+    await instance.patch(`/todos/${todo.id}`, body);
+    instance
+      .get("/todos", {
+        params: {
+          date: dayjs(todo.date).format("YYYY-MM-DD"),
+        },
+      })
+      .then(({ data }) => {
+        setTodos(data);
+      });
+
+    setTodo({
+      id: "",
+      name: "",
+      tag: { id: "", name: "" },
+      date: dayjs(),
+      project: { id: "", title: "" },
+      status: false,
+    });
+  };
+
   const handleUpdateStatus = async (itemId: string) => {
     let newStatus;
     const newTodos = todos.map((item) => {
@@ -81,7 +141,13 @@ export const MainView = () => {
       <Contribution dayRatio={dayRatio} />
       <Box>
         <DailyTodoList
+          todo={todo}
+          todos={todos}
+          tags={[]}
+          projects={[]}
           setTodo={setTodo}
+          handleCreate={handleCreate}
+          handleUpdate={handleUpdate}
           handleUpdateStatus={handleUpdateStatus}
         />
       </Box>
