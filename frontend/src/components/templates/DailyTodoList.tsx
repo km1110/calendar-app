@@ -7,38 +7,25 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import { Add, MoreHoriz } from "@mui/icons-material";
+
 import dayjs from "dayjs";
-import { dailyTodoData } from "@/mock/dayTodo";
+
 import { todoType } from "@/types/todo";
-import { Edit, DeleteForever, Add } from "@mui/icons-material";
 
 type Props = {
   setTodo: React.Dispatch<React.SetStateAction<todoType>>;
   handleUpdateStatus: (id: string) => void;
-  handleDelete: (id: string) => void;
 };
 
-export const DailyTodoList = () => {
+export const DailyTodoList = ({ setTodo, handleUpdateStatus }: Props) => {
   const today = dayjs().format("MM月DD日");
-  const [dailyTodo, setDailyTodo] = useState(dailyTodoData);
+  const [dailyTodo, setDailyTodo] = useState([]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [typeDialog, setTypeDialog] = useState<"add" | "change">("add");
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  // const handleChangeClick = (item: todoType) => {
-  //   setTodo((prevTodo) => ({ ...prevTodo, ...item }));
-  //   setTypeDialog("change");
-  //   setIsOpen(true);
-  // };
-
-  const handleUpdateStatus = (id: string) => {
-    const newTodo = dailyTodo.map((todo) =>
-      todo.id === id ? { ...todo, status: !todo.status } : todo
-    );
-    setDailyTodo(newTodo);
-  };
 
   return (
     <Card
@@ -65,8 +52,6 @@ export const DailyTodoList = () => {
               marginLeft: "5px",
               marginRight: "5px",
             }}
-            // onMouseEnter={() => setHoveredIndex(index)}
-            // onMouseLeave={() => setHoveredIndex(null)}
           >
             <Grid item xs={2}>
               <Typography sx={{ marginLeft: "10px" }}>
@@ -83,6 +68,17 @@ export const DailyTodoList = () => {
             </Grid>
             <Grid item xs={3}>
               <Typography>{todo.tag.name}</Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <IconButton
+                sx={{
+                  width: "30px",
+                  height: "30px",
+                  fontSize: "16px",
+                }}
+              >
+                <MoreHoriz />
+              </IconButton>
             </Grid>
           </Grid>
         ))}
