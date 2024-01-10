@@ -39,6 +39,8 @@ export const EditButton = ({ dailyTodo, handleEdit, handleDelete }: Props) => {
         styleOverrides: {
           paper: {
             boxShadow: "none",
+            border: "1px solid #E0E0E0",
+            width: "100px",
           },
         },
       },
@@ -70,14 +72,19 @@ export const EditButton = ({ dailyTodo, handleEdit, handleDelete }: Props) => {
             vertical: "center",
             horizontal: "left",
           }}
-          style={{ boxShadow: "none" }}
         >
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <IconButton onClick={() => handleEdit(dailyTodo)}>
+            <IconButton
+              onClick={() => handleEdit(dailyTodo)}
+              sx={{ borderRadius: "5px" }}
+            >
               <Edit />
               <Typography sx={{ marginLeft: "5px" }}>編集</Typography>
             </IconButton>
-            <IconButton onClick={() => handleDelete(dailyTodo.id)}>
+            <IconButton
+              onClick={() => handleDelete(dailyTodo.id)}
+              sx={{ borderRadius: "5px" }}
+            >
               <Delete />
               <Typography sx={{ marginLeft: "5px" }}>削除</Typography>
             </IconButton>
