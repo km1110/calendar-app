@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Box,
   IconButton,
@@ -10,7 +9,15 @@ import {
 } from "@mui/material";
 import { MoreHoriz, Edit, Delete } from "@mui/icons-material";
 
-export const EditButton = () => {
+import { todoType } from "@/types/todo";
+
+type Props = {
+  dailyTodo: todoType;
+  handleEdit: (todo: todoType) => void;
+  handleDelete: (id: string) => void;
+};
+
+export const EditButton = ({ dailyTodo, handleEdit, handleDelete }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -66,11 +73,11 @@ export const EditButton = () => {
           style={{ boxShadow: "none" }}
         >
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <IconButton>
+            <IconButton onClick={() => handleEdit(dailyTodo)}>
               <Edit />
               <Typography sx={{ marginLeft: "5px" }}>編集</Typography>
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => handleDelete(dailyTodo.id)}>
               <Delete />
               <Typography sx={{ marginLeft: "5px" }}>削除</Typography>
             </IconButton>
