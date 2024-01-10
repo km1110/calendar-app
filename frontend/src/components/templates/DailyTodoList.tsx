@@ -6,15 +6,18 @@ import {
   Grid,
   IconButton,
   Typography,
+  createTheme,
 } from "@mui/material";
-import { Add, MoreHoriz } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 
 import dayjs from "dayjs";
 
 import { TodoDialog } from "@/components/parts/TodoDialog";
+import { EditButton } from "@/components/templates/EditButton";
 import { todoType } from "@/types/todo";
 import { tagType } from "@/types/tag";
 import { projectType } from "@/types/project";
+import { dailyTodoData } from "@/mock/dayTodo";
 
 type Props = {
   todo: todoType;
@@ -25,6 +28,7 @@ type Props = {
   handleCreate: () => void;
   handleUpdate: () => void;
   handleUpdateStatus: (id: string) => void;
+  handleDelete: (id: string) => void;
 };
 
 export const DailyTodoList = ({
@@ -36,13 +40,23 @@ export const DailyTodoList = ({
   handleCreate,
   handleUpdate,
   handleUpdateStatus,
+  handleDelete,
 }: Props) => {
-  const [dailyTodo, setDailyTodo] = useState([]);
+  const [dailyTodos, setDailyTodos] = useState<todoType[]>(dailyTodoData);
 
   const [isOpen, setIsOpen] = useState(false);
   const [typeDialog, setTypeDialog] = useState<"add" | "change">("add");
 
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const handleAdd = () => {
+    setTypeDialog("add");
+    setIsOpen(true);
+  };
+
+  const handleEdit = (todo: todoType) => {
+    setTodo((prevTodo) => ({ ...prevTodo, ...todo }));
+    setTypeDialog("change");
+    setIsOpen(true);
+  };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -94,17 +108,26 @@ export const DailyTodoList = ({
     <Card
       sx={{
         width: "500px",
-        height: "470px",
+        height: "450px",
         border: "2px solid #ebedf0",
         backgroundColor: "#ebedf0",
         borderRadius: "10px 10px 0px 0px",
       }}
     >
-      <Typography sx={{ height: "8%", marginLeft: "10px", marginTop: "10px" }}>
+      <Typography
+        sx={{
+          height: "8%",
+          marginLeft: "10px",
+          marginTop: "10px",
+          fontFamily: "helvetica neue",
+          fontSize: "16px",
+          fontWeight: "bold",
+        }}
+      >
         Todo List
       </Typography>
       <Box sx={{ height: "80%", overflow: "scroll" }}>
-        {dailyTodo.map((todo: todoType, index: number) => (
+        {dailyTodos.map((dailyTodo: todoType, index: number) => (
           <Grid
             container
             key={index}
@@ -120,32 +143,58 @@ export const DailyTodoList = ({
             <Grid item xs={2}>
               <Typography sx={{ marginLeft: "10px" }}>
                 <Checkbox
-                  checked={todo.status}
+                  checked={dailyTodo.status}
                   id="status"
                   name="status"
-                  onChange={() => handleUpdateStatus(todo.id)}
+                  onChange={() => handleUpdateStatus(dailyTodo.id)}
                 />
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography>{todo.name}</Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography>{todo.tag.name}</Typography>
-            </Grid>
-            <Grid item xs={1}>
-              <IconButton
+              <Typography
                 sx={{
-                  width: "30px",
-                  height: "30px",
+                  fontFamily: "helvetica neue",
                   fontSize: "16px",
+                  fontWeight: "bold",
                 }}
               >
-                <MoreHoriz />
-              </IconButton>
+                {dailyTodo.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography
+                sx={{
+                  fontFamily: "helvetica neue",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                }}
+              >
+                {dailyTodo.tag.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <EditButton
+                dailyTodo={dailyTodo}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+              />
             </Grid>
           </Grid>
         ))}
+      </Box>
+      <Box sx={{ height: "12%", display: "flex", justifyContent: "center" }}>
+        <IconButton
+          sx={{
+            width: "100%",
+            height: "90%",
+            fontSize: "16px",
+            borderRadius: "0px",
+          }}
+          onClick={() => handleAdd()}
+        >
+          <Add />
+          タスクの追加
+        </IconButton>
       </Box>
       <TodoDialog
         todo={todo}
@@ -160,18 +209,6 @@ export const DailyTodoList = ({
         handleCreate={handleCreate}
         handleUpdate={handleUpdate}
       />
-      <Box sx={{ height: "12%", display: "flex", justifyContent: "center" }}>
-        <IconButton
-          sx={{
-            width: "70%",
-            height: "90%",
-            fontSize: "16px",
-          }}
-        >
-          <Add />
-          タスクの追加
-        </IconButton>
-      </Box>
     </Card>
   );
 };
