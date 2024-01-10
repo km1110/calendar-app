@@ -6,7 +6,6 @@ import {
   Grid,
   IconButton,
   Typography,
-  createTheme,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 
@@ -17,7 +16,6 @@ import { EditButton } from "@/components/templates/EditButton";
 import { todoType } from "@/types/todo";
 import { tagType } from "@/types/tag";
 import { projectType } from "@/types/project";
-import { dailyTodoData } from "@/mock/dayTodo";
 
 type Props = {
   todo: todoType;
@@ -42,8 +40,6 @@ export const DailyTodoList = ({
   handleUpdateStatus,
   handleDelete,
 }: Props) => {
-  const [dailyTodos, setDailyTodos] = useState<todoType[]>(dailyTodoData);
-
   const [isOpen, setIsOpen] = useState(false);
   const [typeDialog, setTypeDialog] = useState<"add" | "change">("add");
 
@@ -127,7 +123,7 @@ export const DailyTodoList = ({
         Todo List
       </Typography>
       <Box sx={{ height: "80%", overflow: "scroll" }}>
-        {dailyTodos.map((dailyTodo: todoType, index: number) => (
+        {todos.map((dailyTodo: todoType, index: number) => (
           <Grid
             container
             key={index}
@@ -155,7 +151,6 @@ export const DailyTodoList = ({
                 sx={{
                   fontFamily: "helvetica neue",
                   fontSize: "16px",
-                  fontWeight: "bold",
                 }}
               >
                 {dailyTodo.name}
@@ -166,7 +161,6 @@ export const DailyTodoList = ({
                 sx={{
                   fontFamily: "helvetica neue",
                   fontSize: "16px",
-                  fontWeight: "bold",
                 }}
               >
                 {dailyTodo.tag.name}
