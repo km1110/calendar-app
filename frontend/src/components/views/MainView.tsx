@@ -136,6 +136,29 @@ export const MainView = () => {
       });
   };
 
+  // todoの削除
+  const handleDelete = async (id: string) => {
+    await instance
+      .delete(`/todos/${id}`)
+      .then(() => {
+        instance.get("/todos").then(({ data }) => {
+          setTodos(data);
+        });
+      })
+      .catch((error) => {
+        console.error("An error occurred while deleting the todo:", error);
+      });
+
+    setTodo({
+      id: "",
+      name: "",
+      tag: { id: "", name: "" },
+      date: dayjs(),
+      project: { id: "", title: "" },
+      status: false,
+    });
+  };
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Contribution dayRatio={dayRatio} />
@@ -149,6 +172,7 @@ export const MainView = () => {
           handleCreate={handleCreate}
           handleUpdate={handleUpdate}
           handleUpdateStatus={handleUpdateStatus}
+          handleDelete={handleDelete}
         />
       </Box>
     </Box>
