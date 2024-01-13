@@ -29,7 +29,13 @@ type Props = {
   onClose: () => void;
 };
 
-export const Diary = ({ day, diary, setDiary, isOpen, onClose }: Props) => {
+export const DiaryDialog = ({
+  day,
+  diary,
+  setDiary,
+  isOpen,
+  onClose,
+}: Props) => {
   const [isEdit, setIsEdit] = useState(false);
 
   const [diarys, setDiarys] = useRecoilState<diaryType[]>(diarysState);
