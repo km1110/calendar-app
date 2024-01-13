@@ -1,8 +1,9 @@
+import { useRecoilState } from "recoil";
+
 import { diaryState } from "@/atoms/diaryState";
 import { diarysState } from "@/atoms/diarysState";
 import { makeInstance } from "@/libs/api/axios";
 import { diaryType } from "@/types/diary";
-import { useRecoilState } from "recoil";
 
 export const useDiary = (action: "diary" | "diarys") => {
   const [diary, setDiary] = useRecoilState<diaryType>(diaryState);
