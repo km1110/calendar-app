@@ -41,7 +41,16 @@ func (tc todoController) FetchTodo(c *gin.Context) {
 		return
 	}
 
-	todos, err := tc.tm.GetTodos(userID)
+	start_date := c.Query("start_date")
+	end_date := c.Query("end_date")
+
+	var todos []*response.TodosResponse
+
+	if start_date != "" {
+		todos, err = tc.tm.GetDailyTodos(userID, start_date, end_date)
+	} else {
+		todos, err = tc.tm.GetTodos(userID)
+	}
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

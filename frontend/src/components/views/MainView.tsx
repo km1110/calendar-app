@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 
 import { Box } from "@mui/material";
-
-import { todoDayRatioType, todoType } from "@/types/todo";
-import { makeInstance } from "@/libs/api/axios";
 import dayjs from "dayjs";
-import { Contribution } from "../templates/Contribution";
 import { useRecoilState } from "recoil";
+
+import { makeInstance } from "@/libs/api/axios";
+import { Contribution } from "@/components/templates/Contribution";
+import { DailyTodoList } from "@/components/templates/DailyTodoList";
 import { pageState } from "@/atoms/pageState";
-import { DailyTodoList } from "../templates/DailyTodoList";
+import { tagState } from "@/atoms/tagState";
+import { projectState } from "@/atoms/projectState";
+import { todoDayRatioType, todoType } from "@/types/todo";
+import { tagType } from "@/types/tag";
+import { projectsType } from "@/types/project";
 
 export const MainView = () => {
   const [dayRatio, setDayRatio] = useState<todoDayRatioType[]>([]);
@@ -29,6 +33,8 @@ export const MainView = () => {
   const [todos, setTodos] = useState<todoType[]>([]);
 
   const [page, setPage] = useRecoilState<string>(pageState);
+  const [tags, setTags] = useRecoilState<tagType[]>(tagState);
+  const [projects, setProjects] = useRecoilState<projectsType[]>(projectState);
 
   const instance = makeInstance();
 
@@ -55,6 +61,50 @@ export const MainView = () => {
     fetchData();
   }, []);
 
+  // TODOの取得
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const todos = await instance.get("/todos", {
+          params: {
+            start_date: dayjs(todo.date).format("YYYY-MM-DD"),
+            end_date: dayjs(todo.date).add(1, "day").format("YYYY-MM-DD"),
+          },
+        });
+        setTodos(todos.data);
+      } catch (error) {
+        console.error("An error occurred while fetching the todo:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // タグの取得
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tags = await instance.get("/tags");
+        setTags(tags.data);
+      } catch (error) {
+        console.error("An error occurred while fetching the todo:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // プロジェクトの取得
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const projects = await instance.get("/projects");
+        setProjects(projects.data);
+      } catch (error) {
+        console.error("An error occurred while fetching the todo:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   // todoの作成
   const handleCreate = async () => {
     const body = {
@@ -68,7 +118,8 @@ export const MainView = () => {
     instance
       .get("/todos", {
         params: {
-          date: dayjs(todo.date).format("YYYY-MM-DD"),
+          start_date: dayjs(todo.date).format("YYYY-MM-DD"),
+          end_date: dayjs(todo.date).add(1, "day").format("YYYY-MM-DD"),
         },
       })
       .then(({ data }) => {
@@ -98,7 +149,8 @@ export const MainView = () => {
     instance
       .get("/todos", {
         params: {
-          date: dayjs(todo.date).format("YYYY-MM-DD"),
+          start_date: dayjs(todo.date).format("YYYY-MM-DD"),
+          end_date: dayjs(todo.date).add(1, "day").format("YYYY-MM-DD"),
         },
       })
       .then(({ data }) => {
@@ -141,9 +193,16 @@ export const MainView = () => {
     await instance
       .delete(`/todos/${id}`)
       .then(() => {
-        instance.get("/todos").then(({ data }) => {
-          setTodos(data);
-        });
+        instance
+          .get("/todos", {
+            params: {
+              start_date: dayjs(todo.date).format("YYYY-MM-DD"),
+              end_date: dayjs(todo.date).add(1, "day").format("YYYY-MM-DD"),
+            },
+          })
+          .then(({ data }) => {
+            setTodos(data);
+          });
       })
       .catch((error) => {
         console.error("An error occurred while deleting the todo:", error);
@@ -166,8 +225,8 @@ export const MainView = () => {
         <DailyTodoList
           todo={todo}
           todos={todos}
-          tags={[]}
-          projects={[]}
+          tags={tags}
+          projects={projects}
           setTodo={setTodo}
           handleCreate={handleCreate}
           handleUpdate={handleUpdate}
