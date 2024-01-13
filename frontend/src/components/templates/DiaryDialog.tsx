@@ -57,8 +57,8 @@ export const DiaryDialog = ({
     instance
       .get("/diarys", {
         params: {
-          start: start,
-          end: end,
+          start_date: start,
+          end_date: end,
         },
       })
       .then(({ data }) => {
@@ -79,8 +79,8 @@ export const DiaryDialog = ({
     instance
       .get("/diarys", {
         params: {
-          start: start,
-          end: end,
+          start_date: start,
+          end_date: end,
         },
       })
       .then(({ data }) => {
