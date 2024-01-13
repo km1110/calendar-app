@@ -1,7 +1,16 @@
 import { Card, Typography, Box, IconButton, TextField } from "@mui/material";
 import { Upload } from "@mui/icons-material";
+import { diaryType } from "@/types/diary";
 
-export const DiaryCard = () => {
+import { Dispatch, SetStateAction } from "react";
+
+type Props = {
+  diary: diaryType;
+  setDiary: Dispatch<SetStateAction<diaryType>>;
+  handleDiary: (diary: diaryType) => void;
+};
+
+export const DiaryCard = ({ diary, setDiary, handleDiary }: Props) => {
   return (
     <Card
       sx={{
@@ -34,6 +43,8 @@ export const DiaryCard = () => {
         }}
       >
         <TextField
+          value={diary?.title}
+          onChange={(e) => setDiary({ ...diary, title: e.target.value })}
           size="small"
           variant="standard"
           placeholder="タイトルを追加"
@@ -49,19 +60,22 @@ export const DiaryCard = () => {
         }}
       >
         <TextField
+          value={diary?.content}
+          onChange={(e) => setDiary({ ...diary, content: e.target.value })}
+          multiline
+          rows={12}
+          placeholder="内容を追加"
           sx={{
             width: "90%",
             height: "100hv",
             backgroundColor: "#ffffff",
             borderRadius: "5px",
           }}
-          multiline
-          rows={12}
-          placeholder="内容を追加"
         />
       </Box>
       <Box sx={{ height: "10%", display: "flex", justifyContent: "center" }}>
         <IconButton
+          onClick={() => handleDiary(diary)}
           sx={{
             width: "30%",
             height: "90%",
