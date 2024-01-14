@@ -13,6 +13,7 @@ import (
 
 type TodoModel interface {
 	GetTodos(user_id string) ([]*response.TodosResponse, error)
+	GetDailyTodos(user_id, start_date, end_date string) ([]*response.TodosResponse, error)
 	GetDateCount(user_id string, start_year string, end_year string) ([]*entities.TodoDateCount, error)
 	AddTodos(ctx context.Context, user_id string, r request.CreateTodoRequest) (response.TodosResponse, error)
 	UpdateTodos(ctx context.Context, r response.TodosResponse) (response.TodosResponse, error)
@@ -51,6 +52,86 @@ func (tm *todoModel) GetTodos(user_id string) ([]*response.TodosResponse, error)
 							`
 
 	rows, err := tm.db.Query(getQuery, user_id)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var todos []*response.TodosResponse
+
+	for rows.Next() {
+		var (
+			id, name                                    string
+			project_id, project_title, tag_id, tag_name sql.NullString
+			date                                        time.Time
+			status                                      bool
+		)
+
+		if err := rows.Scan(&id, &name, &date, &status, &project_id, &project_title, &tag_id, &tag_name); err != nil {
+			return nil, err
+		}
+
+		var projectID, projectTitle, tagID, tagName string
+
+		if project_id.Valid {
+			projectID = project_id.String
+		}
+
+		if project_title.Valid {
+			projectTitle = project_title.String
+		}
+
+		if tag_id.Valid {
+			tagID = tag_id.String
+		}
+
+		if tag_name.Valid {
+			tagName = tag_name.String
+		}
+
+		todos = append(todos, &response.TodosResponse{
+			Id:     id,
+			Name:   name,
+			Date:   date,
+			Status: status,
+			Project: response.ProjectsResponse{
+				Id:    projectID,
+				Title: projectTitle,
+			},
+			Tag: response.TagResponse{
+				Id:   tagID,
+				Name: tagName,
+			},
+		})
+	}
+
+	return todos, nil
+}
+
+func (tm *todoModel) GetDailyTodos(user_id string, start_date string, end_date string) ([]*response.TodosResponse, error) {
+
+	getQuery := `
+							SELECT 
+									t.id, 
+									t.name, 
+									t.date, 
+									t.status, 
+									p.id AS project_id, 
+									p.title AS project_title, 
+									tg.id AS tag_id, 
+									tg.name AS tag_name
+							FROM 
+									todos t
+							LEFT JOIN 
+									projects p ON t.project_id = p.id
+							LEFT JOIN 
+									tags tg ON t.tag_id = tg.id
+							WHERE 
+									t.user_id = ? AND t.date >= ? AND t.date < ?
+							`
+
+	rows, err := tm.db.Query(getQuery, user_id, start_date, end_date)
 	if err != nil {
 		return nil, err
 	}

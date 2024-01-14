@@ -1,19 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+
+import { Box } from "@mui/material";
+import { useRecoilState } from "recoil";
 
 import { MonthCalender } from "@/components/templates/MonthCalender";
 import { AddScheduleDialog } from "@/components/templates/AddScheduleDialog";
 import { CurrentScheduleDialog } from "@/components/templates/CurrentScheduleDialog";
-import { ChangeScheduleDialog } from "../templates/ChangeScheduleDialog";
+import { AddScheduleBar } from "@/components/templates/AddScheduleBar";
+import { ChangeScheduleDialog } from "@/components/templates/ChangeScheduleDialog";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { makeInstance } from "@/libs/api/axios";
-import { scheduleType } from "@/types/schedule";
 import { getStartAndEndDate } from "@/libs/service/calender";
+import { scheduleType } from "@/types/schedule";
 import { diaryType } from "@/types/diary";
-import { useRecoilState } from "recoil";
 import { diarysState } from "@/atoms/diarysState";
 import { pageState } from "@/atoms/pageState";
-import { Box } from "@mui/material";
-import { AddScheduleBar } from "../templates/AddScheduleBar";
 
 export const MonthView = () => {
   const {
@@ -44,8 +45,8 @@ export const MonthView = () => {
         });
         const diarys = await instance.get("/diarys", {
           params: {
-            start: start,
-            end: end,
+            start_date: start,
+            end_date: end,
           },
         });
         setSchedules(schedules.data);
