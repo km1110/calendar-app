@@ -26,8 +26,6 @@ func NewDiaryController(dm model.DiaryModel, um model.UserModel) DiaryController
 }
 
 func (dc *diaryController) FetchDiary(c *gin.Context) {
-	startDay := c.Query("start")
-	endDay := c.Query("end")
 
 	firebaseUID, err := utils.GetFirebaseUID(c)
 	if err != nil {
@@ -40,6 +38,9 @@ func (dc *diaryController) FetchDiary(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	startDay := c.Query("start_date")
+	endDay := c.Query("end_date")
 
 	diarys, err := dc.dm.GetDiarys(c, useID, startDay, endDay)
 	if err != nil {

@@ -120,8 +120,10 @@ export const TodoDialog = ({
             ))}
         </TextField>
       </DialogContent>
-      <DialogActions>
-        <Box display="flex" flexDirection="column" alignItems="center">
+      <DialogActions
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
+        <Box>
           <Button
             onClick={() => {
               if (typeDialog === "add") handleCreate();
