@@ -17,7 +17,7 @@ export const DiaryCard = ({ diary, setDiary, handleDiary }: Props) => {
         width: "500px",
         height: "450px",
         border: "2px solid #ebedf0",
-        backgroundColor: "#EBF4EF",
+        backgroundColor: "#ebedf0",
         borderRadius: "10px 10px 0px 0px",
       }}
     >
@@ -29,7 +29,6 @@ export const DiaryCard = ({ diary, setDiary, handleDiary }: Props) => {
           fontFamily: "helvetica neue",
           fontSize: "16px",
           fontWeight: "bold",
-          color: "#333333",
         }}
       >
         Diary
