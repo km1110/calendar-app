@@ -4,17 +4,26 @@ import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { useRecoilState } from "recoil";
 
-import { makeInstance } from "@/libs/api/axios";
 import { Contribution } from "@/components/templates/Contribution";
 import { DailyTodoList } from "@/components/templates/DailyTodoList";
+import { DiaryCard } from "@/components/templates/DiaryCard";
+import { makeInstance } from "@/libs/api/axios";
 import { pageState } from "@/atoms/pageState";
 import { tagState } from "@/atoms/tagState";
 import { projectState } from "@/atoms/projectState";
 import { todoDayRatioType, todoType } from "@/types/todo";
 import { tagType } from "@/types/tag";
 import { projectsType } from "@/types/project";
+import { diaryType } from "@/types/diary";
+import { useDiary } from "@/hooks/useDiary";
+import { diaryState } from "@/atoms/diaryState";
 
 export const MainView = () => {
+  const [page, setPage] = useRecoilState<string>(pageState);
+  const [tags, setTags] = useRecoilState<tagType[]>(tagState);
+  const [projects, setProjects] = useRecoilState<projectsType[]>(projectState);
+  const [diary, setDiary] = useRecoilState<diaryType>(diaryState);
+
   const [dayRatio, setDayRatio] = useState<todoDayRatioType[]>([]);
   const [todo, setTodo] = useState<todoType>({
     id: "",
@@ -32,12 +41,12 @@ export const MainView = () => {
   });
   const [todos, setTodos] = useState<todoType[]>([]);
 
-  const [page, setPage] = useRecoilState<string>(pageState);
-  const [tags, setTags] = useRecoilState<tagType[]>(tagState);
-  const [projects, setProjects] = useRecoilState<projectsType[]>(projectState);
-
   const instance = makeInstance();
 
+  const { handleFetchDiary, handleCreateDiary, handleUpdateDiary } =
+    useDiary("diary");
+
+  // 進捗の取得
   useEffect(() => {
     setPage("main");
     // 今年と来年の年を取得
@@ -86,7 +95,7 @@ export const MainView = () => {
         const tags = await instance.get("/tags");
         setTags(tags.data);
       } catch (error) {
-        console.error("An error occurred while fetching the todo:", error);
+        console.error("An error occurred while fetching the tags:", error);
       }
     };
     fetchData();
@@ -99,7 +108,21 @@ export const MainView = () => {
         const projects = await instance.get("/projects");
         setProjects(projects.data);
       } catch (error) {
-        console.error("An error occurred while fetching the todo:", error);
+        console.error("An error occurred while fetching the project:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // 日記の取得
+  useEffect(() => {
+    const fetchData = async () => {
+      const start = dayjs(diary.date).format("YYYY-MM-DD");
+      const end = dayjs(diary.date).add(1, "day").format("YYYY-MM-DD");
+      try {
+        await handleFetchDiary(start, end);
+      } catch (error) {
+        console.error("An error occurred while fetching the diary:", error);
       }
     };
     fetchData();
@@ -218,10 +241,21 @@ export const MainView = () => {
     });
   };
 
+  const handleDiary = async (diary: diaryType) => {
+    const start = dayjs(todo.date).format("YYYY-MM-DD");
+    const end = dayjs(todo.date).add(1, "day").format("YYYY-MM-DD");
+
+    if (diary.id) {
+      await handleUpdateDiary(diary, start, end);
+    } else {
+      await handleCreateDiary(diary, start, end);
+    }
+  };
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Contribution dayRatio={dayRatio} />
-      <Box>
+      <Box display="flex" flexDirection="row" gap="20px">
         <DailyTodoList
           todo={todo}
           todos={todos}
@@ -232,6 +266,11 @@ export const MainView = () => {
           handleUpdate={handleUpdate}
           handleUpdateStatus={handleUpdateStatus}
           handleDelete={handleDelete}
+        />
+        <DiaryCard
+          diary={diary}
+          setDiary={setDiary}
+          handleDiary={handleDiary}
         />
       </Box>
     </Box>

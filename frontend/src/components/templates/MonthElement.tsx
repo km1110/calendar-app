@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { useRecoilState } from "recoil";
 
 import { Schedule } from "@/components/templates/Schedule";
-import { Diary } from "@/components/templates/Diary";
+import { DiaryDialog } from "@/components/templates/DiaryDialog";
 import { scheduleType } from "@/types/schedule";
 
 import { MonthContext } from "@/provider/CalendarProvider";
@@ -124,7 +124,7 @@ export const MonthElement = ({
           </ScheduleStyle>
         )}
       </Box>
-      <Diary
+      <DiaryDialog
         day={day}
         diary={currentDiary}
         setDiary={setCurrentDiary}

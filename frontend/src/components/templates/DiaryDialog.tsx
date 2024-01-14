@@ -29,7 +29,13 @@ type Props = {
   onClose: () => void;
 };
 
-export const Diary = ({ day, diary, setDiary, isOpen, onClose }: Props) => {
+export const DiaryDialog = ({
+  day,
+  diary,
+  setDiary,
+  isOpen,
+  onClose,
+}: Props) => {
   const [isEdit, setIsEdit] = useState(false);
 
   const [diarys, setDiarys] = useRecoilState<diaryType[]>(diarysState);
@@ -51,8 +57,8 @@ export const Diary = ({ day, diary, setDiary, isOpen, onClose }: Props) => {
     instance
       .get("/diarys", {
         params: {
-          start: start,
-          end: end,
+          start_date: start,
+          end_date: end,
         },
       })
       .then(({ data }) => {
@@ -73,8 +79,8 @@ export const Diary = ({ day, diary, setDiary, isOpen, onClose }: Props) => {
     instance
       .get("/diarys", {
         params: {
-          start: start,
-          end: end,
+          start_date: start,
+          end_date: end,
         },
       })
       .then(({ data }) => {
