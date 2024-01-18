@@ -37,12 +37,11 @@ export const MonthCalender = ({ diarys }: Props) => {
           <Grid
             item
             display="flex"
-            justifyContent="center"
+            justifyContent="left"
             xs={1}
             key={day}
             sx={{
               borderBottom: "1px solid #ccc",
-              textAlign: "center",
               fontWeight: "bold",
               color: "#666",
             }}
@@ -68,7 +67,11 @@ export const MonthCalender = ({ diarys }: Props) => {
             <Grid
               container
               columns={7}
-              sx={{ borderLeft: "1px solid #ccc", position: "absolute" }}
+              sx={{
+                borderLeft: "1px solid #ccc",
+                borderRight: "1px solid #ccc",
+                position: "absolute",
+              }}
             >
               {week.map((item: any, dayIndex: number) => (
                 <Grid
@@ -76,7 +79,6 @@ export const MonthCalender = ({ diarys }: Props) => {
                   xs={1}
                   key={parseInt(item.date.format("DD"))}
                   sx={{
-                    borderRight: "1px solid #ccc",
                     borderBottom: "1px solid #ccc;",
                     textAlign: "right",
                     height: "130px",
@@ -91,12 +93,11 @@ export const MonthCalender = ({ diarys }: Props) => {
                   xs={1}
                   key={parseInt(item.date.format("DD"))}
                   sx={{
-                    textAlign: "right",
+                    // textAlign: "left",
                     height: "130px",
                   }}
                 >
                   <Box
-                    className="hoge3"
                     onClick={(e) => {
                       e.stopPropagation();
                       setDaySelected(item.date);
