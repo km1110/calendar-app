@@ -64,7 +64,9 @@ export const ProjectList = ({
         <Typography sx={{ flexGrow: 1, marginTop: "5px", marginLeft: "10px" }}>
           Project
         </Typography>
-        <Button onClick={() => handleAddClick()}>追加</Button>
+        <Button style={{ color: "#69BD83" }} onClick={() => handleAddClick()}>
+          追加
+        </Button>
       </Box>
       <Box
         sx={{

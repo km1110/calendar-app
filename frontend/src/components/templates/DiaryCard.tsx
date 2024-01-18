@@ -16,8 +16,7 @@ export const DiaryCard = ({ diary, setDiary, handleDiary }: Props) => {
       sx={{
         width: "500px",
         height: "450px",
-        border: "2px solid #ebedf0",
-        backgroundColor: "#ebedf0",
+        backgroundColor: "#f5f5f5",
         borderRadius: "10px 10px 0px 0px",
       }}
     >
