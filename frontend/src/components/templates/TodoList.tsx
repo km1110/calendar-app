@@ -128,7 +128,9 @@ export const TodoList = ({
           >
             TODO
           </Typography>
-          <Button onClick={() => handleAddClick()}>追加</Button>
+          <Button style={{ color: "#69BD83" }} onClick={() => handleAddClick()}>
+            追加
+          </Button>
         </Box>
         <Box sx={{ borderBottom: "1px solid #ccc" }}>
           <Grid container>
