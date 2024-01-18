@@ -19,8 +19,10 @@ export const useDiary = (action: "diary" | "diarys") => {
         },
       })
       .then(({ data }) => {
-        if (action === "diary") setDiary(data[0]);
-        else if (action === "diarys") setDiarys(data);
+        if (data !== null) {
+          if (action === "diary") setDiary(data[0]);
+          else if (action === "diarys") setDiarys(data);
+        }
       });
   };
 
