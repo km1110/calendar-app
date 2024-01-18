@@ -30,7 +30,7 @@ export const Header = ({
 }: Props) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ background: "#69BD83" }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -45,7 +45,7 @@ export const Header = ({
           {page === "calendar" ? (
             <>
               <Typography variant="h6" component="div">
-                Calender
+                TaskCopilot
               </Typography>
               <IconButton
                 size="small"
@@ -62,13 +62,17 @@ export const Header = ({
               </Typography>
             </>
           ) : (
-            <Typography variant="h6" component="div">
-              {page}
+            <Typography
+              variant="h6"
+              component="div"
+              fontFamily="helvetica neue"
+            >
+              TaskCopilot
             </Typography>
           )}
           <Box sx={{ flexGrow: 1 }} />
           <Button color="inherit" onClick={handleSignOut}>
-            logout
+            Logout
           </Button>
         </Toolbar>
       </AppBar>
