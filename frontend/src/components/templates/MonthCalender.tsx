@@ -7,6 +7,7 @@ import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { margeSchedules } from "@/libs/service/schedule";
 import { diaryType } from "@/types/diary";
+import { DAYS } from "@/config/days";
 
 type Props = {
   diarys: diaryType[];
@@ -28,21 +29,18 @@ export const MonthCalender = ({ diarys }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month, schedules, diarys]);
 
-  const days = ["日", "月", "火", "水", "木", "金", "土"];
-
   return (
     <Container sx={{ marginTop: "10px", width: "100%", height: "100%" }}>
       <Grid container columns={7}>
-        {days.map((day) => (
+        {DAYS.map((day) => (
           <Grid
             item
             display="flex"
-            justifyContent="center"
+            justifyContent="left"
             xs={1}
             key={day}
             sx={{
               borderBottom: "1px solid #ccc",
-              textAlign: "center",
               fontWeight: "bold",
               color: "#666",
             }}
@@ -68,7 +66,11 @@ export const MonthCalender = ({ diarys }: Props) => {
             <Grid
               container
               columns={7}
-              sx={{ borderLeft: "1px solid #ccc", position: "absolute" }}
+              sx={{
+                borderLeft: "1px solid #ccc",
+                borderRight: "1px solid #ccc",
+                position: "absolute",
+              }}
             >
               {week.map((item: any, dayIndex: number) => (
                 <Grid
@@ -76,7 +78,6 @@ export const MonthCalender = ({ diarys }: Props) => {
                   xs={1}
                   key={parseInt(item.date.format("DD"))}
                   sx={{
-                    borderRight: "1px solid #ccc",
                     borderBottom: "1px solid #ccc;",
                     textAlign: "right",
                     height: "130px",
@@ -91,12 +92,11 @@ export const MonthCalender = ({ diarys }: Props) => {
                   xs={1}
                   key={parseInt(item.date.format("DD"))}
                   sx={{
-                    textAlign: "right",
+                    // textAlign: "left",
                     height: "130px",
                   }}
                 >
                   <Box
-                    className="hoge3"
                     onClick={(e) => {
                       e.stopPropagation();
                       setDaySelected(item.date);

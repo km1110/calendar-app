@@ -23,11 +23,11 @@ export const Top = () => {
             component={Link}
             to="/signup"
             style={{
-              borderColor: "black",
-              background: "#014A8F",
+              borderColor: "#69BD83",
+              background: "#69BD83",
             }}
             sx={{
-              color: "white",
+              color: "#ffffff",
               marginTop: { xs: "10px", sm: "0px" },
               marginX: "10px",
               width: "160px",

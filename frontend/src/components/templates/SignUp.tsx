@@ -33,7 +33,7 @@ export const SignUp = ({ signupData, setSignupData, signup }: Props) => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#014A8F",
+            backgroundColor: "#EBF4EF",
           }}
         >
           <Card
@@ -103,13 +103,12 @@ export const SignUp = ({ signupData, setSignupData, signup }: Props) => {
               variant="outlined"
               type="submit"
               style={{
-                borderColor: "black",
-                background: "#014A8F",
+                background: "#69BD83",
                 fontFamily: "Arial",
                 fontWeight: "bold",
               }}
               sx={{
-                color: "white",
+                color: "#ffffff",
                 marginTop: { xs: "10px", sm: "0px" },
                 marginX: "10px",
                 width: "160px",

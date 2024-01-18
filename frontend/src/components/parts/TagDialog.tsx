@@ -71,7 +71,7 @@ export const TagDialog = ({
             variant="outlined"
             style={{
               borderColor: "black",
-              background: "#014A8F",
+              background: "#69BD83",
             }}
             sx={{
               color: "white",

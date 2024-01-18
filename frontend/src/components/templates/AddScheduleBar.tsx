@@ -90,10 +90,10 @@ export const AddScheduleBar = ({ handleSaveSchedule }: Props) => {
         style={{
           borderColor: "black",
           borderRadius: "20px",
-          background: "#014A8F",
+          background: "#69BD83",
         }}
         sx={{
-          color: "white",
+          color: "#ffffff",
           marginTop: "20px",
           width: "120px",
           fontSize: "20px",

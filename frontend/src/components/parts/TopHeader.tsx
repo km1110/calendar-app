@@ -9,7 +9,7 @@ export const TopHeader = () => {
           fontFamily: "Arial",
           fontSize: "20px",
           fontWeight: "bold",
-          color: "#014A8F",
+          color: "#69BD83",
         }}
       >
         TaskCopilot

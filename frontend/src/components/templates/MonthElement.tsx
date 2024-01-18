@@ -58,7 +58,8 @@ export const MonthElement = ({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "left",
+          marginLeft: "5px",
           height: "20%",
         }}
       >
@@ -81,7 +82,15 @@ export const MonthElement = ({
             </IconButton>
           )}
         </Typography>
-        <Typography variant="caption" sx={{ marginRight: "7px" }}>
+        <Typography
+          variant="caption"
+          sx={{
+            marginTop: "5px",
+            fontFamily: "helvetica neue",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+        >
           {day.format("D")}
         </Typography>
       </Box>
