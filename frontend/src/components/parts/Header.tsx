@@ -58,7 +58,7 @@ export const Header = ({
                 <ArrowForwardIosIcon />
               </IconButton>
               <Typography variant="h6" component="div">
-                {date.format("YYYY年 MM月")}
+                {date.format("YYYY年 M月")}
               </Typography>
             </>
           ) : (

@@ -16,6 +16,7 @@ export const WeekGrass = ({ weekContributions, getColor }: Props) => {
           sx={{
             width: "12px",
             height: "12px",
+            border: "1px solid #ebedf0",
             borderRadius: "2px",
             margin: "1px",
             backgroundColor: getColor(dayContribution.ratio),
