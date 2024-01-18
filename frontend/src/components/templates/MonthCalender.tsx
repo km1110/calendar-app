@@ -7,6 +7,7 @@ import { createCalender } from "@/libs/service/calender";
 import { MonthContext } from "@/provider/CalendarProvider";
 import { margeSchedules } from "@/libs/service/schedule";
 import { diaryType } from "@/types/diary";
+import { DAYS } from "@/config/days";
 
 type Props = {
   diarys: diaryType[];
@@ -28,12 +29,10 @@ export const MonthCalender = ({ diarys }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month, schedules, diarys]);
 
-  const days = ["日", "月", "火", "水", "木", "金", "土"];
-
   return (
     <Container sx={{ marginTop: "10px", width: "100%", height: "100%" }}>
       <Grid container columns={7}>
-        {days.map((day) => (
+        {DAYS.map((day) => (
           <Grid
             item
             display="flex"
