@@ -34,7 +34,7 @@ func Router(db *sql.DB) *gin.Engine {
 	firebaseRequiredGroup := router.Group("/")
 	firebaseRequiredGroup.Use(middleware.FirebaseAuth())
 	{
-		initAuthRouter(firebaseRequiredGroup, uc)
+		initUserRouter(firebaseRequiredGroup, uc)
 		initScheduleRouter(firebaseRequiredGroup, sc)
 		initTodoRouter(firebaseRequiredGroup, tc)
 		initProjectRouter(firebaseRequiredGroup, pc)
