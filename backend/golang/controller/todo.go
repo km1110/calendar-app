@@ -37,7 +37,7 @@ func (tc todoController) FetchTodo(c *gin.Context) {
 
 	userID, err := tc.um.GetUser(firebaseUID.(string))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
