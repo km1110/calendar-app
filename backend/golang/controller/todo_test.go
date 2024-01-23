@@ -120,18 +120,15 @@ func (m *mockTodoManager) DeleteTodo(ctx context.Context, id string) error {
 	return fmt.Errorf("invalid firebaseUID")
 }
 
-func TestFetchTodo(t *testing.T) {
-	// モックのマネージャーを設定
+func setupTest() *todoController {
 	mockUM := &mockUserManager{}
 	mockTM := &mockTodoManager{}
 
-	// コントローラーを初期化
 	tc := todoController{um: mockUM, tm: mockTM}
 
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
 
-	// テストするエンドポイントをセットアップ
 	r.GET("/todos", tc.FetchTodo)
 	r.GET("/todos/day-count", tc.FetchTodoCount)
 	r.POST("/todos", tc.CreateTodo)
@@ -139,20 +136,41 @@ func TestFetchTodo(t *testing.T) {
 	r.PATCH("/todos/:todo_id/status", tc.UpdateTodoStatus)
 	r.DELETE("/todos/:todo_id", tc.DeleteTodo)
 
+	return &tc
+}
+
+func TestFetchTodo(t *testing.T) {
+	tc := setupTest()
+
 	// テストケースを定義
 	tests := []struct {
-		description     string
+		name            string
 		firebaseUID     string
 		expectedStatus  int
 		expectedContent string
 	}{
-		{"Valid firebaseUID", "validUID", http.StatusOK, `[{"id":"123456789","name":"validName","date":"2021-01-01T00:00:00Z","status":false,"project":{"id":"123456789","title":"validName"},"tag":{"id":"123456789","name":"validName"}}]`},
-		{"No firebaseUID", "", http.StatusBadRequest, `{"error":"firebaseUID not provided"}`},
-		{"Invalid firebaseUID", "invalidUID", http.StatusBadRequest, `{"error":"invalid firebaseUID"}`},
+		{
+			name:            "【正常系】1件以上取得",
+			firebaseUID:     "validUID",
+			expectedStatus:  http.StatusOK,
+			expectedContent: `[{"id":"123456789","name":"validName","date":"2021-01-01T00:00:00Z","status":false,"project":{"id":"123456789","title":"validName"},"tag":{"id":"123456789","name":"validName"}}]`,
+		},
+		{
+			name:            "【異常系】firebaseUIDが空",
+			firebaseUID:     "",
+			expectedStatus:  http.StatusBadRequest,
+			expectedContent: `{"error":"firebaseUID not provided"}`,
+		},
+		{
+			name:            "【異常系】firebaseUIDが不正",
+			firebaseUID:     "invalidUID",
+			expectedStatus:  http.StatusBadRequest,
+			expectedContent: `{"error":"invalid firebaseUID"}`,
+		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.description, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			req, _ := http.NewRequest("GET", "/todos", nil)
 			resp := httptest.NewRecorder()
 			c, _ := gin.CreateTestContext(resp)
@@ -164,6 +182,7 @@ func TestFetchTodo(t *testing.T) {
 			}
 
 			tc.FetchTodo(c)
+			// r.ServeHTTP(resp, req)
 
 			assert.Equal(t, test.expectedStatus, resp.Code)
 
