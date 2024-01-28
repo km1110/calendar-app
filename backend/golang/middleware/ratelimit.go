@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -10,9 +12,15 @@ import (
 )
 
 func RateLimiterMiddleware() gin.HandlerFunc {
+	rl, err := strconv.Atoi(os.Getenv("RATE_LIMIT"))
+
+	if err != nil {
+		rl = 100
+	}
+
 	rate := limiter.Rate{
 		Period: 1 * time.Minute,
-		Limit:  50,
+		Limit:  int64(rl),
 	}
 
 	store := memory.NewStore()
