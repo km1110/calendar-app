@@ -12,6 +12,7 @@ import (
 func Router(db *sql.DB) *gin.Engine {
 	router := gin.Default()
 	router.Use(middleware.Cors())
+	router.Use(middleware.RateLimiterMiddleware())
 
 	// modelの初期化
 	um := model.NewUserModel(db)
