@@ -3,7 +3,6 @@ package model
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"time"
 
 	"github.com/km1110/calendar-app/backend/golang/model/entities"
@@ -204,7 +203,6 @@ func (tm *todoModel) GetDateCount(user_id string, start_year string, end_year st
 							`
 
 	rows, err := tm.db.Query(getQuery, user_id, start_year, end_year)
-	fmt.Println(getQuery)
 	if err != nil {
 		return nil, err
 	}
