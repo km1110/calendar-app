@@ -4,13 +4,13 @@ import { todoDayRatioType } from "@/types/todo";
 import { WeekGrass } from "@/components/parts/WeekGrass";
 import { YEAR } from "@/config/year";
 import { COLORS } from "@/config/colors";
+import { createYearCalender } from "@/libs/service/calender";
 
 type Props = {
   dayRatio: todoDayRatioType[];
 };
 
 export const Contribution = ({ dayRatio }: Props) => {
-  // console.log(dayRatio.length);
   const weeks = [];
 
   for (let i = 0; i < 52; i++) {
@@ -20,6 +20,8 @@ export const Contribution = ({ dayRatio }: Props) => {
   const getColor = (ratio: number) => {
     return COLORS[ratio];
   };
+
+  const yearColendar = createYearCalender();
 
   return (
     <Box
@@ -77,7 +79,33 @@ export const Contribution = ({ dayRatio }: Props) => {
               </Typography>
             ))}
           </Box>
-          <Box
+          <Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              {yearColendar.map((week, index) => (
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  {week.map((day, index) => (
+                    <Box
+                      sx={{
+                        width: "12px",
+                        height: "12px",
+                        border: "1px solid #ebedf0",
+                        borderRadius: "2px",
+                        margin: "1px",
+                        backgroundColor: "#ffffff",
+                      }}
+                    />
+                  ))}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+          {/* <Box
             sx={{
               display: "flex",
 
@@ -92,7 +120,7 @@ export const Contribution = ({ dayRatio }: Props) => {
                 key={index}
               />
             ))}
-          </Box>
+          </Box> */}
           <Box
             sx={{
               display: "flex",
