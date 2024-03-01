@@ -86,6 +86,12 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
                   marginBottom: { xs: "40px", sm: "10px" },
                 }}
               />
+              <Typography
+                sx={{ marginBottom: "20px", color: "#69BD83" }}
+                style={{ fontFamily: "Arial", fontWeight: "bold" }}
+              >
+                <Link to={"/sendemail"}>パスワードを忘れた場合はこちら</Link>
+              </Typography>
               <Button
                 size="small"
                 variant="outlined"
