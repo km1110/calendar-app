@@ -1,28 +1,21 @@
-import React, { Dispatch, SetStateAction } from "react";
-
-import { Box, Typography, TextField, Button, Card } from "@mui/material";
-
-import { signinType } from "@/types/sign";
-import { Link } from "react-router-dom";
+import { Box, Card, Typography, TextField, Button } from "@mui/material";
 
 type Props = {
-  signinData: signinType;
-  setSigninData: Dispatch<SetStateAction<signinType>>;
-  signin: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  signinData: {
+    email: string;
+  };
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 };
 
-export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSigninData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
+export const SendEmailForm = ({
+  signinData,
+  handleChange,
+  handleSubmit,
+}: Props) => {
   return (
     <div>
-      <form onSubmit={signin}>
+      <form onSubmit={handleSubmit}>
         <Box
           sx={{
             width: "100%",
@@ -54,7 +47,7 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
                 sx={{ marginTop: "30px", marginBottom: "50px" }}
                 style={{ fontFamily: "Arial", fontWeight: "bold" }}
               >
-                ログイン
+                パスワード再設定
               </Typography>
               <TextField
                 value={signinData.email}
@@ -71,26 +64,15 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
                   marginBottom: { xs: "40px", sm: "10px" },
                 }}
               />
-              <TextField
-                value={signinData.password}
-                onChange={handleChange}
-                required
-                id="password"
-                name="password"
-                label="パスワード"
-                variant="outlined"
-                type="password"
-                sx={{
-                  width: { xs: "240px", sm: "360px" },
-                  height: { xs: "30px", sm: "60px" },
-                  marginBottom: { xs: "40px", sm: "10px" },
-                }}
-              />
               <Typography
-                sx={{ marginBottom: "20px", color: "#69BD83" }}
-                style={{ fontFamily: "Arial", fontWeight: "bold" }}
+                sx={{ marginBottom: "20px" }}
+                style={{
+                  fontSize: "12px",
+                  fontFamily: "Arial",
+                  fontWeight: "inherit",
+                }}
               >
-                <Link to={"/sendemail"}>パスワードを忘れた場合はこちら</Link>
+                パスワード再設定用のURLを上記のメールアドレス宛に送信します
               </Typography>
               <Button
                 size="small"
@@ -107,14 +89,8 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
                   fontSize: "20px",
                 }}
               >
-                ログイン
+                送信
               </Button>
-              <Typography
-                sx={{ marginTop: "20px" }}
-                style={{ fontFamily: "Arial", fontWeight: "bold" }}
-              >
-                <Link to={"/signup"}>新規登録</Link>
-              </Typography>
             </Card>
           </Box>
         </Box>
