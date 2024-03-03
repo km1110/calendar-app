@@ -1,28 +1,21 @@
-import React, { Dispatch, SetStateAction } from "react";
-
-import { Box, Typography, TextField, Button, Card } from "@mui/material";
-
-import { signinType } from "@/types/sign";
-import { Link } from "react-router-dom";
+import { Box, Card, Typography, TextField, Button } from "@mui/material";
 
 type Props = {
-  signinData: signinType;
-  setSigninData: Dispatch<SetStateAction<signinType>>;
-  signin: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  password1: string;
+  password2: string;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 };
 
-export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSigninData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
+export const PasswordResetForm = ({
+  password1,
+  password2,
+  handleChange,
+  handleSubmit,
+}: Props) => {
   return (
     <div>
-      <form onSubmit={signin}>
+      <form onSubmit={handleSubmit}>
         <Box
           sx={{
             width: "100%",
@@ -54,30 +47,15 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
                 sx={{ marginTop: "30px", marginBottom: "50px" }}
                 style={{ fontFamily: "Arial", fontWeight: "bold" }}
               >
-                ログイン
+                パスワードリセット
               </Typography>
               <TextField
-                value={signinData.email}
+                value={password1}
                 onChange={handleChange}
                 required
-                id="email"
-                name="email"
-                label="メールアドレス"
-                variant="outlined"
-                type="email"
-                sx={{
-                  width: { xs: "240px", sm: "360px" },
-                  height: { xs: "25px", sm: "60px" },
-                  marginBottom: { xs: "40px", sm: "10px" },
-                }}
-              />
-              <TextField
-                value={signinData.password}
-                onChange={handleChange}
-                required
-                id="password"
-                name="password"
-                label="パスワード"
+                id="password1"
+                name="password1"
+                label="新しいパスワード"
                 variant="outlined"
                 type="password"
                 sx={{
@@ -86,12 +64,21 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
                   marginBottom: { xs: "40px", sm: "10px" },
                 }}
               />
-              <Typography
-                sx={{ marginBottom: "20px", color: "#69BD83" }}
-                style={{ fontFamily: "Arial", fontWeight: "bold" }}
-              >
-                <Link to={"/sendemail"}>パスワードを忘れた場合はこちら</Link>
-              </Typography>
+              <TextField
+                value={password2}
+                onChange={handleChange}
+                required
+                id="password2"
+                name="password2"
+                label="新しいパスワードの確認"
+                variant="outlined"
+                type="password"
+                sx={{
+                  width: { xs: "240px", sm: "360px" },
+                  height: { xs: "30px", sm: "60px" },
+                  marginBottom: { xs: "40px", sm: "10px" },
+                }}
+              />
               <Button
                 size="small"
                 variant="outlined"
@@ -107,14 +94,8 @@ export const SignIn = ({ signinData, setSigninData, signin }: Props) => {
                   fontSize: "20px",
                 }}
               >
-                ログイン
+                変更
               </Button>
-              <Typography
-                sx={{ marginTop: "20px" }}
-                style={{ fontFamily: "Arial", fontWeight: "bold" }}
-              >
-                <Link to={"/signup"}>新規登録</Link>
-              </Typography>
             </Card>
           </Box>
         </Box>

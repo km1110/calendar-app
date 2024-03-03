@@ -11,7 +11,7 @@ type Props = {
 export const FirebaseAuthProvider = ({ children }: Props) => {
   const auth = getAuth(app);
 
-  const noAuthPages = ["/", "/signup", "/signin"];
+  const noAuthPages = ["/", "/signup", "/signin", "/sendemail", "/reset"];
   const path = useLocation().pathname;
   const navigate = useNavigate();
 
