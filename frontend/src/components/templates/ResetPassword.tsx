@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { confirmPasswordReset, getAuth } from "firebase/auth";
+import {
+  confirmPasswordReset,
+  getAuth,
+  verifyPasswordResetCode,
+} from "firebase/auth";
 
 import { PasswordResetForm } from "@/components/parts/PasswordResetForm";
 import { app } from "@/libs/firebase";
@@ -38,8 +42,12 @@ export const ResetPassword = () => {
       return;
     }
     try {
-      confirmPasswordReset(auth, actionCode, password1);
-      alert("パスワードをリセットしました");
+      verifyPasswordResetCode(auth, actionCode).then(() => {
+        confirmPasswordReset(auth, actionCode, password1).then(() => {
+          alert("パスワードをリセットしました");
+          window.location.href = "/signin";
+        });
+      });
     } catch (error) {
       alert("パスワードのリセットに失敗しました");
     }
@@ -47,9 +55,6 @@ export const ResetPassword = () => {
     // フォームをクリア
     setPassword1("");
     setPassword2("");
-
-    // ログインページに遷移
-    window.location.href = "/login";
   };
 
   return (
