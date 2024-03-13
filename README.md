@@ -37,8 +37,3 @@
 ## Doc
 
 - [DB](/docs/db.md)
-
-## test account
-
-- id : test@test.com
-- pw : test123
